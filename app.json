@@ -4,8 +4,12 @@
     "slug": "phomag",
     "version": "1.0.0",
     "orientation": "portrait",
+    "primaryColor": "#777DF5",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "developmentClient": {
+      "silentLaunch": false
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,13 +25,23 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#ffffff00"
+      },
+      "package": "com.roncoder.phomag"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#777DF5"
+        }
+      ]
+    ]
   }
 }

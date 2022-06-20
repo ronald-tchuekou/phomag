@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "766559946401",
+    "project_id": "phomag-c438c",
+    "storage_bucket": "phomag-c438c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766559946401:android:3b5762abfa21d4743892e0",
+        "android_client_info": {
+          "package_name": "com.roncoder.phomag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766559946401-h3ppsbvoa9fcdb5n23962ti75mlmf7a4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxMX0gGn2JLopDmeEOBcoCWH8vb7tiUqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766559946401-h3ppsbvoa9fcdb5n23962ti75mlmf7a4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
