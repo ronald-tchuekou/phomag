@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "766559946401-e9e82gpvv6h3q1ki7at6vj3pb4nfot84.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.roncoder.phomag",
+            "certificate_hash": "4eee29299cccadd0f0c2d3f5824c61d9565a53a1"
+          }
+        },
+        {
           "client_id": "766559946401-h3ppsbvoa9fcdb5n23962ti75mlmf7a4.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,20 +1,53 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { createAppContainer, createSwitchNavigator } from 'react-navigation'
+import AuthFlow from './src/navigations/auth-flow'
+import { Provider as AuthProvider } from './src/contexts/authContext'
+import './src/calendar-local-config'
+import * as Notifications from 'expo-notifications'
+import ManagerFlow from './src/navigations/manager/manager-flow'
+import PrinterServiceFlow from './src/navigations/printer-service/printer-service-flow'
+import StartFlow from './src/navigations/start-flow'
+import TeacherFlow from './src/navigations/teacher/teacher-flow'
 
-export default function App() {
+const baseNavigator = createSwitchNavigator({
+   StartFlow: StartFlow,
+   AuthFlow: AuthFlow,
+   ManagerFlow: ManagerFlow,
+   TeacherFlow: TeacherFlow,
+   PrinterServiceFlow: PrinterServiceFlow
+}, {
+   initialRouteName: 'StartFlow'
+})
+
+Notifications.setNotificationHandler({
+   handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false
+   })
+})
+
+const App = createAppContainer(baseNavigator)
+
+export default () => {
+   const notificationListener = React.useRef(null)
+   const responseListener = React.useRef(null)
+
+   React.useEffect(() => {
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+         console.log('Received Notification listener : ', notification)
+      })
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+         console.log('Received Notification response : ', response)
+      })
+      return () => {
+         notificationListener.current && Notifications.removeNotificationSubscription(notificationListener.current)
+         responseListener.current && Notifications.removeNotificationSubscription(responseListener.current)
+      }
+   }, [])
    return (
-      <View style={styles.container}>
-         <Text>Open up App.js to start working on your app!</Text>
-         <StatusBar style='auto' />
-      </View>
+      <AuthProvider>
+         <App />
+      </AuthProvider>
    )
 }
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
-   }
-})

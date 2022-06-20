@@ -42,6 +42,8 @@
           "color": "#777DF5"
         }
       ]
-    ]
+    ],
+    "description": "Service printer application.",
+    "githubUrl": "https://github.com/ronald-tchuekou/phomag.git"
   }
 }

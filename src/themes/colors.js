@@ -29,7 +29,8 @@ const COLORS = {
    DARK_800: '#313131',
    DARK_500: '#54514C',
    DARK_300: '#54514CBF',
-   DARK_200: '#bbbbbb'
+   DARK_200: '#bbbbbb',
+   DARK_100: '#d9d9d9',
 }
 
 export default COLORS
