@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { AppStatusBar, AppTextInput, Space } from '../../components'
+import { AppStatusBar, AppTextInput, ModalLoader, Space } from '../../components'
 import COLORS from '../../themes/colors'
 import { Context as AuthContext } from '../../contexts/authContext'
 import SIZES from '../../themes/sizes'
 import STYLES from '../../themes/style'
 import { ToastMessage } from '../../utils'
 
-const SignInScreen = ({}) => {
+const SignInScreen = ({ navigation }) => {
    const loader_ref = React.useRef(null)
 
    const {
@@ -42,11 +42,14 @@ const SignInScreen = ({}) => {
       }
 
       loader_ref.current.show()
-      setTimeout(() => loader_ref.current.dismiss(), 4000)
+      setTimeout(() => {
+         loader_ref.current.dismiss()
+         navigation.navigate('ManagerFlow')
+      }, 4000)
    }
 
    return (
-      <AppStatusBar barStyle={'dark-content'} bgColor={COLORS.DARK_100}>
+      <AppStatusBar barStyle={'dark-content'} bgColor={COLORS.WHITE}>
          <View style={styles.container}>
 
             <Space />
@@ -54,7 +57,7 @@ const SignInScreen = ({}) => {
             <Space />
             <Space />
 
-            <Text style={styles.title}>Sing in to your</Text>
+            <Text style={styles.title}>Sign in to your</Text>
             <Text style={styles.title}>Account</Text>
 
             <Space />
@@ -95,9 +98,10 @@ const SignInScreen = ({}) => {
                      color: 'rgba(255,255,255,0.53)'
                   }}
                   style={[STYLES.button_primary, { width: 200 }]}>
-                  <Text style={STYLES.button_text_primary}>Se connecter</Text>
+                  <Text style={STYLES.button_text_primary}>Connect</Text>
                </Pressable>
             </View>
+            <ModalLoader ref={loader_ref} />
          </View>
       </AppStatusBar>
    )
@@ -105,7 +109,9 @@ const SignInScreen = ({}) => {
 
 const styles = StyleSheet.create({
    container: {
-      padding: SIZES.DEFAULT_PADDING
+      padding: SIZES.DEFAULT_PADDING,
+      backgroundColor: COLORS.WHITE,
+      flex: 1
    },
    title: {
       fontSize: SIZES.H1,

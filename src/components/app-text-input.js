@@ -61,10 +61,11 @@ export const AppTextInput = ({
          height: 45,
          width: '100%',
          borderRadius: 10,
-         backgroundColor: COLORS.DARK_200,
+         backgroundColor: COLORS.DARK_100,
          paddingLeft: iconLeft ? 45 : 10,
          paddingRight: iconRight ? 45 : 10,
-         paddingVertical: 5
+         paddingVertical: 5,
+         fontSize: 15
       }
    })
 
