@@ -16,6 +16,8 @@ const SignInScreen = ({ navigation }) => {
       setFormDataField
    } = React.useContext(AuthContext)
 
+   const [secure, setSecure] = React.useState(true)
+
    function setValue(key, value) {
       setFormDataField({ key: key, value: value }, () => {
       })
@@ -75,18 +77,19 @@ const SignInScreen = ({ navigation }) => {
             <Space />
             <Space />
             <AppTextInput
-               secure
+               secure={secure}
                label={'Mot de passe'}
                onChange={(val) => setValue('password', val)}
                value={getValue('password', '')}
                iconLeft={() => <Ionicons name={'lock-closed'} size={20} color={COLORS.DARK_300} />}
-               iconRight={() => <Pressable onPress={() => {
-               }} android_ripple={{
-                  color: COLORS.DARK_300,
-                  borderless: true
-               }}>
-                  <Ionicons name={'eye'} size={25} color={COLORS.DARK_300} />
-               </Pressable>}
+               iconRight={() => (
+                  <Pressable onPress={() => setSecure(s => !s)} android_ripple={{
+                     color: COLORS.DARK_500,
+                     borderless: true
+                  }} style={{padding: 2, zIndex: 20}}>
+                     <Ionicons name={secure ? 'eye' : 'eye-off'} size={25} color={COLORS.DARK_300} />
+                  </Pressable>
+               )}
             />
             <Space />
             <Space />
@@ -97,7 +100,7 @@ const SignInScreen = ({ navigation }) => {
                   android_ripple={{
                      color: 'rgba(255,255,255,0.53)'
                   }}
-                  style={[STYLES.button_primary, { width: 200 }]}>
+                  style={[STYLES.button_primary, { width: 150 }]}>
                   <Text style={STYLES.button_text_primary}>Connect</Text>
                </Pressable>
             </View>
@@ -109,7 +112,7 @@ const SignInScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
    container: {
-      padding: SIZES.DEFAULT_PADDING,
+      padding: SIZES.MEDIUM_PADDING,
       backgroundColor: COLORS.WHITE,
       flex: 1
    },

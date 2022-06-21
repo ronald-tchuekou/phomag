@@ -1,5 +1,6 @@
+import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { StyleSheet, TextInput, View } from 'react-native'
+import { Pressable, StyleSheet, TextInput, View } from 'react-native'
 import COLORS from '../themes/colors'
 
 export const AppTextInput = ({
@@ -10,8 +11,8 @@ export const AppTextInput = ({
                                 autoFocus = false,
                                 capitalize = false,
                                 secure = false,
-                                iconRight,
                                 iconLeft,
+                                iconRight,
                                 lines = 1,
                                 multiline = false,
                                 readOnly = true,
@@ -22,15 +23,12 @@ export const AppTextInput = ({
 
    const capitalization = capitalize === true ? 'words' : capitalize === false ? 'none' : capitalize
 
-   // States
-   const [focused, setFocused] = React.useState(false)
-
    function onFocus() {
-      setFocused(true)
+
    }
 
    function onBlur() {
-      setFocused(false)
+
    }
 
    const styles = StyleSheet.create({
@@ -93,7 +91,7 @@ export const AppTextInput = ({
             keyboardType={type}
          />
          {iconRight ? (
-            <View style={styles.icon2}>{iconRight()}</View>
+               <View  style={styles.icon2}>{iconRight()}</View>
          ) : null}
       </View>
    )

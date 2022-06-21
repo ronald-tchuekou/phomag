@@ -6,6 +6,8 @@ const SIZES = {
    H5: 20,
    H6: 17,
    H7: 15,
+   H8: 12,
+   H9: 10,
    DEFAULT_PADDING: 15,
    MEDIUM_PADDING: 20,
    LARGE_PADDING: 30,

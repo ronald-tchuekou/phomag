@@ -2,10 +2,10 @@ import React from 'react'
 import { Platform, SafeAreaView, StatusBar, View } from 'react-native'
 import COLORS from '../themes/colors'
 
-const AppStatusBar = ({ children, hidden = false, bgColor = COLORS.PRIMARY, barStyle = 'light-content' }) => {
+const AppStatusBar = ({ children, hidden = false, bgColor = COLORS.DARK_50, barStyle = 'dark-content' }) => {
    if (Platform.OS === 'ios')
       return (
-         <View style={{ flex: 1, backgroundColor: COLORS.DARK_100 }}>
+         <View style={{ flex: 1, backgroundColor: COLORS.DARK_50 }}>
             <StatusBar
                animated
                hidden={hidden}
@@ -16,7 +16,7 @@ const AppStatusBar = ({ children, hidden = false, bgColor = COLORS.PRIMARY, barS
          </View>
       )
    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.DARK_100 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.DARK_50 }}>
          <StatusBar
             animated
             hidden={hidden}

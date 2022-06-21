@@ -12,7 +12,7 @@ import PrinterServicesFlow from './printer-services-flow'
 export const styles = StyleSheet.create({
    bottom_tab_container: {
       borderTopWidth: 1,
-      borderTopColor: COLORS.PRIMARY_15,
+      borderTopColor: COLORS.DARK_100,
       backgroundColor: COLORS.WHITE,
       paddingHorizontal: 5,
       paddingVertical: 2,
