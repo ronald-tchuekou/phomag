@@ -1,6 +1,5 @@
-import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { Pressable, StyleSheet, TextInput, View } from 'react-native'
+import { StyleSheet, TextInput, View } from 'react-native'
 import COLORS from '../themes/colors'
 
 export const AppTextInput = ({
@@ -59,7 +58,7 @@ export const AppTextInput = ({
          height: 45,
          width: '100%',
          borderRadius: 10,
-         backgroundColor: COLORS.DARK_100,
+         backgroundColor: COLORS.DARK_50,
          paddingLeft: iconLeft ? 45 : 10,
          paddingRight: iconRight ? 45 : 10,
          paddingVertical: 5,
@@ -91,7 +90,7 @@ export const AppTextInput = ({
             keyboardType={type}
          />
          {iconRight ? (
-               <View  style={styles.icon2}>{iconRight()}</View>
+            <View style={styles.icon2}>{iconRight()}</View>
          ) : null}
       </View>
    )

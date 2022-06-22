@@ -2,15 +2,13 @@ import React from "react"
 import {Modal, StyleSheet, View} from "react-native"
 import SIZES from '../themes/sizes'
 
-export const AppModal = ({visible, onClose, children, openMode = 'slide'}) => {
+export const AppModal = ({visible, onClose, children, openMode = 'fade'}) => {
    return (
-      <View style={[
-         styles.centeredView,
-         {
+      <View style={{
             height: 0,
-            width: 0
-         }
-      ]}>
+            width: 0,
+            overflow: 'hidden'
+         }}>
          <Modal
             animationType={openMode}
             transparent={true}
@@ -33,7 +31,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.15)',
-      zIndex: 100000,
       padding: SIZES.LARGE_PADDING
    }
 })

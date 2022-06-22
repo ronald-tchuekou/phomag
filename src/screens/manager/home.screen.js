@@ -1,25 +1,38 @@
 import React from 'react'
-import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
-import { AppStatusBar, Space } from '../../components'
+import { AppLoader, AppStatusBar, RequestItem, Space } from '../../components'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 
-const {width} = Dimensions.get('window')
+const HomeScreen = ({navigation}) => {
 
-const HomeScreen = ({}) => {
-   const content = [
-      { id: 'id1', title: 'Title' },
-      { id: 'id2', title: 'Title' },
-      { id: 'id3', title: 'Title' },
-      { id: 'id4', title: 'Title' },
-      { id: 'id5', title: 'Title' },
-      { id: 'id6', title: 'Title' },
-      { id: 'id7', title: 'Title' },
-      { id: 'id8', title: 'Title' },
-      { id: 'id9', title: 'Title' },
-      { id: 'id10', title: 'Title' }
-   ]
+   const [loading, setLoading] = React.useState(false)
+   const [content, setContent] = React.useState([])
+
+   React.useState(() => {
+      setLoading(true)
+      setTimeout(() => {
+         setLoading(false)
+         setContent([
+            { id: 'id1', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
+            { id: 'id2', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id3', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id4', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Canceled' },
+            { id: 'id5', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
+            { id: 'id6', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id7', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id8', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
+            { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' }
+         ])
+      }, 5000)
+   })
+
+   const showDetails = React.useCallback(() => {
+      navigation.navigate('RequestDetailsScreen')
+   }, [])
+
    return (
       <AppStatusBar>
          <Space />
@@ -47,79 +60,23 @@ const HomeScreen = ({}) => {
                </View>
             </Pressable>
          </View>
-         <FlatList
-            data={content}
-            keyExtractor={(item, index) => 'item' + item.id + index}
-            renderItem={({ item, index }) => <RequestItem item={item} index={index} />} />
+         {loading ? (
+            <AppLoader />
+         ) : (
+            <FlatList
+               data={content}
+               keyExtractor={(item, index) => 'item' + item.id + index}
+               renderItem={({ item, index }) => (
+                  <RequestItem onPress={showDetails} item={item} index={index} />
+               )} />
+         )}
       </AppStatusBar>
-   )
-}
-
-const RequestItem = ({ item, index, onPress }) => {
-   const itemStyles = StyleSheet.create({
-      container: {
-         backgroundColor: COLORS.WHITE,
-         borderRadius: 15,
-         borderWidth: 1,
-         borderColor: COLORS.DARK_100,
-         marginHorizontal: SIZES.MEDIUM_MARGIN,
-         marginTop: index === 0 ? SIZES.SMALL_MARGIN : 0,
-         marginBottom: SIZES.SMALL_MARGIN,
-         overflow: 'hidden',
-      },
-      content: {
-         width: '100%',
-         paddingHorizontal:SIZES.DEFAULT_PADDING,
-         paddingVertical: SIZES.SMALL_PADDING,
-         flexDirection: 'row',
-         justifyContent: 'space-between',
-         alignItems: 'center'
-      },
-      title: {
-         width: width - 150,
-         fontSize: SIZES.H7,
-         color: COLORS.DARK_500,
-         fontWeight: '700'
-      },
-      label: {
-         fontSize:SIZES.H8,
-         color: COLORS.DARK_300
-      },
-      badge: {
-         borderRadius: 5,
-         backgroundColor: COLORS.WARNING_15,
-         paddingVertical: 4,
-         paddingHorizontal: 8
-      },
-      badge_label: {
-         color: COLORS.WARNING,
-         fontSize: SIZES.H9,
-         fontWeight: 'bold'
-      }
-   })
-   return (
-      <View style={itemStyles.container}>
-         <Pressable
-            onPress={onPress}
-            android_ripple={{ color: COLORS.DARK_200 }}
-            style={itemStyles.content}>
-            <View>
-               <Text style={itemStyles.title} numberOfLines={1}>
-                  Fiche de TD N° 12 Fiche de TD N° 12 Fiche de TD N° 12 Fiche de TD N° 12
-               </Text>
-               <Text style={itemStyles.label}>Lundi, 12 Jan 2022</Text>
-            </View>
-            <View style={itemStyles.badge}>
-               <Text style={itemStyles.badge_label}>Pending</Text>
-            </View>
-         </Pressable>
-      </View>
    )
 }
 
 const styles = StyleSheet.create({
    title: {
-      fontSize: SIZES.H4,
+      fontSize: SIZES.H5,
       color: COLORS.DARK_800,
       fontWeight: 'bold'
    },

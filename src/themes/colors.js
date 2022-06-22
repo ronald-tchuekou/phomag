@@ -26,11 +26,11 @@ const COLORS = {
    WARNING_25: 'rgba(255,139,45,0.25)',
    WARNING_15: 'rgba(255,139,45,0.15)',
 
-   SUCCESS: '#05F0FF',
-   SUCCESS_75: 'rgba(5,240,255,0.75)',
-   SUCCESS_50: 'rgba(5,240,255,0.50)',
-   SUCCESS_25: 'rgba(5,240,255,0.25)',
-   SUCCESS_15: 'rgba(5,240,255,0.15)',
+   SUCCESS: '#06d1de',
+   SUCCESS_75: 'rgba(6,209,222,0.75)',
+   SUCCESS_50: 'rgba(6,209,222,0.50)',
+   SUCCESS_25: 'rgba(6,209,222,0.25)',
+   SUCCESS_15: 'rgba(6,209,222,0.15)',
 
    // Text colors.
    DARK_800: '#313131',
