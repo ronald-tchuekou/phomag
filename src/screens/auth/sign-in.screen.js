@@ -2,8 +2,8 @@ import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppStatusBar, AppTextInput, ModalLoader, Space } from '../../components'
-import COLORS from '../../themes/colors'
 import { Context as AuthContext } from '../../contexts/authContext'
+import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import STYLES from '../../themes/style'
 import { ToastMessage } from '../../utils'
@@ -47,7 +47,7 @@ const SignInScreen = ({ navigation }) => {
       setTimeout(() => {
          loader_ref.current.dismiss()
          navigation.navigate('ManagerFlow')
-      }, 4000)
+      }, 800)
    }
 
    return (
@@ -74,8 +74,10 @@ const SignInScreen = ({ navigation }) => {
                value={getValue('email', '')}
                iconLeft={() => <Ionicons name={'person'} size={20} color={COLORS.DARK_300} />}
             />
+
             <Space />
             <Space />
+
             <AppTextInput
                secure={secure}
                label={'Mot de passe'}
@@ -86,14 +88,16 @@ const SignInScreen = ({ navigation }) => {
                   <Pressable onPress={() => setSecure(s => !s)} android_ripple={{
                      color: COLORS.DARK_500,
                      borderless: true
-                  }} style={{padding: 2, zIndex: 20}}>
+                  }} style={{ padding: 2, zIndex: 20 }}>
                      <Ionicons name={secure ? 'eye' : 'eye-off'} size={25} color={COLORS.DARK_300} />
                   </Pressable>
                )}
             />
+
             <Space />
             <Space />
             <Space />
+
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                <Pressable
                   onPress={submit}

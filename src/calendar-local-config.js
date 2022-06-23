@@ -49,4 +49,5 @@ LocaleConfig.locales['fr'] = {
    ],
    today: 'Aujourd\'hui'
 }
-LocaleConfig.defaultLocale = 'fr'
+
+// LocaleConfig.defaultLocale = 'en'

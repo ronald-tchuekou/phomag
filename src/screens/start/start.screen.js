@@ -18,12 +18,12 @@ const StartScreen = ({ navigation }) => {
    const checkUser = () => {
       return getLocaleValue(ENV.user_key, (error, value) => {
          console.log(value)
-         setTimeout(() => navigation.navigate('AuthFlow'), 3000)
+         setTimeout(() => navigation.navigate('AuthFlow'), 1000)
       })
    }
 
    return (
-      <AppStatusBar hidden>
+      <AppStatusBar>
          <View style={{
             width: '100%',
             height: '100%',

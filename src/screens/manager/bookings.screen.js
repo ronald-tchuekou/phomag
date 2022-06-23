@@ -26,7 +26,7 @@ const BookingsScreen = ({ navigation }) => {
             { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: current },
             { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: current }
          ])
-      }, 5000)
+      }, 800)
    }, [current])
 
    const showDetails = React.useCallback(() => {
@@ -75,7 +75,7 @@ const BookingsScreen = ({ navigation }) => {
    )
 }
 
-const ButtonNav = ({ title, selected, onPress }) => {
+export const ButtonNav = ({ title, selected, onPress }) => {
    const btn_style = StyleSheet.create({
       container: {
          textAlign: 'center',

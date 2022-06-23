@@ -26,7 +26,7 @@ const HomeScreen = ({navigation}) => {
             { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
             { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' }
          ])
-      }, 5000)
+      }, 800)
    }, [])
 
    const showDetails = React.useCallback(() => {
