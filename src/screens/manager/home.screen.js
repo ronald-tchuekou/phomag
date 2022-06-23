@@ -10,7 +10,7 @@ const HomeScreen = ({navigation}) => {
    const [loading, setLoading] = React.useState(false)
    const [content, setContent] = React.useState([])
 
-   React.useState(() => {
+   React.useEffect(() => {
       setLoading(true)
       setTimeout(() => {
          setLoading(false)
@@ -27,7 +27,7 @@ const HomeScreen = ({navigation}) => {
             { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' }
          ])
       }, 5000)
-   })
+   }, [])
 
    const showDetails = React.useCallback(() => {
       navigation.navigate('RequestDetailsScreen')

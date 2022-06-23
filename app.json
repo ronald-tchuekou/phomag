@@ -4,7 +4,7 @@
     "slug": "phomag",
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#777DF5",
+    "primaryColor": "#ffffff",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "developmentClient": {
