@@ -164,6 +164,14 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
                </View>
 
                <Space />
+
+               <View style={[styles.container_plage, styles.line]}>
+                  <Text style={styles.subTitle}>18h00</Text>
+                  <Text style={styles.subTitle}>to</Text>
+                  <Text style={styles.subTitle}>20h30</Text>
+               </View>
+
+               <Space />
                <Space />
                <Space />
                <Space />
