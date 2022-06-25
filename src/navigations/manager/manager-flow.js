@@ -2,12 +2,12 @@ import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
-import ProfileScreen from '../../screens/manager/profile.screen'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import BookingsFlow from './bookings-flow'
 import HomeFlow from './home-flow'
 import PrinterServicesFlow from './printer-services-flow'
+import ProfileFlow from './profile-flow'
 
 export const styles = StyleSheet.create({
    bottom_tab_container: {
@@ -107,7 +107,7 @@ const tabBarComponent = (props) => {
          />
          <TabBarItem
             title={'Profile'}
-            onPress={() => goTo('ProfileScreen')}
+            onPress={() => goTo('ProfileFlow')}
             icon={() => (
                <Svg
                   width={icon_size}
@@ -157,7 +157,7 @@ const ManagerFlow = createBottomTabNavigator({
    HomeFlow,
    BookingsFlow,
    PrinterServicesFlow,
-   ProfileScreen
+   ProfileFlow
 }, {
    tabBarComponent
 })
