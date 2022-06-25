@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppStatusBar, AppTextInput, ModalLoader, Space } from '../../components'
@@ -46,38 +47,38 @@ const SignInScreen = ({ navigation }) => {
       loader_ref.current.show()
       setTimeout(() => {
          loader_ref.current.dismiss()
-         navigation.navigate('ManagerFlow')
+         if (data.email === 'manager')
+            navigation.navigate('ManagerFlow')
+         else if (data.email === 'teacher')
+            navigation.navigate('TeacherFlow')
+         else if (data.email === 'printer')
+            navigation.navigate('PrinterServiceFlow')
+         else
+            ToastMessage('Your connection information isn\'t correct!')
       }, 800)
    }
 
    return (
       <AppStatusBar barStyle={'dark-content'} bgColor={COLORS.WHITE}>
          <View style={styles.container}>
-
             <Space />
             <Space />
             <Space />
             <Space />
-
             <Text style={styles.title}>Sign in to your</Text>
             <Text style={styles.title}>Account</Text>
-
             <Space />
             <Space />
             <Space />
             <Space />
-
             <AppTextInput
-               label={'Adresse e-mail'}
-               type={'email-address'}
+               label={'Matricule / Adresse e-mail'}
                onChange={(val) => setValue('email', val)}
                value={getValue('email', '')}
                iconLeft={() => <Ionicons name={'person'} size={20} color={COLORS.DARK_300} />}
             />
-
             <Space />
             <Space />
-
             <AppTextInput
                secure={secure}
                label={'Mot de passe'}
@@ -93,20 +94,23 @@ const SignInScreen = ({ navigation }) => {
                   </Pressable>
                )}
             />
-
             <Space />
             <Space />
             <Space />
-
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-               <Pressable
-                  onPress={submit}
-                  android_ripple={{
-                     color: 'rgba(255,255,255,0.53)'
-                  }}
-                  style={[STYLES.button_primary, { width: 150 }]}>
-                  <Text style={STYLES.button_text_primary}>Connect</Text>
-               </Pressable>
+               <LinearGradient
+                  colors={[COLORS.PRIMARY_50, COLORS.PRIMARY]}
+                  style={STYLES.button_container}
+               >
+                  <Pressable
+                     onPress={submit}
+                     android_ripple={{
+                        color: 'rgba(255,255,255,0.53)'
+                     }}
+                     style={[STYLES.button_primary, { width: 150 }]}>
+                     <Text style={STYLES.button_text_accent}>Connect</Text>
+                  </Pressable>
+               </LinearGradient>
             </View>
             <ModalLoader ref={loader_ref} />
          </View>

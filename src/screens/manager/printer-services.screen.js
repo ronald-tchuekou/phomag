@@ -3,12 +3,12 @@ import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from '
 import { AppLoader, AppStatusBar, Space } from '../../components'
 import { AddPersonSVG } from '../../svg'
 import COLORS from '../../themes/colors'
-import { profile1 } from '../../themes/images'
+import { default_profile } from '../../themes/images'
 import SIZES from '../../themes/sizes'
 
 const { width } = Dimensions.get('window')
 
-const PrinterServices = ({navigation}) => {
+const PrinterServices = ({ navigation }) => {
 
    const content = [
       {
@@ -148,13 +148,14 @@ export const PrinterServiceItem = ({ onPress, item, index }) => {
       profile: {
          height: 50,
          width: 50,
-         borderRadius: 500,
+         borderRadius: 50,
          backgroundColor: COLORS.DARK_100,
          overflow: 'hidden'
       },
       profile_img: {
          width: '100%',
-         height: '100%'
+         height: '100%',
+         borderRadius: 50
       }
    })
    return (
@@ -164,9 +165,9 @@ export const PrinterServiceItem = ({ onPress, item, index }) => {
             android_ripple={{ color: COLORS.DARK_200 }}
             style={itemStyles.content}>
             <View style={itemStyles.profile}>
-               <Image source={profile1} resizeMode={'contain'} style={itemStyles.profile_img}/>
+               <Image source={default_profile} resizeMode={'contain'} style={itemStyles.profile_img} />
             </View>
-            <View style={{paddingLeft: SIZES.SMALL_PADDING}}>
+            <View style={{ paddingLeft: SIZES.SMALL_PADDING }}>
                <Text style={itemStyles.title} numberOfLines={1}>
                   {item.firstname} {item.lastname}
                </Text>

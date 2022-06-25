@@ -1,16 +1,28 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppStatusBar, Space } from '../../components'
-import { ArrowLeft, NotificationSVG } from '../../svg'
+import { Context as AuthContext } from '../../contexts/authContext'
+import { ArrowLeftSVG, NotificationSVG } from '../../svg'
 import COLORS from '../../themes/colors'
-import { profile1 } from '../../themes/images'
+import { default_profile } from '../../themes/images'
 import SIZES from '../../themes/sizes'
 
 const ProfileScreen = ({ navigation }) => {
+   const {
+      state: { formData }
+   } = React.useContext(AuthContext)
 
    const showNotifications = React.useCallback(() => {
       navigation.navigate('NotificationsScreen')
    }, [])
+
+   function getValue(key, default_value) {
+      if (formData)
+         return formData[key] || default_value
+      return default_value
+   }
+
+   const role = getValue('email', '').trim()
 
    return (
       <AppStatusBar>
@@ -19,7 +31,7 @@ const ProfileScreen = ({ navigation }) => {
             <View style={styles.line}>
                <View style={styles.profile}>
                   <Image
-                     source={profile1}
+                     source={default_profile}
                      resizeMode={'contain'}
                      style={{ width: '100%', height: '100%' }} />
                </View>
@@ -33,15 +45,17 @@ const ProfileScreen = ({ navigation }) => {
                      fontSize: SIZES.H7,
                      color: COLORS.SUCCESS,
                      fontWeight: '600'
-                  }}>Manager</Text>
+                  }}>
+                     {role === 'manager' ? 'Manager' : role === 'teacher' ? 'Teacher' : 'Printer Service'}
+                  </Text>
                </View>
             </View>
             <Pressable
                onPress={showNotifications}
                android_ripple={{
-               color: COLORS.DARK_200,
-               borderless: true
-            }}
+                  color: COLORS.DARK_200,
+                  borderless: true
+               }}
                style={styles.notification}>
                <NotificationSVG />
                <View style={styles.notification_label}>
@@ -61,7 +75,7 @@ const ProfileScreen = ({ navigation }) => {
                   <Text style={styles.description}>English</Text>
                </View>
                <View>
-                  <ArrowLeft />
+                  <ArrowLeftSVG />
                </View>
             </Pressable>
          </View>
@@ -77,7 +91,7 @@ const ProfileScreen = ({ navigation }) => {
                   <Text style={styles.description}>Light</Text>
                </View>
                <View>
-                  <ArrowLeft />
+                  <ArrowLeftSVG />
                </View>
             </Pressable>
          </View>

@@ -18,7 +18,7 @@ const StartScreen = ({ navigation }) => {
    const checkUser = () => {
       return getLocaleValue(ENV.user_key, (error, value) => {
          console.log(value)
-         setTimeout(() => navigation.navigate('AuthFlow'), 1000)
+         setTimeout(() => navigation.navigate('AuthFlow'), 500)
       })
    }
 

@@ -10,23 +10,22 @@ const STYLES = StyleSheet.create({
       alignItems: 'center'
    },
    button_primary: {
-      borderWidth: 1,
-      borderColor: COLORS.PRIMARY,
-      backgroundColor: COLORS.PRIMARY,
+      backgroundColor: COLORS.TRANSPARENT,
       paddingVertical: SIZES.SMALL_PADDING,
       paddingHorizontal: SIZES.DEFAULT_PADDING,
       borderRadius: 10,
-      color: COLORS.WHITE,
       overflow: 'hidden'
    },
    button_accent: {
-      borderWidth: 1,
-      borderColor: COLORS.WARNING,
-      backgroundColor: COLORS.WARNING,
+      backgroundColor: COLORS.TRANSPARENT,
       paddingVertical: SIZES.SMALL_PADDING,
       paddingHorizontal: SIZES.DEFAULT_PADDING,
       borderRadius: 10,
-      color: COLORS.WHITE,
+      overflow: 'hidden'
+   },
+   button_container: {
+      backgroundColor: COLORS.TRANSPARENT,
+      borderRadius: 10,
       overflow: 'hidden'
    },
    button_text_primary: {
