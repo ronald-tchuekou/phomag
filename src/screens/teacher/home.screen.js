@@ -1,18 +1,98 @@
 import React from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
-import { AppStatusBar } from '../../components'
-import { AddRequestSVG } from '../../svg'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { AppLoader, AppStatusBar, ChartProgress, RequestItem } from '../../components'
+import { AddRequestSVG, NotificationSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 
 const HomeScreen = ({ navigation }) => {
 
+   const [loading, setLoading] = React.useState(false)
+   const [content, setContent] = React.useState([])
+   const [value, setValue] = React.useState(0)
+
+   React.useEffect(() => {
+      setLoading(true)
+      setValue(0)
+      setTimeout(() => {
+         setLoading(false)
+         setContent([
+            { id: 'id1', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
+            { id: 'id2', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id3', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id4', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Canceled' },
+            { id: 'id5', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
+            { id: 'id6', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id7', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id8', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
+            { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
+            { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' }
+         ])
+         setValue(40)
+      }, 1000)
+   }, [])
+
+   const showDetails = React.useCallback(() => {
+      navigation.navigate('RequestDetailsScreen')
+   }, [])
+
    const handleAddAction = React.useCallback(() => {
       navigation.navigate('AddRequestScreen')
    }, [])
 
+   const showNotifications = React.useCallback(() => {
+      navigation.navigate('NotificationsScreen')
+   }, [])
+
    return (
       <AppStatusBar>
+         <ScrollView style={{ flex: 1 }}>
+            <View style={styles.header}>
+               <View style={{
+                  width: 200,
+                  height: 200
+               }}>
+                  <ChartProgress value={value} />
+               </View>
+               <View style={styles.progress_container}>
+                  <Text style={styles.progress_indicator}>{value}%</Text>
+                  <Text style={styles.progress_description}>used</Text>
+               </View>
+               <View style={styles.notification_container}>
+                  <Pressable
+                     onPress={showNotifications}
+                     android_ripple={{
+                        color: COLORS.DARK_200,
+                        borderless: true
+                     }}
+                     style={styles.notification}>
+                     <NotificationSVG />
+                     <View style={styles.notification_label}>
+                        <Text style={styles.notification_text}>10</Text>
+                     </View>
+                  </Pressable>
+               </View>
+            </View>
+            <Text style={styles.subTitle}>Recent requests</Text>
+            <View style={{ flex: 1 }}>
+               {loading ? (
+                  <AppLoader />
+               ) : (
+                  <>
+                     {content.map((item, index) => {
+                        return (
+                           <RequestItem
+                              key={'item' + item.id + index}
+                              onPress={showDetails}
+                              item={item}
+                              index={index}
+                           />
+                        )
+                     })}
+                  </>
+               )}
+            </View>
+         </ScrollView>
          <View style={styles.fab_container}>
             <Pressable
                onPress={handleAddAction}
@@ -26,10 +106,43 @@ const HomeScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+   header: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 250,
+      position: 'relative'
+   },
+   progress_indicator: {
+      fontSize: 50,
+      fontWeight: 'bold',
+      color: COLORS.PRIMARY
+   },
+   progress_description: {
+      color: COLORS.PRIMARY,
+      fontSize: 20
+   },
+   progress_container: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+   },
    title: {
       fontSize: SIZES.H5,
       color: COLORS.DARK_800,
       fontWeight: 'bold'
+   },
+   subTitle: {
+      color: COLORS.DARK_800,
+      fontWeight: 'bold',
+      fontSize: SIZES.H6,
+      marginHorizontal: SIZES.MEDIUM_MARGIN,
+      paddingHorizontal: SIZES.SMALL_PADDING,
+      paddingBottom: 4
    },
    line_between: {
       flexDirection: 'row',
@@ -55,6 +168,28 @@ const styles = StyleSheet.create({
       backgroundColor: COLORS.PRIMARY,
       justifyContent: 'center',
       alignItems: 'center'
+   },
+   notification_container: {
+      position: 'absolute',
+      top: 30,
+      right: 30
+   },
+   notification: {
+      position: 'relative',
+      padding: 2
+   },
+   notification_label: {
+      position: 'absolute',
+      top: -3,
+      right: -5,
+      borderRadius: 50,
+      backgroundColor: COLORS.ERROR,
+      paddingHorizontal: 3,
+      paddingVertical: 1
+   },
+   notification_text: {
+      color: COLORS.WHITE,
+      fontSize: 12
    }
 })
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import { AppStatusBar, RequestConfirmationModal, Space, Status } from '../../components'
-import { ArrowBackSVG, PdfSVG } from '../../svg'
+import { ArrowBackSVG, EditRequestSVG, PdfSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 
@@ -28,8 +28,8 @@ const RequestDetailsScreen = ({ navigation }) => {
       console.log(status)
    }, [])
 
-   const cancel = React.useCallback(() => {
-      confirm_ref.current.show('Are you sure you want to cancel this request?')
+   const edit = React.useCallback(() => {
+      navigation.navigate('AddRequestScreen')
    }, [])
 
    const validate = React.useCallback(() => {
@@ -52,6 +52,14 @@ const RequestDetailsScreen = ({ navigation }) => {
                ]} numberOfLines={1}>
                   Request details
                </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+               <Pressable onPress={edit} android_ripple={{
+                  color: COLORS.DARK_200,
+                  borderless: true
+               }}>
+                  <EditRequestSVG/>
+               </Pressable>
             </View>
          </View>
          <ScrollView style={{ flex: 1 }}>

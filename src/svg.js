@@ -268,3 +268,33 @@ export const ProfileSVG = (
       </Svg>
    )
 }
+
+export const EditRequestSVG = (
+   {
+      w = 35,
+      h = 35,
+      color = COLORS.DARK_500
+   }
+) => (
+   <Svg
+      width={w}
+      height={h}
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+   >
+      <Path
+         d='m20.593 6.76 2.647 2.646m-.945-4.977-7.159 7.159c-.37.369-.622.84-.725 1.352l-.661 3.31 3.31-.662a2.645 2.645 0 0 0 1.353-.724l7.158-7.159a2.316 2.316 0 0 0-3.276-3.276v0Z'
+         stroke={color}
+         strokeWidth={2.5}
+         strokeLinecap='round'
+         strokeLinejoin='round'
+      />
+      <Path
+         d='M23.75 18.75v3.75a2.5 2.5 0 0 1-2.5 2.5H7.5A2.5 2.5 0 0 1 5 22.5V8.75a2.5 2.5 0 0 1 2.5-2.5h3.75'
+         stroke={color}
+         strokeWidth={2.5}
+         strokeLinecap='round'
+         strokeLinejoin='round'
+      />
+   </Svg>
+)
