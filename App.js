@@ -2,6 +2,7 @@ import React from 'react'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import AuthFlow from './src/navigations/auth-flow'
 import { Provider as AuthProvider } from './src/contexts/authContext'
+import { Provider as UserProvider } from './src/contexts/printerServiceContext'
 import './src/calendar-local-config'
 import * as Notifications from 'expo-notifications'
 import ManagerFlow from './src/navigations/manager/manager-flow'
@@ -47,7 +48,9 @@ export default () => {
    }, [])
    return (
       <AuthProvider>
-         <App />
+         <UserProvider>
+            <App />
+         </UserProvider>
       </AuthProvider>
    )
 }

@@ -5,7 +5,7 @@ import { Alert, Platform, ToastAndroid } from 'react-native'
 import { ENV } from './api/env'
 import COLORS from './themes/colors'
 import API_ROUTES from './api/api_routes'
-import detectPresenceApi from './api/detect-presence-api'
+import phomagAPI from './api/phomag-api'
 
 export const storeLocaleValue = async (key, value, callback) => {
    try {
@@ -30,22 +30,22 @@ export const getLocaleValue = async (key, callback) => {
 }
 
 export const registerForPushNotificationsAsync = async () => {
-   try{
+   try {
       let token;
-         const { status: existingStatus } = await Notifications.getPermissionsAsync();
-         let finalStatus = existingStatus;
-         if (existingStatus !== 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-         }
-         if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
-         }
-         token = (await Notifications.getExpoPushTokenAsync({
-            experienceId: '@ronald-tchuekou/detect-presence',
-         })).data;
-         console.log(token);
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+         const { status } = await Notifications.requestPermissionsAsync();
+         finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+         alert('Failed to get push token for push notification!');
+         return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync({
+         experienceId: '@ronald-tchuekou/detect-presence',
+      })).data;
+      console.log(token);
 
       if (Platform.OS === 'android') {
          Notifications.setNotificationChannelAsync('default', {
@@ -57,7 +57,7 @@ export const registerForPushNotificationsAsync = async () => {
       }
 
       return token;
-   }catch(e){
+   } catch (e) {
       ToastAndroid.show('Votre téléphone ne peux pas avoir de notification ===> ' + e.message, ToastAndroid.LONG)
       console.log('Error when generate de user token of notification : ', e)
       return null
@@ -84,7 +84,7 @@ export const notifyUser = async (title, subtitle, message, data = {}) => {
 export const uploadImage = (formData, userToken, bucket) => {
    return new Promise(async (resolve, reject) => {
       try {
-         const fileResponse = await detectPresenceApi.post(API_ROUTES.GET_FIlES + '/' + bucket, formData, {
+         const fileResponse = await phomagAPI.post(API_ROUTES.GET_FIlES + '/' + bucket, formData, {
             headers: {
                'x-access-token': userToken,
                'Content-Type': 'multipart/form-data'

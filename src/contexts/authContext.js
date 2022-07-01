@@ -5,7 +5,7 @@
  */
 
 import createDataContext from './createDataContext'
-import detectPresenceApi from '../api/detect-presence-api'
+import phomagAPI from '../api/phomag-api'
 import API_ROUTES from '../api/api_routes'
 import { ENV } from '../api/env'
 import { storeLocaleValue, uploadImage } from '../utils'
@@ -29,7 +29,7 @@ const reducer = (state, action) => {
 const signIn = (dispatch) => {
    return async (data, callback) => {
       try {
-         const response = await detectPresenceApi.post(API_ROUTES.SIGNING, data)
+         const response = await phomagAPI.post(API_ROUTES.SIGNING, data)
          await storeLocaleValue(ENV.user_key, response.data, (error, value) => {
             dispatch({ type: 'set_current_user', payload: response.data })
             dispatch({ type: 'set_current_user_token', payload: response.data.token })
@@ -55,7 +55,7 @@ const signOut = (dispatch) => {
 const verifyUserEmail = (dispatch) => {
    return async (data, callback) => {
       try {
-         const user = await detectPresenceApi.get(API_ROUTES.VERIFY_USER_EMAIL + '/' + data.email)
+         const user = await phomagAPI.get(API_ROUTES.VERIFY_USER_EMAIL + '/' + data.email)
          callback(undefined, user.data)
       } catch (e) {
          callback(e.response.data, undefined)
@@ -66,8 +66,8 @@ const verifyUserEmail = (dispatch) => {
 const resetUserPassword = (dispatch) => {
    return async (data, callback) => {
       try {
-         await detectPresenceApi.put(API_ROUTES.RESET_USER_PASSWORD, data)
-         const response = await detectPresenceApi.post(API_ROUTES.SIGNING, data)
+         await phomagAPI.put(API_ROUTES.RESET_USER_PASSWORD, data)
+         const response = await phomagAPI.post(API_ROUTES.SIGNING, data)
          await storeLocaleValue(ENV.user_key, response.data, (error, value) => {
             dispatch({ type: 'set_current_user', payload: response.data })
             dispatch({ type: 'set_current_user_token', payload: response.data.token })
@@ -83,7 +83,7 @@ const resetUserPassword = (dispatch) => {
 const updatePassword = (dispatch) => {
    return async (data, callback) => {
       try {
-         const response = await detectPresenceApi.put(API_ROUTES.UPDATE_PASS, data, {
+         const response = await phomagAPI.put(API_ROUTES.UPDATE_PASS, data, {
             headers: {
                'Content-Type': 'application/json',
                'x-access-token': data.token
@@ -103,7 +103,7 @@ const setUserImage = (dispatch) => {
       try {
          let fileJson = await uploadImage(formData, token, 'avatar')
          console.log('File json : ', fileJson)
-         await detectPresenceApi.put(
+         await phomagAPI.put(
             `${API_ROUTES.GET_PERSONNEL + '/' + user.personnel_id}`,
             { image_profile: fileJson.path },
             {
@@ -136,9 +136,9 @@ const setCurrentUser = (dispatch) => {
 const setNotificationToken = (dispatch) => {
    return async (data, callback) => {
       try {
-         const response = await detectPresenceApi.put(
+         const response = await phomagAPI.put(
             API_ROUTES.GET_PERSONNEL + '/' + data.id,
-            {notify_token: data.notify_token},
+            { notify_token: data.notify_token },
             {
                headers: {
                   'Content-Type': 'application/json',

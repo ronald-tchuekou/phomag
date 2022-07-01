@@ -6,8 +6,8 @@
 
 export const ENV = {
    base: {
-      url: 'https://detect-presence.herokuapp.com'
+      url: 'https://phomag.herokuapp.com'
    },
-   user_key: '@detect_presence_current_user_key',
-   notification_channel_id: 'detect_presence_notifications_channel_id'
+   user_key: '@phomag_current_user_key',
+   notification_channel_id: 'phomag_notifications_channel_id'
 }
