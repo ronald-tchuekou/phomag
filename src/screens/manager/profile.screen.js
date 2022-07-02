@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import { AppStatusBar, Space } from '../../components'
+import { AppStatusBar, RequestConfirmationModal, Space } from '../../components'
 import { Context as AuthContext } from '../../contexts/authContext'
 import { ArrowLeftSVG, NotificationSVG } from '../../svg'
 import COLORS from '../../themes/colors'
@@ -8,21 +8,25 @@ import { default_profile } from '../../themes/images'
 import SIZES from '../../themes/sizes'
 
 const ProfileScreen = ({ navigation }) => {
+   const confirm_ref = React.useRef(null)
    const {
-      state: { formData }
+      state: { currentUser },
+      signOut
    } = React.useContext(AuthContext)
 
    const showNotifications = React.useCallback(() => {
       navigation.navigate('NotificationsScreen')
    }, [])
 
-   function getValue(key, default_value) {
-      if (formData)
-         return formData[key] || default_value
-      return default_value
-   }
+   const onConfirm = React.useCallback((status) => {
+      if (status)
+         signOut(() => {
+            navigation.navigate('AuthFlow')
+         })
+   }, [])
 
-   const role = getValue('email', '').trim()
+   if (!currentUser)
+      return null
 
    return (
       <AppStatusBar>
@@ -40,13 +44,23 @@ const ProfileScreen = ({ navigation }) => {
                      fontSize: SIZES.H6,
                      color: COLORS.DARK_500,
                      fontWeight: '700'
-                  }}>Ronald Tchuekou</Text>
+                  }}>{currentUser.matricule}</Text>
                   <Text style={{
                      fontSize: SIZES.H7,
-                     color: COLORS.SUCCESS,
+                     color: COLORS.DARK_300,
+                     fontWeight: '700'
+                  }}>{currentUser.lastname} {currentUser.firstname}</Text>
+                  <Text style={{
+                     fontSize: SIZES.H7,
+                     color: COLORS.DARK_300,
+                     fontWeight: '700'
+                  }}>{currentUser.email}</Text>
+                  <Text style={{
+                     fontSize: SIZES.H7,
+                     color: COLORS.WARNING,
                      fontWeight: '600'
                   }}>
-                     {role === 'manager' ? 'Manager' : role === 'teacher' ? 'Teacher' : 'Printer Service'}
+                     {currentUser.role === 'Chief' ? 'Manager' : currentUser.role === 'Teacher' ? 'Teacher' : 'Printer Service'}
                   </Text>
                </View>
             </View>
@@ -98,6 +112,7 @@ const ProfileScreen = ({ navigation }) => {
          <Space />
          <View style={styles.setting_container}>
             <Pressable
+               onPress={() => confirm_ref.current.show('Are you sure, you want to disconnect on this account ?')}
                android_ripple={{
                   color: COLORS.DARK_100
                }}
@@ -109,6 +124,7 @@ const ProfileScreen = ({ navigation }) => {
                }}>Disconnect</Text>
             </Pressable>
          </View>
+         <RequestConfirmationModal onConfirm={onConfirm} ref={confirm_ref} />
       </AppStatusBar>
    )
 }

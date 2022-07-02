@@ -7,14 +7,16 @@ import { Context as AuthContext } from '../../contexts/authContext'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import STYLES from '../../themes/style'
-import { ToastMessage } from '../../utils'
+import { registerForPushNotificationsAsync, ToastMessage } from '../../utils'
 
 const SignInScreen = ({ navigation }) => {
    const loader_ref = React.useRef(null)
 
    const {
       state: { formData },
-      setFormDataField
+      setFormDataField,
+      signIn,
+      setNotificationToken
    } = React.useContext(AuthContext)
 
    const [secure, setSecure] = React.useState(true)
@@ -40,22 +42,46 @@ const SignInScreen = ({ navigation }) => {
       }
 
       const data = {
-         email: email,
+         username: email,
          password: password
       }
 
       loader_ref.current.show()
-      setTimeout(() => {
+      signIn(data, async (error, response) => {
          loader_ref.current.dismiss()
-         if (data.email === 'manager')
-            navigation.navigate('ManagerFlow')
-         else if (data.email === 'teacher')
-            navigation.navigate('TeacherFlow')
-         else if (data.email === 'printer')
-            navigation.navigate('PrinterServiceFlow')
-         else
-            ToastMessage('Your connection information isn\'t correct!')
-      }, 800)
+         if (error) {
+            console.log(error)
+            if (error.message)
+               ToastMessage(error.message)
+            else
+               ToastMessage('An error are provided, please try again!')
+            return
+         }
+
+         console.log(response)
+         const notification_token = await registerForPushNotificationsAsync()
+         setNotificationToken({
+            id: response.user_id,
+            token: response.token,
+            notify_token: notification_token,
+            role: response.role
+         }, (error, res) => {
+            if (error) {
+               console.log(error)
+               return
+            }
+            console.log(res)
+         })
+
+         if (response.role === 'Chief')
+            return navigation.navigate('ManagerFlow')
+         if (response.role === 'Teacher')
+            return navigation.navigate('TeacherFlow')
+         if (response.role === 'Printer')
+            return navigation.navigate('PrinterServiceFlow')
+
+         ToastMessage('Your connection information isn\'t correct!')
+      })
    }
 
    return (

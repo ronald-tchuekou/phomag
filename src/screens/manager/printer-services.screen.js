@@ -1,10 +1,11 @@
 import React from 'react'
 import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppLoader, AppStatusBar, Space } from '../../components'
-import { AddPersonSVG } from '../../svg'
+import { AddPersonSVG, EmptyPrinterSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import { default_profile } from '../../themes/images'
 import SIZES from '../../themes/sizes'
+import { Context as PrinterContext } from '../../contexts/printerServiceContext'
 
 const { width } = Dimensions.get('window')
 
@@ -69,15 +70,25 @@ const PrinterServices = ({ navigation }) => {
       }
    ]
 
+   const {
+      state: { currentPrinter, printersList },
+      getPrinters,
+      setCurrentPrinter
+   } = React.useContext(PrinterContext)
+
    const [loading, setLoading] = React.useState(false)
 
    React.useEffect(() => {
       setLoading(true)
-      setTimeout(() => setLoading(false), 800)
+      getPrinters((error, res) => {
+         setLoading(false)
+      })
    }, [])
 
    const showDetails = React.useCallback((item) => {
-      navigation.navigate('PrinterServicesDetailsScreen')
+      setCurrentPrinter(item, () => {
+         navigation.navigate('PrinterServicesDetailsScreen')
+      })
    }, [])
 
    const handleAddAction = React.useCallback(() => {
@@ -92,9 +103,35 @@ const PrinterServices = ({ navigation }) => {
          </View>
          {loading ? (
             <AppLoader />
+         ) : printersList.length === 0 ? (
+            <View style={{
+               flex: 1,
+               justifyContent: 'center',
+               alignItems: 'center'
+            }}>
+               <Space />
+               <EmptyPrinterSVG />
+               <Space />
+               <Space />
+               <Text style={{
+                  fontSize: SIZES.H5,
+                  color: COLORS.SECOND,
+                  fontWeight: "bold",
+                  paddingHorizontal: SIZES.DEFAULT_PADDING
+               }}>No Printer Service Register !</Text>
+               <Space />
+               <Text style={{
+                  fontSize: SIZES.H8,
+                  color: COLORS.DARK_300,
+                  textAlign: 'center',
+                  paddingHorizontal: SIZES.DEFAULT_PADDING
+               }}>To add new printer service, click to the Floating Action Button.</Text>
+               <Space />
+               <Space />
+            </View>
          ) : (
             <FlatList
-               data={content}
+               data={printersList}
                keyExtractor={(item, index) => item.id + index}
                renderItem={({ item, index }) => (
                   <PrinterServiceItem onPress={showDetails} item={item} index={index} />

@@ -1,11 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import * as Notifications from 'expo-notifications'
 import * as ImagePicker from 'expo-image-picker'
+import * as Notifications from 'expo-notifications'
 import { Alert, Platform, ToastAndroid } from 'react-native'
-import { ENV } from './api/env'
-import COLORS from './themes/colors'
 import API_ROUTES from './api/api_routes'
 import phomagAPI from './api/phomag-api'
+import COLORS from './themes/colors'
 
 export const storeLocaleValue = async (key, value, callback) => {
    try {
@@ -31,32 +30,32 @@ export const getLocaleValue = async (key, callback) => {
 
 export const registerForPushNotificationsAsync = async () => {
    try {
-      let token;
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
+      let token
+      const { status: existingStatus } = await Notifications.getPermissionsAsync()
+      let finalStatus = existingStatus
       if (existingStatus !== 'granted') {
-         const { status } = await Notifications.requestPermissionsAsync();
-         finalStatus = status;
+         const { status } = await Notifications.requestPermissionsAsync()
+         finalStatus = status
       }
       if (finalStatus !== 'granted') {
-         alert('Failed to get push token for push notification!');
-         return;
+         alert('Failed to get push token for push notification!')
+         return
       }
       token = (await Notifications.getExpoPushTokenAsync({
-         experienceId: '@ronald-tchuekou/detect-presence',
-      })).data;
-      console.log(token);
+         experienceId: '@ronald-tchuekou/detect-presence'
+      })).data
+      console.log(token)
 
       if (Platform.OS === 'android') {
-         Notifications.setNotificationChannelAsync('default', {
+         await Notifications.setNotificationChannelAsync('default', {
             name: 'default',
             importance: Notifications.AndroidImportance.MAX,
             vibrationPattern: [0, 250, 250, 250],
-            lightColor: COLORS.PRIMARY,
-         });
+            lightColor: COLORS.PRIMARY
+         })
       }
 
-      return token;
+      return token
    } catch (e) {
       ToastAndroid.show('Votre téléphone ne peux pas avoir de notification ===> ' + e.message, ToastAndroid.LONG)
       console.log('Error when generate de user token of notification : ', e)
@@ -74,10 +73,7 @@ export const notifyUser = async (title, subtitle, message, data = {}) => {
          priority: 'HIGH',
          color: COLORS.PRIMARY
       },
-      trigger: {
-         second: 2,
-         channelId: ENV.notification_channel_id
-      }
+      trigger: null
    })
 }
 

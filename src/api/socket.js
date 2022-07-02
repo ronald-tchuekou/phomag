@@ -5,5 +5,6 @@
  */
 
 import { io } from 'socket.io-client'
+import API_ROUTES from './api_routes'
 
-export const socket = io('https://detect-presence.herokuapp.com')
+export const socket = io(API_ROUTES.SOCKET_URI)

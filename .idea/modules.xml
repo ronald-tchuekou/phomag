@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/phomag.iml" filepath="$PROJECT_DIR$/.idea/phomag.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../api/phomag-api/.idea/phomag-api.iml" filepath="$PROJECT_DIR$/../../api/phomag-api/.idea/phomag-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../phomag_icons/.idea/phomag_icons.iml" filepath="$PROJECT_DIR$/../../../phomag_icons/.idea/phomag_icons.iml" />
     </modules>
   </component>
 </project>

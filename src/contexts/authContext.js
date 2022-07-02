@@ -4,17 +4,23 @@
  * @email ronaldtchuekou@gmail.com
  */
 
-import createDataContext from './createDataContext'
-import phomagAPI from '../api/phomag-api'
 import API_ROUTES from '../api/api_routes'
 import { ENV } from '../api/env'
+import phomagAPI from '../api/phomag-api'
 import { storeLocaleValue, uploadImage } from '../utils'
+import createDataContext from './createDataContext'
 
 const reducer = (state, action) => {
    switch (action.type) {
       case 'set_form_data_field':
          const payload = action.payload
-         return { ...state, formData: { ...(state.formData ? state.formData : {}), [payload.key]: payload.value } }
+         return {
+            ...state,
+            formData: {
+               ...(state.formData ? state.formData : {}),
+               [payload.key]: payload.value
+            }
+         }
       case 'reset_form_data':
          return { ...state, formData: null }
       case 'set_current_user':
@@ -23,6 +29,18 @@ const reducer = (state, action) => {
          return { ...state, currentUserToken: action.payload }
       default:
          return state
+   }
+}
+
+const setUserInformations = (dispatch) => {
+   return async (data, callback) => {
+      try {
+         dispatch({ type: 'set_current_user', payload: data })
+         dispatch({ type: 'set_current_user_token', payload: data.token })
+         callback(undefined, true)
+      } catch (e) {
+         callback(e, undefined)
+      }
    }
 }
 
@@ -137,8 +155,8 @@ const setNotificationToken = (dispatch) => {
    return async (data, callback) => {
       try {
          const response = await phomagAPI.put(
-            API_ROUTES.GET_PERSONNEL + '/' + data.id,
-            { notify_token: data.notify_token },
+            (data.role === 'Printer' ? API_ROUTES.GET_PRINTER_SERVICE : API_ROUTES.GET_USER) + '/' + data.id,
+            { notification_token: data.notify_token },
             {
                headers: {
                   'Content-Type': 'application/json',
@@ -169,7 +187,8 @@ export const { Context, Provider } = createDataContext(reducer, {
    setFormDataField,
    setCurrentUser,
    setUserImage,
-   setNotificationToken
+   setNotificationToken,
+   setUserInformations
 }, {
    currentUserToken: null,
    currentUser: null,

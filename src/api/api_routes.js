@@ -5,14 +5,15 @@
  */
 
 const API_ROUTES = {
-   SOCKET_URI: 'https://detect-presence.herokuapp.com',
+   SOCKET_URI: 'https://phomag-api.herokuapp.com',
    SIGNUP: '/auth/signup',
-   SIGNING: '/auth/login',
-   VERIFY_USER_EMAIL: '/auth/pass-forgot',
-   RESET_USER_PASSWORD: 'auth/reset-password',
-   UPDATE_PASS: 'auth/update-password',
+   SIGNING: '/auth/sing-in',
+   VERIFY_USER_EMAIL: '/auth/pass-forgot/:email',
+   RESET_USER_PASSWORD: '/auth/reset-password',
+   UPDATE_PASS: '/user/update-password',
    GET_FIlES: '/files',
-   GET_PERSONNEL: '/personnel',
+   GET_USER: '/user',
+   GET_PRINTER_SERVICE: '/printer-service',
    UPDATE_USER_IMG: '/auth/updateimage',
    GET_PLANNING: '/planning',
    GET_PAID_TAUX: '/paid-taux'

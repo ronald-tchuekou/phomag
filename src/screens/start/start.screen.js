@@ -5,10 +5,13 @@ import { AppStatusBar } from '../../components'
 import { Context as AuthContext } from '../../contexts/authContext'
 import COLORS from '../../themes/colors'
 import { splash_screen } from '../../themes/images'
-import { getLocaleValue } from '../../utils'
+import { getLocaleValue, registerForPushNotificationsAsync } from '../../utils'
 
 const StartScreen = ({ navigation }) => {
-   const {} = React.useContext(AuthContext)
+   const {
+      setUserInformations,
+      setNotificationToken
+   } = React.useContext(AuthContext)
 
    React.useEffect(() => {
       checkUser().then(() => {
@@ -16,9 +19,31 @@ const StartScreen = ({ navigation }) => {
    }, [])
 
    const checkUser = () => {
-      return getLocaleValue(ENV.user_key, (error, value) => {
-         console.log(value)
-         setTimeout(() => navigation.navigate('AuthFlow'), 500)
+      return getLocaleValue(ENV.user_key, async (error, value) => {
+         console.log('Local value : ', value)
+         if (value) {
+            const notification_token = await registerForPushNotificationsAsync()
+            setNotificationToken({
+               id: value.user_id,
+               token: value.token,
+               notify_token: notification_token,
+               role: value.role
+            }, (error, res) => {
+               setUserInformations(value, (error, res) => {
+                  if (res) {
+                     if (value.role === 'Chief')
+                        return navigation.navigate('ManagerFlow')
+                     if (value.role === 'Teacher')
+                        return navigation.navigate('TeacherFlow')
+                     if (value.role === 'Printer')
+                        return navigation.navigate('PrinterServiceFlow')
+                  }
+               })
+               console.log(res)
+            })
+         } else {
+            navigation.navigate('AuthFlow')
+         }
       })
    }
 

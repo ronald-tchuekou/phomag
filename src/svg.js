@@ -1,5 +1,5 @@
 import React from 'react'
-import Svg, { Path } from 'react-native-svg'
+import Svg, { Path, Circle, Mask, G, Rect, Ellipse } from 'react-native-svg'
 import COLORS from './themes/colors'
 
 export const AddPersonSVG = () => {
@@ -296,5 +296,120 @@ export const EditRequestSVG = (
          strokeLinecap='round'
          strokeLinejoin='round'
       />
+   </Svg>
+)
+
+export const EmptyPrinterSVG = (
+   {
+      w = 225,
+      h = 255
+   }
+) => (
+   <Svg
+      width={w}
+      height={h}
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+   >
+      <Circle cx={112.5} cy={112.5} r={112.5} fill='#F5F9FB' />
+      <Mask
+         id='a'
+         style={{
+            maskType: 'alpha'
+         }}
+         maskUnits='userSpaceOnUse'
+         x={0}
+         y={0}
+         width={225}
+         height={225}
+      >
+         <Circle cx={112.5} cy={112.5} r={112.5} fill='#fff' />
+      </Mask>
+      <G mask='url(#a)'>
+         <Rect x={26} y={61} width={171} height={242} rx={49} fill='#C8DBEF' />
+         <Path fill='#EFD0BD' d='M95 123h33v45H95z' />
+         <Path
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M128.068 133.182c-1.164 8.99-8.091 15.896-16.463 15.896-8.262 0-15.117-6.725-16.415-15.54l-11.202 2.289C60.714 140.584 44 161.06 44 184.815V300c0 27.614 22.386 50 50 50h37c27.614 0 50-22.386 50-50V184.815c0-23.755-16.714-44.231-39.988-48.988l-12.944-2.645Z'
+            fill='#6973BA'
+         />
+         <Path fill='#FFDFCB' d='M44 193h23v78H44zM158 193h23v78h-23z' />
+         <Rect x={86} y={163} width={51} height={97} rx={10} fill='#262626' />
+         <Rect x={94} y={171} width={17} height={7} rx={3.5} fill='#484848' />
+         <Path
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M116.577 216.559a9.094 9.094 0 0 1 14.328-11.138l36.308 40.926c4.842 5.459 4.075 13.872-1.675 18.365-5.77 4.508-14.151 3.191-18.26-2.87l-30.701-45.283Z'
+            fill='#FFDFCB'
+         />
+         <Ellipse
+            cx={112.523}
+            cy={83.459}
+            rx={52.032}
+            ry={43.459}
+            fill='#945E6E'
+         />
+         <Ellipse
+            cx={111.5}
+            cy={58}
+            rx={45.5}
+            ry={39}
+            transform='rotate(34 111.5 58)'
+            fill='#945E6E'
+         />
+         <Path
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M111.5 41c19.053 0 33.585 15.446 32.456 34.5l-1.125 19c-1.129 19.054-15.156 36.5-31.331 36.5-16.176 0-30.203-17.446-31.332-36.5l-1.125-19C77.914 56.446 92.446 41 111.5 41Z'
+            fill='#FFDFCB'
+         />
+         <Rect x={74} y={75} width={14} height={14} rx={7} fill='#FFDFCB' />
+         <Rect x={135} y={75} width={14} height={14} rx={7} fill='#FFDFCB' />
+         <Circle cx={98.357} cy={84.55} r={4} fill='#494A4B' />
+         <Rect x={91} y={75} width={11} height={2} rx={1} fill='#525252' />
+         <Circle cx={124.419} cy={84.55} r={4} fill='#494A4B' />
+         <Ellipse cx={111.574} cy={107.505} rx={9.997} ry={5.01} fill='#372C28' />
+         <Mask
+            id='b'
+            style={{
+               maskType: 'alpha'
+            }}
+            maskUnits='userSpaceOnUse'
+            x={101}
+            y={102}
+            width={21}
+            height={11}
+         >
+            <Ellipse cx={111.574} cy={107.505} rx={9.997} ry={5.01} fill='#fff' />
+         </Mask>
+         <G mask='url(#b)'>
+            <Ellipse
+               rx={9.997}
+               ry={5.01}
+               transform='matrix(1 0 0 -1 111.574 113.398)'
+               fill='#D96B70'
+            />
+            <Ellipse
+               rx={6.469}
+               ry={3.241}
+               transform='matrix(1 0 0 -1 111.574 101.022)'
+               fill='#fff'
+            />
+         </G>
+         <Path
+            opacity={0.308}
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M109.267 82.85a2.259 2.259 0 0 1 4.481 0l1.552 11.81a3.826 3.826 0 1 1-7.586 0l1.553-11.81Z'
+            fill='#CAA3A3'
+         />
+         <Path
+            fillRule='evenodd'
+            clipRule='evenodd'
+            d='M80.321 52.814s10.925 29.082 48.537 25.017c-4.669-5.13-7.436-7.823-10.896-21.19 9.702 9.065 12.604 12.665 29.237 13.367-.113-13.368-5.835-31.662-29.237-35.58-23.402-3.916-37.64 18.386-37.64 18.386Z'
+            fill='#945E6E'
+         />
+      </G>
    </Svg>
 )
