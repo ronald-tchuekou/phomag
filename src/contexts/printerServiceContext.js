@@ -25,15 +25,19 @@ const reducer = (state, action) => {
 }
 
 const getPrinters = (dispatch) => {
-   return async (callback) => {
+   return async (token, callback) => {
       try {
-         const response = await phomagApi.get(API_ROUTES.GET_PRINTER_SERVICE)
+         const response = await phomagApi.get(API_ROUTES.GET_PRINTER_SERVICE, {
+            headers: {
+               'x-access-token': token
+            }
+         })
          dispatch({ type: 'set_printers_list', payload: response.data })
          if (callback)
             callback(undefined, response.data)
       } catch (error) {
          if (callback)
-            callback(error.data, undefined)
+            callback(error.response.data, undefined)
       }
    }
 }
@@ -47,7 +51,7 @@ const getPrinterById = (dispatch) => {
             callback(undefined, response.data)
       } catch (error) {
          if (callback)
-            callback(error.data, undefined)
+            callback(error.response.data, undefined)
       }
    }
 }
@@ -57,14 +61,14 @@ const createPrinter = () => {
       try {
          const response = await phomagApi.post(API_ROUTES.GET_PRINTER_SERVICE, data, {
             headers: {
-               "x-access-token": token
+               'x-access-token': token
             }
          })
          if (callback)
             callback(undefined, response.data)
       } catch (error) {
          if (callback)
-            callback(error.data, undefined)
+            callback(error.response.data, undefined)
       }
    }
 }
@@ -77,7 +81,7 @@ const updatePrinter = () => {
             callback(undefined, response.data)
       } catch (error) {
          if (callback)
-            callback(error.data, undefined)
+            callback(error.response.data, undefined)
       }
    }
 }
@@ -90,7 +94,7 @@ const deletePrinter = () => {
             callback(undefined, response.data)
       } catch (error) {
          if (callback)
-            callback(error.data, undefined)
+            callback(error.response.data, undefined)
       }
    }
 }
@@ -103,7 +107,7 @@ const setCurrentPrinter = (dispatch) => {
             callback(undefined, true)
       } catch (error) {
          if (callback)
-            callback(error.data, undefined)
+            callback(error.response.data, undefined)
       }
    }
 }

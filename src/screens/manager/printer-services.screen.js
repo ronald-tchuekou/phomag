@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppLoader, AppStatusBar, Space } from '../../components'
+import { Context as AuthContext } from '../../contexts/authContext'
 import { AddPersonSVG, EmptyPrinterSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import { default_profile } from '../../themes/images'
@@ -71,6 +72,10 @@ const PrinterServices = ({ navigation }) => {
    ]
 
    const {
+      state: { currentUserToken }
+   } = React.useContext(AuthContext)
+
+   const {
       state: { currentPrinter, printersList },
       getPrinters,
       setCurrentPrinter
@@ -80,7 +85,7 @@ const PrinterServices = ({ navigation }) => {
 
    React.useEffect(() => {
       setLoading(true)
-      getPrinters((error, res) => {
+      getPrinters(currentUserToken, (error, res) => {
          setLoading(false)
       })
    }, [])
@@ -116,7 +121,7 @@ const PrinterServices = ({ navigation }) => {
                <Text style={{
                   fontSize: SIZES.H5,
                   color: COLORS.SECOND,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   paddingHorizontal: SIZES.DEFAULT_PADDING
                }}>No Printer Service Register !</Text>
                <Space />

@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AppStatusBar, AppTextInput, ModalLoader, Space } from '../../components'
 import { Context as AuthContext } from '../../contexts/authContext'
 import { Context as PrinterContext } from '../../contexts/printerServiceContext'
@@ -38,16 +38,11 @@ const PrinterServiceAddScreen = ({ navigation }) => {
       return default_value
    }
 
-   const submit = React.useCallback(() => {
+   const submit = () => {
       const service_name = getValue('service_name', '').trim()
       const service_address = getValue('service_address', '').trim()
       const service_email = getValue('service_email', '').trim()
-      const service_phone = getValue('service_email', '').trim()
-
-      if (service_name === '' || service_address === '' || service_email) {
-         ToastMessage('Any fields can be empty!')
-         return
-      }
+      const service_phone = getValue('service_phone', '').trim()
 
       const data = {
          service_name: service_name,
@@ -55,6 +50,18 @@ const PrinterServiceAddScreen = ({ navigation }) => {
          service_phone: service_phone,
          service_address: service_address,
          department: currentUser.department
+      }
+
+      console.log(data)
+
+      if (
+         service_name === '' ||
+         service_email === '' ||
+         service_phone === '' ||
+         service_address === ''
+      ) {
+         ToastMessage('Any fields can be empty!')
+         return
       }
 
       loader_ref.current.show()
@@ -73,7 +80,7 @@ const PrinterServiceAddScreen = ({ navigation }) => {
             navigation.pop()
          }
       })
-   }, [])
+   }
 
    return (
       <AppStatusBar>
@@ -92,60 +99,64 @@ const PrinterServiceAddScreen = ({ navigation }) => {
                </Text>
             </View>
          </View>
-         <Space />
-         <Space />
-         <View style={styles.container}>
+         <ScrollView style={{flex: 1}}>
             <Space />
             <Space />
-            <AppTextInput
-               label={'Service name'}
-               onChange={(val) => setValue('service_name', val)}
-               value={getValue('service_name', '')}
-            />
-
-            <Space />
-            <Space />
-
-            <AppTextInput
-               label={'Service address'}
-               onChange={(val) => setValue('service_address', val)}
-               value={getValue('service_address', '')}
-            />
-
-            <Space />
-            <Space />
-
-            <AppTextInput
-               label={'Service e-mail address'}
-               type={'email-address'}
-               onChange={(val) => setValue('service_email', val)}
-               value={getValue('service_email', '')}
-            />
-
-            <Space />
-            <Space />
-
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-               <LinearGradient
-                  colors={[COLORS.WARNING_50, COLORS.WARNING]}
-                  style={STYLES.button_container}
-               >
-                  <Pressable
-                     onPress={submit}
-                     android_ripple={{
-                        color: 'rgba(255,255,255,0.53)'
-                     }}
-                     style={[STYLES.button_accent, { width: 150 }]}>
-                     <Text style={STYLES.button_text_accent}>Submit</Text>
-                  </Pressable>
-               </LinearGradient>
+            <View style={styles.container}>
+               <Space />
+               <Space />
+               <AppTextInput
+                  capitalize
+                  label={'Service name'}
+                  onChange={(val) => setValue('service_name', val)}
+                  value={getValue('service_name', '')}
+               />
+               <Space />
+               <Space />
+               <AppTextInput
+                  capitalize
+                  label={'Service address'}
+                  onChange={(val) => setValue('service_address', val)}
+                  value={getValue('service_address', '')}
+               />
+               <Space />
+               <Space />
+               <AppTextInput
+                  label={'Service phone'}
+                  type={'phone-pad'}
+                  onChange={(val) => setValue('service_phone', val)}
+                  value={getValue('service_phone', '')}
+               />
+               <Space />
+               <Space />
+               <AppTextInput
+                  label={'Service e-mail address'}
+                  type={'email-address'}
+                  onChange={(val) => setValue('service_email', val)}
+                  value={getValue('service_email', '')}
+               />
+               <Space />
+               <Space />
+               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <LinearGradient
+                     colors={[COLORS.WARNING_50, COLORS.WARNING]}
+                     style={STYLES.button_container}
+                  >
+                     <Pressable
+                        onPress={submit}
+                        android_ripple={{
+                           color: 'rgba(255,255,255,0.53)'
+                        }}
+                        style={[STYLES.button_accent, { width: 150 }]}>
+                        <Text style={STYLES.button_text_accent}>Submit</Text>
+                     </Pressable>
+                  </LinearGradient>
+               </View>
+               <Space />
+               <Space />
+               <ModalLoader ref={loader_ref} />
             </View>
-
-            <Space />
-            <Space />
-
-            <ModalLoader ref={loader_ref} />
-         </View>
+         </ScrollView>
       </AppStatusBar>
    )
 }
