@@ -1,82 +1,24 @@
+import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppLoader, AppStatusBar, Space } from '../../components'
 import { Context as AuthContext } from '../../contexts/authContext'
+import { Context as PrinterContext } from '../../contexts/printerServiceContext'
 import { AddPersonSVG, EmptyPrinterSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import { default_profile } from '../../themes/images'
 import SIZES from '../../themes/sizes'
-import { Context as PrinterContext } from '../../contexts/printerServiceContext'
 
 const { width } = Dimensions.get('window')
 
 const PrinterServices = ({ navigation }) => {
-
-   const content = [
-      {
-         id: 'printer1',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      },
-      {
-         id: 'printer2',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      },
-      {
-         id: 'printer3',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      },
-      {
-         id: 'printer4',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      },
-      {
-         id: 'printer5',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      },
-      {
-         id: 'printer6',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      },
-      {
-         id: 'printer7',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      },
-      {
-         id: 'printer8',
-         firstname: 'Printer',
-         lastname: 'Service',
-         email: 'printer.service@gmail.com',
-         profile_image: 'default_profile.png'
-      }
-   ]
 
    const {
       state: { currentUserToken }
    } = React.useContext(AuthContext)
 
    const {
-      state: { currentPrinter, printersList },
+      state: {printersList },
       getPrinters,
       setCurrentPrinter
    } = React.useContext(PrinterContext)
@@ -87,6 +29,7 @@ const PrinterServices = ({ navigation }) => {
       setLoading(true)
       getPrinters(currentUserToken, (error, res) => {
          setLoading(false)
+         console.log(res)
       })
    }, [])
 
@@ -100,11 +43,25 @@ const PrinterServices = ({ navigation }) => {
       navigation.navigate('PrinterServicesAddScreen')
    }, [])
 
+   const reload = React.useCallback(() => {
+      setLoading(true)
+      getPrinters(currentUserToken, (error, res) => {
+         setLoading(false)
+         console.log(res)
+      })
+   }, [])
+
    return (
       <AppStatusBar>
          <Space />
          <View style={styles.line_between}>
             <Text style={styles.title}>Printer services manager</Text>
+            <Pressable onPress={reload} android_ripple={{
+               color: COLORS.DARK_200,
+               borderless: true
+            }}>
+               <Ionicons name={'reload'} size={30} color={COLORS.DARK_300} />
+            </Pressable>
          </View>
          {loading ? (
             <AppLoader />
@@ -137,7 +94,7 @@ const PrinterServices = ({ navigation }) => {
          ) : (
             <FlatList
                data={printersList}
-               keyExtractor={(item, index) => item.id + index}
+               keyExtractor={(item) => 'printer_' + item.printer_service_id}
                renderItem={({ item, index }) => (
                   <PrinterServiceItem onPress={showDetails} item={item} index={index} />
                )}
@@ -211,9 +168,9 @@ export const PrinterServiceItem = ({ onPress, item, index }) => {
             </View>
             <View style={{ paddingLeft: SIZES.SMALL_PADDING }}>
                <Text style={itemStyles.title} numberOfLines={1}>
-                  {item.firstname} {item.lastname}
+                  {item.service_name}
                </Text>
-               <Text style={itemStyles.label}>{item.email}</Text>
+               <Text style={itemStyles.label}>{item.service_email}</Text>
             </View>
          </Pressable>
       </View>

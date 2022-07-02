@@ -3,8 +3,8 @@ import moment from 'moment'
 import React from 'react'
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Calendar } from 'react-native-calendars/src/index'
-import Svg, { Path } from 'react-native-svg'
 import { AppLoader, AppStatusBar, RequestItem, Space } from '../../components'
+import { Context as PrinterContext } from '../../contexts/printerServiceContext'
 import { ArrowBackSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
@@ -28,6 +28,10 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
       { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
       { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' }
    ]
+
+   const {
+      state: { currentPrinter }
+   } = React.useContext(PrinterContext)
 
    const [current, setCurrent] = React.useState('Requests')
    const [loading, setLoading] = React.useState(false)
@@ -57,20 +61,14 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
                   color: COLORS.DARK_200,
                   borderless: true
                }}>
-                  <ArrowBackSVG/>
+                  <ArrowBackSVG />
                </Pressable>
                <Text style={[styles.title, { paddingHorizontal: 10, width: width - 170 }]} numberOfLines={1}>
                   Printer service details
                </Text>
             </View>
          </View>
-         <PrinterServiceItem item={{
-            id: 'printer1',
-            firstname: 'Printer',
-            lastname: 'Service',
-            email: 'printer.service@gmail.com',
-            profile_image: 'default_profile.png'
-         }} onPress={() => {
+         <PrinterServiceItem item={currentPrinter} onPress={() => {
          }} />
          <View style={styles.header_nav}>
             <ButtonNav
