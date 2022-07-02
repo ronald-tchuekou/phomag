@@ -24,8 +24,13 @@ const PrinterServiceAddScreen = ({ navigation }) => {
    const {
       state: { formData },
       createPrinter,
-      setFormDataField
+      setFormDataField,
+      resetFormData
    } = React.useContext(PrinterContext)
+
+   React.useEffect(() => {
+      resetFormData()
+   }, [])
 
    function setValue(key, value) {
       setFormDataField({ key: key, value: value }, () => {
@@ -49,10 +54,9 @@ const PrinterServiceAddScreen = ({ navigation }) => {
          service_email: service_email,
          service_phone: service_phone,
          service_address: service_address,
-         department: currentUser.department
+         department: currentUser.department,
+         created_by: currentUser.user_id
       }
-
-      console.log(data)
 
       if (
          service_name === '' ||

@@ -1,10 +1,10 @@
+import * as Notifications from 'expo-notifications'
 import React from 'react'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
-import AuthFlow from './src/navigations/auth-flow'
+import './src/calendar-local-config'
 import { Provider as AuthProvider } from './src/contexts/authContext'
 import { Provider as PrinterProvider } from './src/contexts/printerServiceContext'
-import './src/calendar-local-config'
-import * as Notifications from 'expo-notifications'
+import AuthFlow from './src/navigations/auth-flow'
 import ManagerFlow from './src/navigations/manager/manager-flow'
 import PrinterServiceFlow from './src/navigations/printer-service/printer-service-flow'
 import StartFlow from './src/navigations/start-flow'
@@ -30,7 +30,7 @@ Notifications.setNotificationHandler({
 
 const App = createAppContainer(baseNavigator)
 
-export default () => {
+export default function AppMain() {
    const notificationListener = React.useRef(null)
    const responseListener = React.useRef(null)
 

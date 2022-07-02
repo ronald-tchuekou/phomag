@@ -56,14 +56,20 @@ const getPrinterById = (dispatch) => {
    }
 }
 
-const createPrinter = () => {
+const createPrinter = (dispatch) => {
    return async (data, token, callback) => {
       try {
-         const response = await phomagApi.post(API_ROUTES.GET_PRINTER_SERVICE, data, {
+         await phomagApi.post(API_ROUTES.GET_PRINTER_SERVICE, data, {
             headers: {
                'x-access-token': token
             }
          })
+         const response = await phomagApi.get(API_ROUTES.GET_PRINTER_SERVICE, {
+            headers: {
+               'x-access-token': token
+            }
+         })
+         dispatch({ type: 'set_printers_list', payload: response.data })
          if (callback)
             callback(undefined, response.data)
       } catch (error) {
@@ -120,6 +126,14 @@ const setFormDataField = (dispatch) => {
    }
 }
 
+const resetFormData = (dispatch) => {
+   return (callback) => {
+      dispatch({type: 'reset_form_data', payload: null})
+      if(callback)
+         callback()
+   }
+}
+
 export const { Context, Provider } = createDataContext(
    reducer,
    {
@@ -129,7 +143,8 @@ export const { Context, Provider } = createDataContext(
       setCurrentPrinter,
       createPrinter,
       updatePrinter,
-      deletePrinter
+      deletePrinter,
+      resetFormData
    },
    {
       currentPrinter: null,
