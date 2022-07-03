@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AppLoader, AppStatusBar, RequestItem, Space } from '../../components'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
@@ -39,28 +39,36 @@ const BookingsScreen = ({ navigation }) => {
          <View style={styles.line_between}>
             <Text style={styles.title}>All requests with status</Text>
          </View>
-         <View style={styles.header_nav}>
-            <ButtonNav
-               onPress={() => setCurrent('Pending')}
-               title={'Pending'}
-               selected={current === 'Pending'}
-            />
-            <ButtonNav
-               onPress={() => setCurrent('Validate')}
-               title={'Validate'}
-               selected={current === 'Validate'}
-            />
-            <ButtonNav
-               onPress={() => setCurrent('Printed')}
-               title={'Printed'}
-               selected={current === 'Printed'}
-            />
-            <ButtonNav
-               onPress={() => setCurrent('Cancel')}
-               title={'Cancel'}
-               selected={current === 'Cancel'}
-            />
-         </View>
+         <ScrollView
+            style={{
+               flexGrow: 0,
+               flexShrink: 0
+            }}
+            horizontal
+            showsHorizontalScrollIndicator={false}>
+            <View style={styles.header_nav}>
+               <ButtonNav
+                  onPress={() => setCurrent('Pending')}
+                  title={'Pending'}
+                  selected={current === 'Pending'}
+               />
+               <ButtonNav
+                  onPress={() => setCurrent('Validate')}
+                  title={'Validate'}
+                  selected={current === 'Validate'}
+               />
+               <ButtonNav
+                  onPress={() => setCurrent('Printed')}
+                  title={'Printed'}
+                  selected={current === 'Printed'}
+               />
+               <ButtonNav
+                  onPress={() => setCurrent('Cancel')}
+                  title={'Cancel'}
+                  selected={current === 'Cancel'}
+               />
+            </View>
+         </ScrollView>
          {loading ? (
             <AppLoader />
          ) : (

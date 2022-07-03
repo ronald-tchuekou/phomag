@@ -1,21 +1,17 @@
-import { MaterialIcons } from '@expo/vector-icons'
 import moment from 'moment'
 import React from 'react'
-import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Calendar } from 'react-native-calendars/src/index'
-import { AppLoader, AppStatusBar, RequestItem, Space } from '../../components'
+import { Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { AppLoader, AppStatusBar, PrinterAvailability, RequestItem, Space } from '../../components'
 import { Context as PrinterContext } from '../../contexts/printerServiceContext'
 import { ArrowBackSVG } from '../../svg'
 import COLORS from '../../themes/colors'
+import { default_profile } from '../../themes/images'
 import SIZES from '../../themes/sizes'
 import { ButtonNav } from './bookings.screen'
-import { PrinterServiceItem } from './printer-services.screen'
 
 const { width } = Dimensions.get('window')
 
 const PrinterServiceDetailsScreen = ({ navigation }) => {
-
-   const current_day = moment().format('YYYY-MM-DD')
    const content = [
       { id: 'id1', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
       { id: 'id2', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
@@ -26,11 +22,11 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
       { id: 'id7', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
       { id: 'id8', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
       { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-      { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' }
+      { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
    ]
 
    const {
-      state: { currentPrinter }
+      state: { currentPrinter },
    } = React.useContext(PrinterContext)
 
    const [current, setCurrent] = React.useState('Requests')
@@ -49,18 +45,17 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
       navigation.navigate('RequestDetailsScreen')
    }, [])
 
-   const dateHandler = React.useCallback((day) => {
-      console.log(day)
-   }, [])
-
    return (
       <AppStatusBar>
          <View style={styles.line_between}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <Pressable onPress={back} android_ripple={{
-                  color: COLORS.DARK_200,
-                  borderless: true
-               }}>
+               <Pressable
+                  onPress={back}
+                  android_ripple={{
+                     color: COLORS.DARK_200,
+                     borderless: true,
+                  }}
+               >
                   <ArrowBackSVG />
                </Pressable>
                <Text style={[styles.title, { paddingHorizontal: 10, width: width - 170 }]} numberOfLines={1}>
@@ -68,14 +63,86 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
                </Text>
             </View>
          </View>
-         <PrinterServiceItem item={currentPrinter} onPress={() => {
-         }} />
+         <View style={styles.container}>
+            <View style={styles.profile}>
+               <Image source={default_profile} resizeMode="contain" style={{ width: '100%', height: '100%' }} />
+            </View>
+            <Text
+               style={{
+                  color: COLORS.DARK_500,
+                  fontSize: SIZES.H6,
+                  marginVertical: 5,
+                  fontWeight: 'bold',
+               }}
+            >
+               {currentPrinter.service_name}
+            </Text>
+            <View style={[styles.line, { width: '100%' }]}>
+               <Text
+                  style={{
+                     color: COLORS.DARK_300,
+                     fontSize: SIZES.H7,
+                     marginVertical: 5,
+                  }}
+               >
+                  Email :{' '}
+               </Text>
+               <Text
+                  style={{
+                     color: COLORS.DARK_500,
+                     fontSize: SIZES.H7,
+                     marginVertical: 5,
+                     fontWeight: 'bold',
+                  }}
+               >
+                  {currentPrinter.service_email}
+               </Text>
+            </View>
+            <View style={[styles.line, { width: '100%' }]}>
+               <Text
+                  style={{
+                     color: COLORS.DARK_300,
+                     fontSize: SIZES.H7,
+                     marginVertical: 5,
+                  }}
+               >
+                  Phone :{' '}
+               </Text>
+               <Text
+                  style={{
+                     color: COLORS.DARK_500,
+                     fontSize: SIZES.H7,
+                     marginVertical: 5,
+                     fontWeight: 'bold',
+                  }}
+               >
+                  {currentPrinter.service_phone}
+               </Text>
+            </View>
+            <View style={[styles.line, { width: '100%' }]}>
+               <Text
+                  style={{
+                     color: COLORS.DARK_300,
+                     fontSize: SIZES.H7,
+                     marginVertical: 5,
+                  }}
+               >
+                  Address :{' '}
+               </Text>
+               <Text
+                  style={{
+                     color: COLORS.DARK_500,
+                     fontSize: SIZES.H7,
+                     marginVertical: 5,
+                     fontWeight: 'bold',
+                  }}
+               >
+                  {currentPrinter.service_address}
+               </Text>
+            </View>
+         </View>
          <View style={styles.header_nav}>
-            <ButtonNav
-               onPress={() => setCurrent('Requests')}
-               title={'Requests'}
-               selected={current === 'Requests'}
-            />
+            <ButtonNav onPress={() => setCurrent('Requests')} title={'Requests'} selected={current === 'Requests'} />
             <ButtonNav
                onPress={() => setCurrent('Availability')}
                title={'Availability'}
@@ -88,101 +155,32 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
             <FlatList
                data={content}
                keyExtractor={(item, index) => 'item' + item.id + index}
-               renderItem={({ item, index }) => (
-                  <RequestItem onPress={showDetails} item={item} index={index} />
-               )} />
+               renderItem={({ item, index }) => <RequestItem onPress={showDetails} item={item} index={index} />}
+            />
          ) : (
-            <ScrollView style={{ flex: 1 }}>
-
-               <Space />
-               <Space />
-
-               <View style={styles.container}>
-
-                  <Space />
-                  <Space />
-
-                  <Calendar
-                     theme={{
-                        selectedDayBackgroundColor: COLORS.PRIMARY,
-                        selectedDayTextColor: COLORS.WHITE,
-                        arrowColor: COLORS.PRIMARY,
-                        indicatorColor: COLORS.PRIMARY
-                     }}
-                     renderArrow={(direction) => {
-                        if (direction === 'left') {
-                           return <MaterialIcons name='keyboard-arrow-left' size={28} color={COLORS.PRIMARY} />
-                        }
-                        return <MaterialIcons name='keyboard-arrow-right' size={28} color={COLORS.PRIMARY} />
-                     }}
-                     scrollEnabled={true}
-                     enableSwipeMonths={true}
-                     current={current_day}
-                     markedDates={{
-                        [current_day]: { selected: true }
-                     }}
-                     onDayPress={dateHandler}
-                  />
-
-                  <Space />
-                  <Space />
-
-               </View>
-
-               <Space />
-               <Space />
-
-               <View style={{
-                  marginHorizontal: SIZES.MEDIUM_MARGIN,
-                  paddingHorizontal: SIZES.SMALL_PADDING,
-                  paddingBottom: 5
-               }}>
-                  <Text style={styles.title}>Plages</Text>
-               </View>
-
-               <View style={[styles.container_plage, styles.line]}>
-                  <Text style={styles.subTitle}>8h00</Text>
-                  <Text style={styles.subTitle}>to</Text>
-                  <Text style={styles.subTitle}>12h30</Text>
-               </View>
-
-               <Space />
-
-               <View style={[styles.container_plage, styles.line]}>
-                  <Text style={styles.subTitle}>13h00</Text>
-                  <Text style={styles.subTitle}>to</Text>
-                  <Text style={styles.subTitle}>17h30</Text>
-               </View>
-
-               <Space />
-
-               <View style={[styles.container_plage, styles.line]}>
-                  <Text style={styles.subTitle}>18h00</Text>
-                  <Text style={styles.subTitle}>to</Text>
-                  <Text style={styles.subTitle}>20h30</Text>
-               </View>
-
-               <Space />
-               <Space />
-               <Space />
-               <Space />
-
-            </ScrollView>
+            <PrinterAvailability />
          )}
       </AppStatusBar>
    )
 }
 
 const styles = StyleSheet.create({
+   profile: {
+      height: 80,
+      width: 80,
+      borderRadius: 100,
+      overflow: 'hidden',
+      backgroundColor: COLORS.DARK_200,
+   },
    title: {
       fontSize: SIZES.H5,
       color: COLORS.DARK_800,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
    },
    subTitle: {
       color: COLORS.DARK_800,
       fontSize: SIZES.H6,
-      paddingHorizontal: SIZES.SMALL_PADDING
+      paddingHorizontal: SIZES.SMALL_PADDING,
    },
    container: {
       backgroundColor: COLORS.WHITE,
@@ -192,15 +190,10 @@ const styles = StyleSheet.create({
       marginHorizontal: SIZES.MEDIUM_MARGIN,
       marginBottom: SIZES.SMALL_MARGIN,
       overflow: 'hidden',
-      padding: SIZES.DEFAULT_PADDING
-   },
-   container_plage: {
-      backgroundColor: COLORS.WHITE,
-      borderRadius: 15,
-      borderWidth: 1,
-      borderColor: COLORS.DARK_100,
-      marginHorizontal: SIZES.MEDIUM_MARGIN,
-      padding: SIZES.SMALL_PADDING
+      padding: SIZES.DEFAULT_PADDING,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
    },
    line_between: {
       flexDirection: 'row',
@@ -208,25 +201,12 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingTop: SIZES.MEDIUM_PADDING,
       paddingHorizontal: SIZES.MEDIUM_PADDING,
-      paddingBottom: SIZES.SMALL_PADDING
+      paddingBottom: SIZES.SMALL_PADDING,
    },
    line: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
-   },
-   doc_container: {
-      flexDirection: 'row',
-      paddingVertical: 5
-   },
-   doc_name: {
-      fontSize: SIZES.H7,
-      fontWeight: 'bold',
-      color: COLORS.DARK_800
-   },
-   doc_sub_name: {
-      fontSize: SIZES.H8,
-      color: COLORS.DARK_300
+      alignItems: 'center',
    },
    header_nav: {
       flexDirection: 'row',
@@ -234,12 +214,12 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingHorizontal: SIZES.MEDIUM_PADDING,
       paddingTop: 5,
-      paddingBottom: SIZES.SMALL_PADDING
-   }
+      paddingBottom: SIZES.SMALL_PADDING,
+   },
 })
 
 PrinterServiceDetailsScreen.navigationOptions = () => ({
-   headerShown: false
+   headerShown: false,
 })
 
 export default PrinterServiceDetailsScreen

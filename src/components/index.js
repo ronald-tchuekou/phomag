@@ -5,7 +5,8 @@ import { RequestConfirmationModal } from './request-confirmation.modal'
 import { RequestItem } from './request-item'
 import { Space } from './space'
 import { Status } from './status'
-import {ChartProgress} from './chart-progress'
+import { ChartProgress } from './chart-progress'
+import { PrinterAvailability } from './printer-availability'
 
 export {
    AppStatusBar,
@@ -16,5 +17,6 @@ export {
    AppLoader,
    RequestItem,
    RequestConfirmationModal,
-   ChartProgress
+   ChartProgress,
+   PrinterAvailability
 }
