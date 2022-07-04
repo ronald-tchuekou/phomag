@@ -3,19 +3,18 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppModal } from '../base-component/modal'
 import COLORS from '../themes/colors'
 import SIZES from '../themes/sizes'
-import { Ionicons,Entypo } from '@expo/vector-icons'
+import { Ionicons, Entypo } from '@expo/vector-icons'
 import { AppTextInput } from './app-text-input'
 import { Context as AuthContext } from '../contexts/authContext'
 import STYLES from '../themes/style'
 import { Space } from './space'
 
 export const ProfileModal = React.forwardRef((props, ref) => {
-
    const { height } = Dimensions.get('window')
 
    const {
       state: { formData, currentUser },
-      setFormDataField
+      setFormDataField,
    } = React.useContext(AuthContext)
 
    // Content state.
@@ -23,17 +22,15 @@ export const ProfileModal = React.forwardRef((props, ref) => {
 
    React.useImperativeHandle(ref, () => ({
       open: open,
-      close: close
+      close: close,
    }))
 
    function setValue(key, value) {
-      setFormDataField({ key: key, value: value }, () => {
-      })
+      setFormDataField({ key: key, value: value }, () => {})
    }
 
    function getValue(key, default_value) {
-      if (formData)
-         return formData[key] || default_value
+      if (formData) return formData[key] || default_value
       return default_value
    }
 
@@ -59,25 +56,25 @@ export const ProfileModal = React.forwardRef((props, ref) => {
          width: '100%',
          maxWidth: 450,
          maxHeight: height - 180,
-         position: 'relative'
+         position: 'relative',
       },
       title: {
          fontWeight: 'bold',
          textAlign: 'center',
          color: COLORS.DARK_500,
-         fontSize: SIZES.H5
+         fontSize: SIZES.H5,
       },
       button_content: {
          overflow: 'hidden',
          borderRadius: 200,
          position: 'absolute',
          top: 0,
-         right: 0
+         right: 0,
       },
       button: {
          padding: SIZES.SMALL_PADDING,
-         borderRadius: 200
-      }
+         borderRadius: 200,
+      },
    })
 
    return (
@@ -125,19 +122,23 @@ export const ProfileModal = React.forwardRef((props, ref) => {
             <Space />
             <Space />
             <Pressable
-               onPress={() => {
-               }}
+               onPress={() => {}}
                android_ripple={{
-                  color: 'rgba(255,255,255,0.53)'
+                  color: 'rgba(255,255,255,0.53)',
                }}
-               style={STYLES.button_primary}>
+               style={STYLES.button_primary}
+            >
                <Text style={STYLES.button_text_primary}>Modifier</Text>
             </Pressable>
             <View style={styles.button_content}>
-               <Pressable onPress={close} android_ripple={{
-                  color: 'rgba(0, 0, 0, 0.15)'
-               }} style={styles.button}>
-                  <Ionicons name='close' size={35} color={COLORS.DARK_300} />
+               <Pressable
+                  onPress={close}
+                  android_ripple={{
+                     color: 'rgba(0, 0, 0, 0.15)',
+                  }}
+                  style={styles.button}
+               >
+                  <Ionicons name="close" size={35} color={COLORS.DARK_300} />
                </Pressable>
             </View>
          </View>

@@ -41,12 +41,15 @@ const tabBarComponent = (props) => {
    )
 }
 
-const TeacherFlow = createBottomTabNavigator({
-   HomeFlow,
-   BookingsFlow,
-   ProfileFlow
-}, {
-   tabBarComponent
-})
+const TeacherFlow = createBottomTabNavigator(
+   {
+      HomeFlow,
+      BookingsFlow,
+      ProfileFlow,
+   },
+   {
+      tabBarComponent,
+   }
+)
 
 export default TeacherFlow

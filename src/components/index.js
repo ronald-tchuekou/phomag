@@ -7,6 +7,9 @@ import { Space } from './space'
 import { Status } from './status'
 import { ChartProgress } from './chart-progress'
 import { PrinterAvailability } from './printer-availability'
+import { DocumentList } from './documentList'
+import { DocumentFormList } from './documentsFormList'
+import { ViewComponent } from './view-component'
 
 export {
    AppStatusBar,
@@ -18,5 +21,8 @@ export {
    RequestItem,
    RequestConfirmationModal,
    ChartProgress,
-   PrinterAvailability
+   PrinterAvailability,
+   DocumentFormList,
+   DocumentList,
+   ViewComponent,
 }

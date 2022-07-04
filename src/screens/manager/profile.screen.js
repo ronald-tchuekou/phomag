@@ -11,7 +11,7 @@ const ProfileScreen = ({ navigation }) => {
    const confirm_ref = React.useRef(null)
    const {
       state: { currentUser },
-      signOut
+      signOut,
    } = React.useContext(AuthContext)
 
    const showNotifications = React.useCallback(() => {
@@ -25,8 +25,7 @@ const ProfileScreen = ({ navigation }) => {
          })
    }, [])
 
-   if (!currentUser)
-      return null
+   if (!currentUser) return null
 
    return (
       <AppStatusBar>
@@ -34,33 +33,48 @@ const ProfileScreen = ({ navigation }) => {
          <View style={styles.line_between}>
             <View style={styles.line}>
                <View style={styles.profile}>
-                  <Image
-                     source={default_profile}
-                     resizeMode={'contain'}
-                     style={{ width: '100%', height: '100%' }} />
+                  <Image source={default_profile} resizeMode={'contain'} style={{ width: '100%', height: '100%' }} />
                </View>
                <View style={{ padding: SIZES.SMALL_PADDING }}>
-                  <Text style={{
-                     fontSize: SIZES.H6,
-                     color: COLORS.DARK_500,
-                     fontWeight: '700'
-                  }}>{currentUser.matricule}</Text>
-                  <Text style={{
-                     fontSize: SIZES.H7,
-                     color: COLORS.DARK_300,
-                     fontWeight: '700'
-                  }}>{currentUser.lastname} {currentUser.firstname}</Text>
-                  <Text style={{
-                     fontSize: SIZES.H7,
-                     color: COLORS.DARK_300,
-                     fontWeight: '700'
-                  }}>{currentUser.email}</Text>
-                  <Text style={{
-                     fontSize: SIZES.H7,
-                     color: COLORS.WARNING,
-                     fontWeight: '600'
-                  }}>
-                     {currentUser.role === 'Chief' ? 'Manager' : currentUser.role === 'Teacher' ? 'Teacher' : 'Printer Service'}
+                  <Text
+                     style={{
+                        fontSize: SIZES.H6,
+                        color: COLORS.DARK_500,
+                        fontWeight: '700',
+                     }}
+                  >
+                     {currentUser.matricule}
+                  </Text>
+                  <Text
+                     style={{
+                        fontSize: SIZES.H7,
+                        color: COLORS.DARK_300,
+                        fontWeight: '700',
+                     }}
+                  >
+                     {currentUser.lastname} {currentUser.firstname}
+                  </Text>
+                  <Text
+                     style={{
+                        fontSize: SIZES.H7,
+                        color: COLORS.DARK_300,
+                        fontWeight: '700',
+                     }}
+                  >
+                     {currentUser.email}
+                  </Text>
+                  <Text
+                     style={{
+                        fontSize: SIZES.H7,
+                        color: COLORS.WARNING,
+                        fontWeight: '600',
+                     }}
+                  >
+                     {currentUser.role === 'Chief'
+                        ? 'Manager'
+                        : currentUser.role === 'Teacher'
+                        ? 'Teacher'
+                        : 'Printer Service'}
                   </Text>
                </View>
             </View>
@@ -68,9 +82,10 @@ const ProfileScreen = ({ navigation }) => {
                onPress={showNotifications}
                android_ripple={{
                   color: COLORS.DARK_200,
-                  borderless: true
+                  borderless: true,
                }}
-               style={styles.notification}>
+               style={styles.notification}
+            >
                <NotificationSVG />
                <View style={styles.notification_label}>
                   <Text style={styles.notification_text}>10</Text>
@@ -81,9 +96,10 @@ const ProfileScreen = ({ navigation }) => {
          <View style={styles.setting_container}>
             <Pressable
                android_ripple={{
-                  color: COLORS.DARK_100
+                  color: COLORS.DARK_100,
                }}
-               style={styles.setting_content}>
+               style={styles.setting_content}
+            >
                <View>
                   <Text style={styles.label}>Change language</Text>
                   <Text style={styles.description}>English</Text>
@@ -97,9 +113,10 @@ const ProfileScreen = ({ navigation }) => {
          <View style={styles.setting_container}>
             <Pressable
                android_ripple={{
-                  color: COLORS.DARK_100
+                  color: COLORS.DARK_100,
                }}
-               style={styles.setting_content}>
+               style={styles.setting_content}
+            >
                <View>
                   <Text style={styles.label}>Change theme</Text>
                   <Text style={styles.description}>Light</Text>
@@ -114,14 +131,19 @@ const ProfileScreen = ({ navigation }) => {
             <Pressable
                onPress={() => confirm_ref.current.show('Are you sure, you want to disconnect on this account ?')}
                android_ripple={{
-                  color: COLORS.DARK_100
+                  color: COLORS.DARK_100,
                }}
-               style={styles.setting_content}>
-               <Text style={{
-                  fontSize: SIZES.H7,
-                  fontWeight: '700',
-                  color: COLORS.ERROR
-               }}>Disconnect</Text>
+               style={styles.setting_content}
+            >
+               <Text
+                  style={{
+                     fontSize: SIZES.H7,
+                     fontWeight: '700',
+                     color: COLORS.ERROR,
+                  }}
+               >
+                  Disconnect
+               </Text>
             </Pressable>
          </View>
          <RequestConfirmationModal onConfirm={onConfirm} ref={confirm_ref} />
@@ -135,15 +157,15 @@ const styles = StyleSheet.create({
       height: 60,
       borderRadius: 500,
       backgroundColor: COLORS.DARK_200,
-      overflow: 'hidden'
+      overflow: 'hidden',
    },
    title: {
       fontSize: SIZES.H5,
       color: COLORS.DARK_800,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
    },
    container: {
-      padding: SIZES.MEDIUM_PADDING
+      padding: SIZES.MEDIUM_PADDING,
    },
    line_between: {
       flexDirection: 'row',
@@ -151,16 +173,16 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingTop: SIZES.MEDIUM_PADDING,
       paddingHorizontal: SIZES.MEDIUM_PADDING,
-      paddingBottom: SIZES.SMALL_PADDING
+      paddingBottom: SIZES.SMALL_PADDING,
    },
    line: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
    },
    notification: {
       position: 'relative',
-      padding: 2
+      padding: 2,
    },
    notification_label: {
       position: 'absolute',
@@ -169,26 +191,26 @@ const styles = StyleSheet.create({
       borderRadius: 50,
       backgroundColor: COLORS.ERROR,
       paddingHorizontal: 3,
-      paddingVertical: 1
+      paddingVertical: 1,
    },
    notification_text: {
       color: COLORS.WHITE,
-      fontSize: 12
+      fontSize: 12,
    },
    label: {
       fontSize: SIZES.H7,
       fontWeight: '700',
-      color: COLORS.DARK_500
+      color: COLORS.DARK_500,
    },
    description: {
       fontSize: SIZES.H8,
       fontWeight: '600',
-      color: COLORS.DARK_300
+      color: COLORS.DARK_300,
    },
    setting_container: {
       marginHorizontal: SIZES.DEFAULT_MARGIN,
       borderRadius: 15,
-      overflow: 'hidden'
+      overflow: 'hidden',
    },
    setting_content: {
       padding: SIZES.DEFAULT_PADDING,
@@ -198,12 +220,12 @@ const styles = StyleSheet.create({
       borderColor: COLORS.DARK_200,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
-   }
+      alignItems: 'center',
+   },
 })
 
 ProfileScreen.navigationOptions = () => ({
-   headerShown: false
+   headerShown: false,
 })
 
 export default ProfileScreen

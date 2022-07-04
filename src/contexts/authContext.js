@@ -18,8 +18,8 @@ const reducer = (state, action) => {
             ...state,
             formData: {
                ...(state.formData ? state.formData : {}),
-               [payload.key]: payload.value
-            }
+               [payload.key]: payload.value,
+            },
          }
       case 'reset_form_data':
          return { ...state, formData: null }
@@ -104,14 +104,12 @@ const updatePassword = (dispatch) => {
          const response = await phomagAPI.put(API_ROUTES.UPDATE_PASS, data, {
             headers: {
                'Content-Type': 'application/json',
-               'x-access-token': data.token
-            }
+               'x-access-token': data.token,
+            },
          })
-         if (callback)
-            callback(undefined, response.data)
+         if (callback) callback(undefined, response.data)
       } catch (e) {
-         if (callback)
-            callback(e.response.data, undefined)
+         if (callback) callback(e.response.data, undefined)
       }
    }
 }
@@ -126,17 +124,22 @@ const setUserImage = (dispatch) => {
             { image_profile: fileJson.path },
             {
                headers: {
-                  'x-access-token': token
-               }
-            })
-         await storeLocaleValue(ENV.user_key, {
-            ...user,
-            image_profile: fileJson.path
-         }, (error, value) => {
-            dispatch({ type: 'set_current_user', payload: value })
-            dispatch({ type: 'set_current_user_token', payload: token })
-            callback(undefined, value)
-         })
+                  'x-access-token': token,
+               },
+            }
+         )
+         await storeLocaleValue(
+            ENV.user_key,
+            {
+               ...user,
+               image_profile: fileJson.path,
+            },
+            (error, value) => {
+               dispatch({ type: 'set_current_user', payload: value })
+               dispatch({ type: 'set_current_user_token', payload: token })
+               callback(undefined, value)
+            }
+         )
       } catch (e) {
          callback(e.response.data, undefined)
       }
@@ -160,8 +163,8 @@ const setNotificationToken = (dispatch) => {
             {
                headers: {
                   'Content-Type': 'application/json',
-                  'x-access-token': data.token
-               }
+                  'x-access-token': data.token,
+               },
             }
          )
          callback(undefined, response.data)
@@ -178,19 +181,23 @@ const setFormDataField = (dispatch) => {
    }
 }
 
-export const { Context, Provider } = createDataContext(reducer, {
-   signIn,
-   signOut,
-   updatePassword,
-   verifyUserEmail,
-   resetUserPassword,
-   setFormDataField,
-   setCurrentUser,
-   setUserImage,
-   setNotificationToken,
-   setUserInformations
-}, {
-   currentUserToken: null,
-   currentUser: null,
-   formData: null
-})
+export const { Context, Provider } = createDataContext(
+   reducer,
+   {
+      signIn,
+      signOut,
+      updatePassword,
+      verifyUserEmail,
+      resetUserPassword,
+      setFormDataField,
+      setCurrentUser,
+      setUserImage,
+      setNotificationToken,
+      setUserInformations,
+   },
+   {
+      currentUserToken: null,
+      currentUser: null,
+      formData: null,
+   }
+)

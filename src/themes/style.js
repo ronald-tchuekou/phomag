@@ -7,37 +7,37 @@ const STYLES = StyleSheet.create({
       backgroundColor: COLORS.WHITE,
       flex: 1,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
    },
    button_primary: {
       backgroundColor: COLORS.TRANSPARENT,
       paddingVertical: SIZES.SMALL_PADDING,
       paddingHorizontal: SIZES.DEFAULT_PADDING,
       borderRadius: 10,
-      overflow: 'hidden'
+      overflow: 'hidden',
    },
    button_accent: {
       backgroundColor: COLORS.TRANSPARENT,
       paddingVertical: SIZES.SMALL_PADDING,
       paddingHorizontal: SIZES.DEFAULT_PADDING,
       borderRadius: 10,
-      overflow: 'hidden'
+      overflow: 'hidden',
    },
    button_container: {
       backgroundColor: COLORS.TRANSPARENT,
       borderRadius: 10,
-      overflow: 'hidden'
+      overflow: 'hidden',
    },
    button_text_primary: {
       color: COLORS.WHITE,
       fontSize: SIZES.H7,
-      textAlign: 'center'
+      textAlign: 'center',
    },
    button_text_accent: {
       color: COLORS.WHITE,
       fontSize: SIZES.H7,
-      textAlign: 'center'
-   }
+      textAlign: 'center',
+   },
 })
 
 export default STYLES

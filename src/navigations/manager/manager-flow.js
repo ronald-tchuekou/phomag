@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
       height: 55,
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'space-around'
+      justifyContent: 'space-around',
    },
    bottom_tab_item: {
       display: 'flex',
@@ -27,8 +27,8 @@ export const styles = StyleSheet.create({
       height: 50,
       justifyContent: 'center',
       alignItems: 'center',
-      flexDirection: 'column'
-   }
+      flexDirection: 'column',
+   },
 })
 
 const tabBarComponent = (props) => {
@@ -75,14 +75,17 @@ export const TabBarItem = ({ title, icon, selected, onPress }) => {
       text: {
          color: selected ? COLORS.PRIMARY : COLORS.DARK_200,
          textAlign: 'center',
-         fontSize: 10
-      }
+         fontSize: 10,
+      },
    })
    return (
-      <Pressable android_ripple={{
-         color: COLORS.PRIMARY_25,
-         borderless: true
-      }} onPress={onPress}>
+      <Pressable
+         android_ripple={{
+            color: COLORS.PRIMARY_25,
+            borderless: true,
+         }}
+         onPress={onPress}
+      >
          <View style={styles.bottom_tab_item}>
             {icon()}
             <Text style={item_styles.text}>{title}</Text>
@@ -91,13 +94,16 @@ export const TabBarItem = ({ title, icon, selected, onPress }) => {
    )
 }
 
-const ManagerFlow = createBottomTabNavigator({
-   HomeFlow,
-   BookingsFlow,
-   PrinterServicesFlow,
-   ProfileFlow
-}, {
-   tabBarComponent
-})
+const ManagerFlow = createBottomTabNavigator(
+   {
+      HomeFlow,
+      BookingsFlow,
+      PrinterServicesFlow,
+      ProfileFlow,
+   },
+   {
+      tabBarComponent,
+   }
+)
 
 export default ManagerFlow

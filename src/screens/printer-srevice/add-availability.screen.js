@@ -8,11 +8,11 @@ import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import STYLES from '../../themes/style'
 import { ToastMessage } from '../../utils'
-import {Context as AvailabilityContext } from "../../contexts/availabilityContext"
+import { Context as AvailabilityContext } from '../../contexts/availabilityContext'
 import moment from 'moment'
-import "moment/locale/en-ca"
+import 'moment/locale/en-ca'
 
-moment.locale("en-ca")
+moment.locale('en-ca')
 
 const { width } = Dimensions.get('window')
 
@@ -65,7 +65,7 @@ const AddAvailabilityScreen = ({ navigation }) => {
             if (error.message) ToastMessage(error.message)
             else ToastMessage('Error are provided, please try again !')
          }
-         ToastMessage("New period are successfull added !")
+         ToastMessage('New period are successfull added !')
          console.log(res)
       })
    }
@@ -112,7 +112,7 @@ const AddAvailabilityScreen = ({ navigation }) => {
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                <LinearGradient colors={[COLORS.WARNING_50, COLORS.WARNING]} style={STYLES.button_container}>
                   <Pressable
-                  onPress={submit}
+                     onPress={submit}
                      android_ripple={{
                         color: 'rgba(255,255,255,0.53)',
                      }}
@@ -124,7 +124,7 @@ const AddAvailabilityScreen = ({ navigation }) => {
             </View>
             <Space />
             <Space />
-            <ModalLoader ref={loader_ref}/>
+            <ModalLoader ref={loader_ref} />
          </View>
       </AppStatusBar>
    )

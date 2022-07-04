@@ -16,19 +16,17 @@ const SignInScreen = ({ navigation }) => {
       state: { formData },
       setFormDataField,
       signIn,
-      setNotificationToken
+      setNotificationToken,
    } = React.useContext(AuthContext)
 
    const [secure, setSecure] = React.useState(true)
 
    function setValue(key, value) {
-      setFormDataField({ key: key, value: value }, () => {
-      })
+      setFormDataField({ key: key, value: value }, () => {})
    }
 
    function getValue(key, default_value) {
-      if (formData)
-         return formData[key] || default_value
+      if (formData) return formData[key] || default_value
       return default_value
    }
 
@@ -43,7 +41,7 @@ const SignInScreen = ({ navigation }) => {
 
       const data = {
          username: email,
-         password: password
+         password: password,
       }
 
       loader_ref.current.show()
@@ -51,36 +49,34 @@ const SignInScreen = ({ navigation }) => {
          loader_ref.current.dismiss()
          if (error) {
             console.log(error)
-            if (error.message)
-               ToastMessage(error.message)
-            else
-               ToastMessage('An error are provided, please try again!')
+            if (error.message) ToastMessage(error.message)
+            else ToastMessage('An error are provided, please try again!')
             return
          }
 
          console.log(response)
          const notification_token = await registerForPushNotificationsAsync()
-         setNotificationToken({
-            id: response.user_id,
-            token: response.token,
-            notify_token: notification_token,
-            role: response.role
-         }, (error, res) => {
-            if (error) {
-               console.log(error)
-               return
+         setNotificationToken(
+            {
+               id: response.user_id,
+               token: response.token,
+               notify_token: notification_token,
+               role: response.role,
+            },
+            (error, res) => {
+               if (error) {
+                  console.log(error)
+                  return
+               }
+               console.log(res)
             }
-            console.log(res)
-         })
+         )
 
-         if (response.role === 'Chief')
-            return navigation.navigate('ManagerFlow')
-         if (response.role === 'Teacher')
-            return navigation.navigate('TeacherFlow')
-         if (response.role === 'Printer')
-            return navigation.navigate('PrinterServiceFlow')
+         if (response.role === 'Chief') return navigation.navigate('ManagerFlow')
+         if (response.role === 'Teacher') return navigation.navigate('TeacherFlow')
+         if (response.role === 'Printer') return navigation.navigate('PrinterServiceFlow')
 
-         ToastMessage('Your connection information isn\'t correct!')
+         ToastMessage("Your connection information isn't correct!")
       })
    }
 
@@ -112,10 +108,14 @@ const SignInScreen = ({ navigation }) => {
                value={getValue('password', '')}
                iconLeft={() => <Ionicons name={'lock-closed'} size={20} color={COLORS.DARK_300} />}
                iconRight={() => (
-                  <Pressable onPress={() => setSecure(s => !s)} android_ripple={{
-                     color: COLORS.DARK_500,
-                     borderless: true
-                  }} style={{ padding: 2, zIndex: 20 }}>
+                  <Pressable
+                     onPress={() => setSecure((s) => !s)}
+                     android_ripple={{
+                        color: COLORS.DARK_500,
+                        borderless: true,
+                     }}
+                     style={{ padding: 2, zIndex: 20 }}
+                  >
                      <Ionicons name={secure ? 'eye' : 'eye-off'} size={25} color={COLORS.DARK_300} />
                   </Pressable>
                )}
@@ -124,16 +124,14 @@ const SignInScreen = ({ navigation }) => {
             <Space />
             <Space />
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-               <LinearGradient
-                  colors={[COLORS.PRIMARY_50, COLORS.PRIMARY]}
-                  style={STYLES.button_container}
-               >
+               <LinearGradient colors={[COLORS.PRIMARY_50, COLORS.PRIMARY]} style={STYLES.button_container}>
                   <Pressable
                      onPress={submit}
                      android_ripple={{
-                        color: 'rgba(255,255,255,0.53)'
+                        color: 'rgba(255,255,255,0.53)',
                      }}
-                     style={[STYLES.button_primary, { width: 150 }]}>
+                     style={[STYLES.button_primary, { width: 150 }]}
+                  >
                      <Text style={STYLES.button_text_accent}>Connect</Text>
                   </Pressable>
                </LinearGradient>
@@ -148,17 +146,16 @@ const styles = StyleSheet.create({
    container: {
       padding: SIZES.MEDIUM_PADDING,
       backgroundColor: COLORS.WHITE,
-      flex: 1
+      flex: 1,
    },
    title: {
       fontSize: SIZES.H1,
-      fontWeight: 'bold'
-
-   }
+      fontWeight: 'bold',
+   },
 })
 
 SignInScreen.navigationOptions = () => ({
-   headerShown: false
+   headerShown: false,
 })
 
 export default SignInScreen

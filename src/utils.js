@@ -9,22 +9,18 @@ import COLORS from './themes/colors'
 export const storeLocaleValue = async (key, value, callback) => {
    try {
       await AsyncStorage.setItem(key, JSON.stringify(value))
-      if (callback)
-         callback(undefined, value)
+      if (callback) callback(undefined, value)
    } catch (error) {
-      if (callback)
-         callback(error, undefined)
+      if (callback) callback(error, undefined)
    }
 }
 
 export const getLocaleValue = async (key, callback) => {
    try {
       const value = await AsyncStorage.getItem(key)
-      if (callback)
-         callback(undefined, value ? JSON.parse(value) : null)
+      if (callback) callback(undefined, value ? JSON.parse(value) : null)
    } catch (error) {
-      if (callback)
-         callback(error, undefined)
+      if (callback) callback(error, undefined)
    }
 }
 
@@ -41,9 +37,11 @@ export const registerForPushNotificationsAsync = async () => {
          alert('Failed to get push token for push notification!')
          return
       }
-      token = (await Notifications.getExpoPushTokenAsync({
-         experienceId: '@ronald-tchuekou/detect-presence'
-      })).data
+      token = (
+         await Notifications.getExpoPushTokenAsync({
+            experienceId: '@ronald-tchuekou/detect-presence',
+         })
+      ).data
       console.log(token)
 
       if (Platform.OS === 'android') {
@@ -51,7 +49,7 @@ export const registerForPushNotificationsAsync = async () => {
             name: 'default',
             importance: Notifications.AndroidImportance.MAX,
             vibrationPattern: [0, 250, 250, 250],
-            lightColor: COLORS.PRIMARY
+            lightColor: COLORS.PRIMARY,
          })
       }
 
@@ -71,9 +69,9 @@ export const notifyUser = async (title, subtitle, message, data = {}) => {
          body: message,
          data: data,
          priority: 'HIGH',
-         color: COLORS.PRIMARY
+         color: COLORS.PRIMARY,
       },
-      trigger: null
+      trigger: null,
    })
 }
 
@@ -83,8 +81,8 @@ export const uploadImage = (formData, userToken, bucket) => {
          const fileResponse = await phomagAPI.post(API_ROUTES.GET_FIlES + '/' + bucket, formData, {
             headers: {
                'x-access-token': userToken,
-               'Content-Type': 'multipart/form-data'
-            }
+               'Content-Type': 'multipart/form-data',
+            },
          })
          resolve(fileResponse.data)
       } catch (e) {
@@ -102,22 +100,35 @@ export const pickImage = async (callback) => {
             allowsEditing: true,
             aspect: [5, 5],
             quality: 1,
-            exif: true
+            exif: true,
          })
-         if (!file_picked.cancelled && callback)
-            callback(undefined, file_picked)
+         if (!file_picked.cancelled && callback) callback(undefined, file_picked)
       } else {
          Alert.alert(
-            'message d\'avertissement',
+            "message d'avertissement",
             'Pour pouvoir télécharger une image de votre téléphone, vous devez donner la permission à Detect Presence de pouvoir accéder à votre galerie.'
          )
-         if (callback)
-            callback(undefined, null)
+         if (callback) callback(undefined, null)
       }
    } catch (e) {
-      if (callback)
-         callback(e, undefined)
+      if (callback) callback(e, undefined)
    }
+}
+
+export const formatFileSize = (size) => {
+   const KOct = 1024
+   const MOct = KOct * 1024
+   const GOct = MOct * 1024
+   const TOct = GOct * 1024
+   return size < KOct
+      ? size + ' o'
+      : size / KOct < 1024
+      ? parseFloat(`${size / KOct}`).toFixed(2) + ' Ko'
+      : size / MOct < 1024
+      ? parseFloat(`${size / MOct}`).toFixed(2) + ' Mo'
+      : size / GOct < 1024
+      ? parseFloat(`${size / GOct}`).toFixed(2) + ' Go'
+      : parseFloat(`${size / TOct}`).toFixed(2) + ' To'
 }
 
 export const ToastMessage = (message) => ToastAndroid.show(message, ToastAndroid.LONG)

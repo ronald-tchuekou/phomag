@@ -3,36 +3,32 @@ import { StyleSheet, TextInput, View } from 'react-native'
 import COLORS from '../themes/colors'
 
 export const AppTextInput = ({
-                                label,
-                                value,
-                                onChange,
-                                type = 'default',
-                                autoFocus = false,
-                                capitalize = false,
-                                secure = false,
-                                iconLeft,
-                                iconRight,
-                                lines = 1,
-                                multiline = false,
-                                readOnly = true,
-                                onPress,
-                                maxLength = 300
-                             }) => {
+   label,
+   value,
+   onChange,
+   type = 'default',
+   autoFocus = false,
+   capitalize = false,
+   secure = false,
+   iconLeft,
+   iconRight,
+   lines = 1,
+   multiline = false,
+   readOnly = true,
+   onPress,
+   maxLength = 300,
+}) => {
    const input_ref = React.useRef(null)
 
    const capitalization = capitalize === true ? 'words' : capitalize === false ? 'none' : capitalize
 
-   function onFocus() {
+   function onFocus() {}
 
-   }
-
-   function onBlur() {
-
-   }
+   function onBlur() {}
 
    const styles = StyleSheet.create({
       input_container: {
-         position: 'relative'
+         position: 'relative',
       },
       icon1: {
          position: 'absolute',
@@ -42,7 +38,7 @@ export const AppTextInput = ({
          alignItems: 'center',
          height: 45,
          width: 45,
-         zIndex: 10
+         zIndex: 10,
       },
       icon2: {
          position: 'absolute',
@@ -52,25 +48,22 @@ export const AppTextInput = ({
          alignItems: 'center',
          height: 45,
          width: 45,
-         zIndex: 10
+         zIndex: 10,
       },
       input: {
-         height: 45,
          width: '100%',
          borderRadius: 10,
          backgroundColor: COLORS.DARK_50,
          paddingLeft: iconLeft ? 45 : 10,
          paddingRight: iconRight ? 45 : 10,
-         paddingVertical: 5,
-         fontSize: 15
-      }
+         paddingVertical: 7,
+         fontSize: 15,
+      },
    })
 
    return (
       <View style={styles.input_container}>
-         {iconLeft ? (
-            <View style={styles.icon1}>{iconLeft()}</View>
-         ) : null}
+         {iconLeft ? <View style={styles.icon1}>{iconLeft()}</View> : null}
          <TextInput
             onFocus={onFocus}
             onBlur={onBlur}
@@ -89,9 +82,7 @@ export const AppTextInput = ({
             onChangeText={onChange}
             keyboardType={type}
          />
-         {iconRight ? (
-            <View style={styles.icon2}>{iconRight()}</View>
-         ) : null}
+         {iconRight ? <View style={styles.icon2}>{iconRight()}</View> : null}
       </View>
    )
 }

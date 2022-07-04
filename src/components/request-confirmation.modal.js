@@ -1,8 +1,10 @@
 import React from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppModal } from '../base-component/modal'
 import COLORS from '../themes/colors'
 import SIZES from '../themes/sizes'
+
+const { width } = Dimensions.get('window')
 
 export const RequestConfirmationModal = React.forwardRef((props, ref) => {
    const [show, setShow] = React.useState(false)
@@ -13,19 +15,19 @@ export const RequestConfirmationModal = React.forwardRef((props, ref) => {
          setShow(true)
          setTitle(title)
       },
-      dismiss: () => setShow(false)
+      dismiss: () => setShow(false),
    }))
 
-   const onPress = React.useCallback((value) => {
-      setShow(false)
-      props.onConfirm(value)
-   }, [props.onConfirm])
+   const onPress = React.useCallback(
+      (value) => {
+         setShow(false)
+         props.onConfirm(value)
+      },
+      [props.onConfirm]
+   )
 
    return (
-      <AppModal
-         openMode='fade'
-         visible={show}
-      >
+      <AppModal openMode="fade" visible={show}>
          <View style={styles.container}>
             <Text style={styles.title}>Confirmation</Text>
             <Text style={styles.message}>{title}</Text>
@@ -34,9 +36,10 @@ export const RequestConfirmationModal = React.forwardRef((props, ref) => {
                   <Pressable
                      onPress={() => onPress(false)}
                      android_ripple={{
-                        color: COLORS.ERROR_25
+                        color: COLORS.ERROR_25,
                      }}
-                     style={styles.btn}>
+                     style={styles.btn}
+                  >
                      <Text style={styles.btn_cancel_text}>Cancel</Text>
                   </Pressable>
                </View>
@@ -44,9 +47,10 @@ export const RequestConfirmationModal = React.forwardRef((props, ref) => {
                   <Pressable
                      onPress={() => onPress(true)}
                      android_ripple={{
-                        color: COLORS.PRIMARY_25
+                        color: COLORS.PRIMARY_25,
                      }}
-                     style={styles.btn}>
+                     style={styles.btn}
+                  >
                      <Text style={styles.btn_validate_text}>Validate</Text>
                   </Pressable>
                </View>
@@ -61,39 +65,40 @@ const styles = StyleSheet.create({
       backgroundColor: COLORS.WHITE,
       borderRadius: 15,
       padding: SIZES.DEFAULT_PADDING,
-      maxWidth: 300
+      maxWidth: 400,
+      width: width - 80,
    },
    title: {
       fontSize: SIZES.H6,
       fontWeight: 'bold',
-      color: COLORS.DARK_800
+      color: COLORS.DARK_800,
    },
    message: {
       fontSize: SIZES.H7,
       color: COLORS.DARK_500,
-      paddingVertical: SIZES.SMALL_PADDING
+      paddingVertical: SIZES.SMALL_PADDING,
    },
    line: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
    },
    btn_container: {
       borderRadius: 10,
-      overflow: 'hidden'
+      overflow: 'hidden',
    },
    btn: {
-     paddingHorizontal: SIZES.SMALL_PADDING,
-     paddingVertical: 5
+      paddingHorizontal: SIZES.SMALL_PADDING,
+      paddingVertical: 5,
    },
    btn_cancel_text: {
       color: COLORS.ERROR,
       fontSize: SIZES.H7,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
    },
    btn_validate_text: {
       color: COLORS.PRIMARY,
       fontSize: SIZES.H7,
-      fontWeight: 'bold'
-   }
+      fontWeight: 'bold',
+   },
 })

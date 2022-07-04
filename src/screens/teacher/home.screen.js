@@ -6,7 +6,6 @@ import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 
 const HomeScreen = ({ navigation }) => {
-
    const [loading, setLoading] = React.useState(false)
    const [content, setContent] = React.useState([])
    const [value, setValue] = React.useState(0)
@@ -26,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
             { id: 'id7', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
             { id: 'id8', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
             { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' }
+            { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
          ])
          setValue(40)
       }, 1000)
@@ -48,10 +47,12 @@ const HomeScreen = ({ navigation }) => {
       <AppStatusBar>
          <ScrollView style={{ flex: 1 }}>
             <View style={styles.header}>
-               <View style={{
-                  width: 200,
-                  height: 200
-               }}>
+               <View
+                  style={{
+                     width: 200,
+                     height: 200,
+                  }}
+               >
                   <ChartProgress value={value} />
                </View>
                <View style={styles.progress_container}>
@@ -63,9 +64,10 @@ const HomeScreen = ({ navigation }) => {
                      onPress={showNotifications}
                      android_ripple={{
                         color: COLORS.DARK_200,
-                        borderless: true
+                        borderless: true,
                      }}
-                     style={styles.notification}>
+                     style={styles.notification}
+                  >
                      <NotificationSVG />
                      <View style={styles.notification_label}>
                         <Text style={styles.notification_text}>10</Text>
@@ -94,10 +96,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
          </ScrollView>
          <View style={styles.fab_container}>
-            <Pressable
-               onPress={handleAddAction}
-               android_ripple={{ color: COLORS.DARK_100 }}
-               style={styles.fab}>
+            <Pressable onPress={handleAddAction} android_ripple={{ color: COLORS.DARK_100 }} style={styles.fab}>
                <AddRequestSVG h={35} w={35} />
             </Pressable>
          </View>
@@ -110,16 +109,16 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       height: 250,
-      position: 'relative'
+      position: 'relative',
    },
    progress_indicator: {
       fontSize: 50,
       fontWeight: 'bold',
-      color: COLORS.PRIMARY
+      color: COLORS.PRIMARY,
    },
    progress_description: {
       color: COLORS.PRIMARY,
-      fontSize: 20
+      fontSize: 20,
    },
    progress_container: {
       position: 'absolute',
@@ -129,12 +128,12 @@ const styles = StyleSheet.create({
       height: '100%',
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
    },
    title: {
       fontSize: SIZES.H5,
       color: COLORS.DARK_800,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
    },
    subTitle: {
       color: COLORS.DARK_800,
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
       fontSize: SIZES.H6,
       marginHorizontal: SIZES.MEDIUM_MARGIN,
       paddingHorizontal: SIZES.SMALL_PADDING,
-      paddingBottom: 4
+      paddingBottom: 4,
    },
    line_between: {
       flexDirection: 'row',
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingTop: SIZES.MEDIUM_PADDING,
       paddingHorizontal: SIZES.MEDIUM_PADDING,
-      paddingBottom: SIZES.SMALL_PADDING
+      paddingBottom: SIZES.SMALL_PADDING,
    },
    fab_container: {
       position: 'absolute',
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
       right: 20,
       borderRadius: 500,
       overflow: 'hidden',
-      elevation: 10
+      elevation: 10,
    },
    fab: {
       height: 60,
@@ -167,16 +166,16 @@ const styles = StyleSheet.create({
       elevation: 10,
       backgroundColor: COLORS.PRIMARY,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
    },
    notification_container: {
       position: 'absolute',
       top: 30,
-      right: 30
+      right: 30,
    },
    notification: {
       position: 'relative',
-      padding: 2
+      padding: 2,
    },
    notification_label: {
       position: 'absolute',
@@ -185,16 +184,16 @@ const styles = StyleSheet.create({
       borderRadius: 50,
       backgroundColor: COLORS.ERROR,
       paddingHorizontal: 3,
-      paddingVertical: 1
+      paddingVertical: 1,
    },
    notification_text: {
       color: COLORS.WHITE,
-      fontSize: 12
-   }
+      fontSize: 12,
+   },
 })
 
 HomeScreen.navigationOptions = () => ({
-   headerShown: false
+   headerShown: false,
 })
 
 export default HomeScreen

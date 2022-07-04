@@ -18,14 +18,14 @@ const PrinterServiceAddScreen = ({ navigation }) => {
    const back = React.useCallback(() => navigation.pop(), [])
 
    const {
-      state: { currentUserToken, currentUser }
+      state: { currentUserToken, currentUser },
    } = React.useContext(AuthContext)
 
    const {
       state: { formData },
       createPrinter,
       setFormDataField,
-      resetFormData
+      resetFormData,
    } = React.useContext(PrinterContext)
 
    React.useEffect(() => {
@@ -33,13 +33,11 @@ const PrinterServiceAddScreen = ({ navigation }) => {
    }, [])
 
    function setValue(key, value) {
-      setFormDataField({ key: key, value: value }, () => {
-      })
+      setFormDataField({ key: key, value: value }, () => {})
    }
 
    function getValue(key, default_value) {
-      if (formData)
-         return formData[key] || default_value
+      if (formData) return formData[key] || default_value
       return default_value
    }
 
@@ -55,15 +53,10 @@ const PrinterServiceAddScreen = ({ navigation }) => {
          service_phone: service_phone,
          service_address: service_address,
          department: currentUser.department,
-         created_by: currentUser.user_id
+         created_by: currentUser.user_id,
       }
 
-      if (
-         service_name === '' ||
-         service_email === '' ||
-         service_phone === '' ||
-         service_address === ''
-      ) {
+      if (service_name === '' || service_email === '' || service_phone === '' || service_address === '') {
          ToastMessage('Any fields can be empty!')
          return
       }
@@ -73,10 +66,8 @@ const PrinterServiceAddScreen = ({ navigation }) => {
          loader_ref.current.dismiss()
          if (error) {
             console.log(error)
-            if (error.message)
-               ToastMessage(error.message)
-            else
-               ToastMessage('An error are provided, please try again!')
+            if (error.message) ToastMessage(error.message)
+            else ToastMessage('An error are provided, please try again!')
             return
          }
          if (res) {
@@ -90,20 +81,21 @@ const PrinterServiceAddScreen = ({ navigation }) => {
       <AppStatusBar>
          <View style={styles.line_between}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <Pressable onPress={back} android_ripple={{
-                  color: COLORS.DARK_200,
-                  borderless: true
-               }}>
+               <Pressable
+                  onPress={back}
+                  android_ripple={{
+                     color: COLORS.DARK_200,
+                     borderless: true,
+                  }}
+               >
                   <ArrowBackSVG />
                </Pressable>
-               <Text
-                  style={[styles.title, { paddingHorizontal: 10, width: width - 50 }]}
-                  numberOfLines={1}>
+               <Text style={[styles.title, { paddingHorizontal: 10, width: width - 50 }]} numberOfLines={1}>
                   Add printer service
                </Text>
             </View>
          </View>
-         <ScrollView style={{flex: 1}}>
+         <ScrollView style={{ flex: 1 }}>
             <Space />
             <Space />
             <View style={styles.container}>
@@ -142,16 +134,14 @@ const PrinterServiceAddScreen = ({ navigation }) => {
                <Space />
                <Space />
                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <LinearGradient
-                     colors={[COLORS.WARNING_50, COLORS.WARNING]}
-                     style={STYLES.button_container}
-                  >
+                  <LinearGradient colors={[COLORS.WARNING_50, COLORS.WARNING]} style={STYLES.button_container}>
                      <Pressable
                         onPress={submit}
                         android_ripple={{
-                           color: 'rgba(255,255,255,0.53)'
+                           color: 'rgba(255,255,255,0.53)',
                         }}
-                        style={[STYLES.button_accent, { width: 150 }]}>
+                        style={[STYLES.button_accent, { width: 150 }]}
+                     >
                         <Text style={STYLES.button_text_accent}>Submit</Text>
                      </Pressable>
                   </LinearGradient>
@@ -169,7 +159,7 @@ const styles = StyleSheet.create({
    title: {
       fontSize: SIZES.H5,
       color: COLORS.DARK_800,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
    },
    subTitle: {
       color: COLORS.DARK_800,
@@ -177,7 +167,7 @@ const styles = StyleSheet.create({
       fontSize: SIZES.H6,
       marginHorizontal: SIZES.MEDIUM_MARGIN,
       paddingHorizontal: SIZES.SMALL_PADDING,
-      paddingBottom: 4
+      paddingBottom: 4,
    },
    container: {
       backgroundColor: COLORS.WHITE,
@@ -188,7 +178,7 @@ const styles = StyleSheet.create({
       marginBottom: SIZES.SMALL_MARGIN,
       overflow: 'hidden',
       paddingVertical: SIZES.SMALL_PADDING,
-      paddingHorizontal: SIZES.DEFAULT_PADDING
+      paddingHorizontal: SIZES.DEFAULT_PADDING,
    },
    line_between: {
       flexDirection: 'row',
@@ -196,30 +186,30 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingTop: SIZES.MEDIUM_PADDING,
       paddingHorizontal: SIZES.MEDIUM_PADDING,
-      paddingBottom: SIZES.SMALL_PADDING
+      paddingBottom: SIZES.SMALL_PADDING,
    },
    line: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
    },
    doc_container: {
       flexDirection: 'row',
-      paddingVertical: 5
+      paddingVertical: 5,
    },
    doc_name: {
       fontSize: SIZES.H7,
       fontWeight: 'bold',
-      color: COLORS.DARK_800
+      color: COLORS.DARK_800,
    },
    doc_sub_name: {
       fontSize: SIZES.H8,
-      color: COLORS.DARK_300
-   }
+      color: COLORS.DARK_300,
+   },
 })
 
 PrinterServiceAddScreen.navigationOptions = () => ({
-   headerShown: false
+   headerShown: false,
 })
 
 export default PrinterServiceAddScreen

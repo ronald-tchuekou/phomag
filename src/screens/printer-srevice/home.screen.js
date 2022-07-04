@@ -6,7 +6,6 @@ import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 
 const HomeScreen = ({ navigation }) => {
-
    const [loading, setLoading] = React.useState(false)
    const [content, setContent] = React.useState([])
 
@@ -24,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
             { id: 'id7', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
             { id: 'id8', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
             { id: 'id9', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id10', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' }
+            { id: 'id10', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
          ])
       }, 800)
    }, [])
@@ -46,9 +45,10 @@ const HomeScreen = ({ navigation }) => {
                onPress={showNotifications}
                android_ripple={{
                   color: COLORS.DARK_200,
-                  borderless: true
+                  borderless: true,
                }}
-               style={styles.notification}>
+               style={styles.notification}
+            >
                <NotificationSVG />
                <View style={styles.notification_label}>
                   <Text style={styles.notification_text}>10</Text>
@@ -61,9 +61,8 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
                data={content}
                keyExtractor={(item, index) => 'item' + item.id + index}
-               renderItem={({ item, index }) => (
-                  <RequestItem onPress={showDetails} item={item} index={index} />
-               )} />
+               renderItem={({ item, index }) => <RequestItem onPress={showDetails} item={item} index={index} />}
+            />
          )}
       </AppStatusBar>
    )
@@ -73,10 +72,10 @@ const styles = StyleSheet.create({
    title: {
       fontSize: SIZES.H5,
       color: COLORS.DARK_800,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
    },
    container: {
-      padding: SIZES.MEDIUM_PADDING
+      padding: SIZES.MEDIUM_PADDING,
    },
    line_between: {
       flexDirection: 'row',
@@ -84,11 +83,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       paddingTop: SIZES.MEDIUM_PADDING,
       paddingHorizontal: SIZES.MEDIUM_PADDING,
-      paddingBottom: SIZES.SMALL_PADDING
+      paddingBottom: SIZES.SMALL_PADDING,
    },
    notification: {
       position: 'relative',
-      padding: 2
+      padding: 2,
    },
    notification_label: {
       position: 'absolute',
@@ -97,16 +96,16 @@ const styles = StyleSheet.create({
       borderRadius: 50,
       backgroundColor: COLORS.ERROR,
       paddingHorizontal: 3,
-      paddingVertical: 1
+      paddingVertical: 1,
    },
    notification_text: {
       color: COLORS.WHITE,
-      fontSize: 12
-   }
+      fontSize: 12,
+   },
 })
 
 HomeScreen.navigationOptions = () => ({
-   headerShown: false
+   headerShown: false,
 })
 
 export default HomeScreen

@@ -10,8 +10,8 @@ const reducer = (state, action) => {
             ...state,
             formData: {
                ...(state.formData ? state.formData : {}),
-               [payload.key]: payload.value
-            }
+               [payload.key]: payload.value,
+            },
          }
       case 'reset_form_data':
          return { ...state, formData: null }
@@ -29,15 +29,13 @@ const getPrinters = (dispatch) => {
       try {
          const response = await phomagApi.get(API_ROUTES.GET_PRINTER_SERVICE, {
             headers: {
-               'x-access-token': token
-            }
+               'x-access-token': token,
+            },
          })
          dispatch({ type: 'set_printers_list', payload: response.data })
-         if (callback)
-            callback(undefined, response.data)
+         if (callback) callback(undefined, response.data)
       } catch (error) {
-         if (callback)
-            callback(error.response.data, undefined)
+         if (callback) callback(error.response.data, undefined)
       }
    }
 }
@@ -47,11 +45,9 @@ const getPrinterById = (dispatch) => {
       try {
          const response = await phomagApi.get(API_ROUTES.GET_PRINTER_SERVICE + '/' + id)
          dispatch({ type: 'set_current_printer', payload: response.data })
-         if (callback)
-            callback(undefined, response.data)
+         if (callback) callback(undefined, response.data)
       } catch (error) {
-         if (callback)
-            callback(error.response.data, undefined)
+         if (callback) callback(error.response.data, undefined)
       }
    }
 }
@@ -61,20 +57,18 @@ const createPrinter = (dispatch) => {
       try {
          await phomagApi.post(API_ROUTES.GET_PRINTER_SERVICE, data, {
             headers: {
-               'x-access-token': token
-            }
+               'x-access-token': token,
+            },
          })
          const response = await phomagApi.get(API_ROUTES.GET_PRINTER_SERVICE, {
             headers: {
-               'x-access-token': token
-            }
+               'x-access-token': token,
+            },
          })
          dispatch({ type: 'set_printers_list', payload: response.data })
-         if (callback)
-            callback(undefined, response.data)
+         if (callback) callback(undefined, response.data)
       } catch (error) {
-         if (callback)
-            callback(error.response.data, undefined)
+         if (callback) callback(error.response.data, undefined)
       }
    }
 }
@@ -83,11 +77,9 @@ const updatePrinter = () => {
    return async (id, data, callback) => {
       try {
          const response = await phomagApi.put(API_ROUTES.GET_PRINTER_SERVICE + '/' + id, data)
-         if (callback)
-            callback(undefined, response.data)
+         if (callback) callback(undefined, response.data)
       } catch (error) {
-         if (callback)
-            callback(error.response.data, undefined)
+         if (callback) callback(error.response.data, undefined)
       }
    }
 }
@@ -96,11 +88,9 @@ const deletePrinter = () => {
    return async (id, callback) => {
       try {
          const response = await phomagApi.delete(API_ROUTES.GET_PRINTER_SERVICE + '/' + id)
-         if (callback)
-            callback(undefined, response.data)
+         if (callback) callback(undefined, response.data)
       } catch (error) {
-         if (callback)
-            callback(error.response.data, undefined)
+         if (callback) callback(error.response.data, undefined)
       }
    }
 }
@@ -109,11 +99,9 @@ const setCurrentPrinter = (dispatch) => {
    return async (printer, callback) => {
       try {
          dispatch({ type: 'set_current_printer', payload: printer })
-         if (callback)
-            callback(undefined, true)
+         if (callback) callback(undefined, true)
       } catch (error) {
-         if (callback)
-            callback(error.response.data, undefined)
+         if (callback) callback(error.response.data, undefined)
       }
    }
 }
@@ -121,16 +109,14 @@ const setCurrentPrinter = (dispatch) => {
 const setFormDataField = (dispatch) => {
    return (data, callback) => {
       dispatch({ type: 'set_form_data_field', payload: data })
-      if (callback)
-         callback()
+      if (callback) callback()
    }
 }
 
 const resetFormData = (dispatch) => {
    return (callback) => {
-      dispatch({type: 'reset_form_data', payload: null})
-      if(callback)
-         callback()
+      dispatch({ type: 'reset_form_data', payload: null })
+      if (callback) callback()
    }
 }
 
@@ -144,11 +130,11 @@ export const { Context, Provider } = createDataContext(
       createPrinter,
       updatePrinter,
       deletePrinter,
-      resetFormData
+      resetFormData,
    },
    {
       currentPrinter: null,
       printersList: [],
-      formData: null
+      formData: null,
    }
 )

@@ -5,13 +5,16 @@ import PrinterServicesAddScreen from '../../screens/manager/printer-services.add
 import PrinterServicesScreen from '../../screens/manager/printer-services.screen'
 import RequestDetailsScreen from '../../screens/manager/request-details.screen'
 
-const PrinterServicesFlow = createStackNavigator({
-   PrinterServicesScreen: PrinterServicesScreen,
-   PrinterServicesAddScreen: PrinterServicesAddScreen,
-   PrinterServicesDetailsScreen: PrinterServicesDetailsScreen,
-   RequestDetailsScreen: RequestDetailsScreen
-}, {
-   initialRouteName: 'PrinterServicesScreen'
-})
+const PrinterServicesFlow = createStackNavigator(
+   {
+      PrinterServicesScreen: PrinterServicesScreen,
+      PrinterServicesAddScreen: PrinterServicesAddScreen,
+      PrinterServicesDetailsScreen: PrinterServicesDetailsScreen,
+      RequestDetailsScreen: RequestDetailsScreen,
+   },
+   {
+      initialRouteName: 'PrinterServicesScreen',
+   }
+)
 
 export default PrinterServicesFlow

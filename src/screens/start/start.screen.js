@@ -8,14 +8,10 @@ import { splash_screen } from '../../themes/images'
 import { getLocaleValue, registerForPushNotificationsAsync } from '../../utils'
 
 const StartScreen = ({ navigation }) => {
-   const {
-      setUserInformations,
-      setNotificationToken
-   } = React.useContext(AuthContext)
+   const { setUserInformations, setNotificationToken } = React.useContext(AuthContext)
 
    React.useEffect(() => {
-      checkUser().then(() => {
-      })
+      checkUser().then(() => {})
    }, [])
 
    const checkUser = () => {
@@ -23,24 +19,24 @@ const StartScreen = ({ navigation }) => {
          console.log('Local value : ', value)
          if (value) {
             const notification_token = await registerForPushNotificationsAsync()
-            setNotificationToken({
-               id: value.user_id,
-               token: value.token,
-               notify_token: notification_token,
-               role: value.role
-            }, (error, res) => {
-               setUserInformations(value, (error, res) => {
-                  if (res) {
-                     if (value.role === 'Chief')
-                        return navigation.navigate('ManagerFlow')
-                     if (value.role === 'Teacher')
-                        return navigation.navigate('TeacherFlow')
-                     if (value.role === 'Printer')
-                        return navigation.navigate('PrinterServiceFlow')
-                  }
-               })
-               console.log(res)
-            })
+            setNotificationToken(
+               {
+                  id: value.user_id,
+                  token: value.token,
+                  notify_token: notification_token,
+                  role: value.role,
+               },
+               (error, res) => {
+                  setUserInformations(value, (error, res) => {
+                     if (res) {
+                        if (value.role === 'Chief') return navigation.navigate('ManagerFlow')
+                        if (value.role === 'Teacher') return navigation.navigate('TeacherFlow')
+                        if (value.role === 'Printer') return navigation.navigate('PrinterServiceFlow')
+                     }
+                  })
+                  console.log(res)
+               }
+            )
          } else {
             navigation.navigate('AuthFlow')
          }
@@ -49,20 +45,22 @@ const StartScreen = ({ navigation }) => {
 
    return (
       <AppStatusBar>
-         <View style={{
-            width: '100%',
-            height: '100%',
-            flex: 1,
-            backgroundColor: COLORS.WHITE,
-            alignItems: 'center',
-            justifyContent: 'center'
-         }}>
+         <View
+            style={{
+               width: '100%',
+               height: '100%',
+               flex: 1,
+               backgroundColor: COLORS.WHITE,
+               alignItems: 'center',
+               justifyContent: 'center',
+            }}
+         >
             <Image
                source={splash_screen}
                resizeMode={'contain'}
                style={{
                   margin: 'auto',
-                  height: '100%'
+                  height: '100%',
                }}
             />
          </View>
@@ -71,7 +69,7 @@ const StartScreen = ({ navigation }) => {
 }
 
 StartScreen.navigationOptions = () => ({
-   headerShown: false
+   headerShown: false,
 })
 
 export default StartScreen

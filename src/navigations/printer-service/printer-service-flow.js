@@ -48,13 +48,16 @@ const tabBarComponent = (props) => {
    )
 }
 
-const PrinterServiceFlow = createBottomTabNavigator({
-   HomeFlow,
-   BookingsFlow,
-   PlanningFlow,
-   ProfileFlow
-}, {
-   tabBarComponent
-})
+const PrinterServiceFlow = createBottomTabNavigator(
+   {
+      HomeFlow,
+      BookingsFlow,
+      PlanningFlow,
+      ProfileFlow,
+   },
+   {
+      tabBarComponent,
+   }
+)
 
 export default PrinterServiceFlow

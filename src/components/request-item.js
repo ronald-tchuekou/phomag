@@ -16,7 +16,7 @@ export const RequestItem = ({ item, index, onPress }) => {
          marginHorizontal: SIZES.MEDIUM_MARGIN,
          marginTop: index === 0 ? SIZES.SMALL_MARGIN : 0,
          marginBottom: SIZES.SMALL_MARGIN,
-         overflow: 'hidden'
+         overflow: 'hidden',
       },
       content: {
          width: '100%',
@@ -24,25 +24,22 @@ export const RequestItem = ({ item, index, onPress }) => {
          paddingVertical: SIZES.SMALL_PADDING,
          flexDirection: 'row',
          justifyContent: 'space-between',
-         alignItems: 'center'
+         alignItems: 'center',
       },
       title: {
          width: width - 150,
          fontSize: SIZES.H7,
          color: COLORS.DARK_500,
-         fontWeight: '700'
+         fontWeight: '700',
       },
       label: {
          fontSize: SIZES.H8,
-         color: COLORS.DARK_300
-      }
+         color: COLORS.DARK_300,
+      },
    })
    return (
       <View style={itemStyles.container}>
-         <Pressable
-            onPress={onPress}
-            android_ripple={{ color: COLORS.DARK_200 }}
-            style={itemStyles.content}>
+         <Pressable onPress={onPress} android_ripple={{ color: COLORS.DARK_200 }} style={itemStyles.content}>
             <View>
                <Text style={itemStyles.title} numberOfLines={1}>
                   {item.title}

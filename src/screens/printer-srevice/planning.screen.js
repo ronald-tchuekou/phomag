@@ -19,10 +19,7 @@ const PlanningScreen = ({ navigation }) => {
       state: { currentUser },
    } = React.useContext(AuthContext)
 
-   const {
-      getPlagesByDate,
-      setFormDataField
-   } = React.useContext(AvailabilityContext)
+   const { getPlagesByDate, setFormDataField } = React.useContext(AvailabilityContext)
 
    React.useEffect(() => {
       loadPlages(currentDay)
@@ -30,8 +27,7 @@ const PlanningScreen = ({ navigation }) => {
    }, [])
 
    function setValue(key, value) {
-      setFormDataField({ key: key, value: value }, () => {
-      })
+      setFormDataField({ key: key, value: value }, () => {})
    }
 
    const dateHandler = React.useCallback((day) => {

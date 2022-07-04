@@ -13,7 +13,7 @@ LocaleConfig.locales['fr'] = {
       'Septembre',
       'Octobre',
       'Novembre',
-      'Décembre'
+      'Décembre',
    ],
    monthNamesShort: [
       'Janv.',
@@ -27,27 +27,11 @@ LocaleConfig.locales['fr'] = {
       'Sept.',
       'Oct.',
       'Nov.',
-      'Déc.'
+      'Déc.',
    ],
-   dayNames: [
-      'Dimanche',
-      'Lundi',
-      'Mardi',
-      'Mercredi',
-      'Jeudi',
-      'Vendredi',
-      'Samedi'
-   ],
-   dayNamesShort: [
-      'Dim.',
-      'Lun.',
-      'Mar.',
-      'Mer.',
-      'Jeu.',
-      'Ven.',
-      'Sam.'
-   ],
-   today: 'Aujourd\'hui'
+   dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+   dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+   today: "Aujourd'hui",
 }
 
 // LocaleConfig.defaultLocale = 'en'

@@ -40,8 +40,7 @@ const COLORS = {
    DARK_100: '#d9d9d9',
    DARK_50: '#e2e6e8',
 
-   TRANSPARENT: '#E2E6E800'
-
+   TRANSPARENT: '#E2E6E800',
 }
 
 export default COLORS

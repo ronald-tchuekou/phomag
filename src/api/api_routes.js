@@ -17,7 +17,7 @@ const API_ROUTES = {
    UPDATE_USER_IMG: '/auth/updateimage',
    GET_PLANNING: '/planning',
    GET_PAID_TAUX: '/paid-taux',
-   GET_PLAGES: '/availability'
+   GET_PLAGES: '/availability',
 }
 
 export default API_ROUTES

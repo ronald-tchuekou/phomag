@@ -17,7 +17,7 @@ const SIZES = {
    LARGE_MARGIN: 30,
    SMALL_MARGIN: 10,
    BTN_SIZE: 34,
-   ICON_SIZE: 27
+   ICON_SIZE: 27,
 }
 
 export default SIZES
