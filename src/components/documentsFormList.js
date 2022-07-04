@@ -31,7 +31,7 @@ export const DocumentFormList = ({}) => {
    async function addFile() {
       try {
          const response = await DocumentPicker.getDocumentAsync({
-            type: 'application/*',
+            type: 'application/pdf',
          })
          if (response.type === 'success') {
             if (documents.find((item) => item.name === response.name))
