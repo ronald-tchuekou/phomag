@@ -97,7 +97,7 @@ const PrinterServiceAddScreen = ({ navigation }) => {
                   <ArrowBackSVG />
                </Pressable>
                <Text
-                  style={[styles.title, { paddingHorizontal: 10, width: width - 170 }]}
+                  style={[styles.title, { paddingHorizontal: 10, width: width - 50 }]}
                   numberOfLines={1}>
                   Add printer service
                </Text>

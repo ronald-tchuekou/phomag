@@ -16,7 +16,8 @@ const API_ROUTES = {
    GET_PRINTER_SERVICE: '/printer-service',
    UPDATE_USER_IMG: '/auth/updateimage',
    GET_PLANNING: '/planning',
-   GET_PAID_TAUX: '/paid-taux'
+   GET_PAID_TAUX: '/paid-taux',
+   GET_PLAGES: '/availability'
 }
 
 export default API_ROUTES

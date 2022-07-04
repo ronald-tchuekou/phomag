@@ -12,6 +12,8 @@ import { ButtonNav } from './bookings.screen'
 const { width } = Dimensions.get('window')
 
 const PrinterServiceDetailsScreen = ({ navigation }) => {
+   const availability_ref = React.useRef(null)
+
    const content = [
       { id: 'id1', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
       { id: 'id2', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
@@ -33,10 +35,14 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
    const [loading, setLoading] = React.useState(false)
 
    React.useEffect(() => {
-      setLoading(true)
-      setTimeout(() => {
-         setLoading(false)
-      }, 800)
+      if (current === 'Requests') {
+         setLoading(true)
+         setTimeout(() => {
+            setLoading(false)
+         }, 800)
+      } else {
+         availability_ref.current.start()
+      }
    }, [current])
 
    const back = React.useCallback(() => navigation.pop(), [])
@@ -58,7 +64,7 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
                >
                   <ArrowBackSVG />
                </Pressable>
-               <Text style={[styles.title, { paddingHorizontal: 10, width: width - 170 }]} numberOfLines={1}>
+               <Text style={[styles.title, { paddingHorizontal: 10, width: width - 50 }]} numberOfLines={1}>
                   Printer service details
                </Text>
             </View>
@@ -158,7 +164,7 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
                renderItem={({ item, index }) => <RequestItem onPress={showDetails} item={item} index={index} />}
             />
          ) : (
-            <PrinterAvailability />
+            <PrinterAvailability ref={availability_ref} />
          )}
       </AppStatusBar>
    )
