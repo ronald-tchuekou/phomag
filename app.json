@@ -1,50 +1,51 @@
 {
-  "expo": {
-    "name": "PhoMag",
-    "slug": "phomag",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "primaryColor": "#ffffff",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "developmentClient": {
-      "silentLaunch": false
-    },
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "googleServicesFile": "./google-services.json",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff00"
+   "expo": {
+      "name": "PhoMag",
+      "slug": "phomag",
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "primaryColor": "#ffffff",
+      "icon": "./assets/icon.png",
+      "userInterfaceStyle": "light",
+      "developmentClient": {
+         "silentLaunch": false
       },
-      "package": "com.roncoder.phomag"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/notification-icon.png",
-          "color": "#777DF5"
-        }
-      ]
-    ],
-    "description": "Service printer application.",
-    "githubUrl": "https://github.com/ronald-tchuekou/phomag.git"
-  }
+      "splash": {
+         "image": "./assets/splash.png",
+         "resizeMode": "contain",
+         "backgroundColor": "#ffffff"
+      },
+      "updates": {
+         "fallbackToCacheTimeout": 0
+      },
+      "assetBundlePatterns": ["**/*"],
+      "ios": {
+         "supportsTablet": true,
+         "usesIcloudStorage": true,
+         "bundleIdentifier": "com.roncoder.phomag"
+      },
+      "android": {
+         "googleServicesFile": "./google-services.json",
+         "adaptiveIcon": {
+            "foregroundImage": "./assets/adaptive-icon.png",
+            "backgroundColor": "#ffffff00"
+         },
+         "package": "com.roncoder.phomag"
+      },
+      "web": {
+         "favicon": "./assets/favicon.png"
+      },
+      "plugins": [
+         ["expo-document-picker"],
+         [
+            "expo-notifications",
+            {
+               "icon": "./assets/notification-icon.png",
+               "color": "#777DF5"
+            }
+         ]
+      ],
+      "description": "Service printer application.",
+      "githubUrl": "https://github.com/ronald-tchuekou/phomag.git"
+   }
 }

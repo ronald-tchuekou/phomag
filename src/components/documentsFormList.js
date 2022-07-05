@@ -1,15 +1,14 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { Pressable, View, Text, StyleSheet, Dimensions, Image } from 'react-native'
+import { Pressable, View, Text, StyleSheet, Dimensions, Image, Linking } from 'react-native'
 import { PdfSVG } from '../svg'
 import COLORS from '../themes/colors'
 import SIZES from '../themes/sizes'
 import { RequestConfirmationModal } from './request-confirmation.modal'
 import * as DocumentPicker from 'expo-document-picker'
+import * as FileSystem from "expo-file-system"
 import { formatFileSize, ToastMessage } from '../utils'
 import { empty_file } from '../themes/images'
-import { Space } from './space'
-import { Pdf } from 'react-native-openanything'
 
 const { width } = Dimensions.get('window')
 
@@ -31,7 +30,9 @@ export const DocumentFormList = ({}) => {
    async function addFile() {
       try {
          const response = await DocumentPicker.getDocumentAsync({
-            type: 'application/pdf',
+            type: 'application/*',
+            copyToCacheDirectory: false,
+            multiple: false,
          })
          if (response.type === 'success') {
             if (documents.find((item) => item.name === response.name))
@@ -47,10 +48,12 @@ export const DocumentFormList = ({}) => {
       }
    }
 
-   const showDoc = (file) => {
-      // TODO set the correct file url.
-      Pdf('https://irem.univ-reunion.fr/IMG/pdf/4_exponentielle_et_logarithme.pdf')
-      console.log(file.uri)
+   const showDoc = async (file) => {
+      const path = "https://phomag-api.herokuapp.com/files?filename=exponentielle_et_logarithme.pdf&bucket=documents"
+      console.log(path)
+      const response = await Linking.canOpenURL(path)
+      if (response) Linking.openURL(path)
+      else ToastMessage('Any app cant open this file!')
    }
 
    const onConfirm = (status) => {
