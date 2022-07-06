@@ -12,12 +12,26 @@ import { empty_file } from '../themes/images'
 
 const { width } = Dimensions.get('window')
 
-export const DocumentFormList = ({}) => {
+export const DocumentFormList = React.forwardRef((props, ref) => {
+   const {} = props
+
    const confirm_ref = React.useRef(null)
 
    const [action, setAction] = React.useState(null)
    const [currentIndex, setCurrentIndex] = React.useState(-1)
    const [documents, setDocuments] = React.useState([])
+
+   React.useImperativeHandle(ref, () => ({
+      getDocumentsList: getDocumentsList
+   }))
+
+   function getDocumentsList () {
+      return documents.map(item => ({
+         name: item.name,
+         size: item.size,
+         path: item.uri
+      }))
+   }
 
    function removeDoc(index) {
       setCurrentIndex(index)
@@ -146,7 +160,7 @@ export const DocumentFormList = ({}) => {
          <RequestConfirmationModal onConfirm={onConfirm} ref={confirm_ref} />
       </>
    )
-}
+})
 
 const styles = StyleSheet.create({
    container: {

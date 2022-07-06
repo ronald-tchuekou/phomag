@@ -5,20 +5,20 @@ import SIZES from '../themes/sizes'
 
 export const Status = ({ status }) => {
    const text_color =
-      status === 'Pending'
+      status === 'PENDING'
          ? COLORS.WARNING
-         : status === 'Validate'
+         : status === 'VALIDATE'
          ? COLORS.PRIMARY
-         : status === 'Printed'
+         : status === 'PRINTED'
          ? COLORS.SUCCESS
          : COLORS.ERROR
 
    const bg_color =
-      status === 'Pending'
+      status === 'PENDING'
          ? COLORS.WARNING_15
-         : status === 'Validate'
+         : status === 'VALIDATE'
          ? COLORS.PRIMARY_15
-         : status === 'Printed'
+         : status === 'PRINTED'
          ? COLORS.SUCCESS_15
          : COLORS.ERROR_15
 

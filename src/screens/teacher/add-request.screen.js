@@ -1,19 +1,30 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { AppStatusBar, AppTextInput, DocumentFormList, Space } from '../../components'
+import { AppStatusBar, AppTextInput, DocumentFormList, ModalLoader, Space } from '../../components'
 import { Context as AuthContext } from '../../contexts/authContext'
+import { Context as RequestContext } from '../../contexts/requestContext'
 import { ArrowBackSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import STYLES from '../../themes/style'
+import { ToastMessage } from '../../utils'
 
 const { width } = Dimensions.get('window')
 
 const AddRequestScreen = ({ navigation }) => {
+   const loader_ref = React.useRef(null)
+   const documents_ref = React.useRef(null)
+
    const {
       state: { formData },
       setFormDataField,
+      createRequest,
+      updateRequest,
+   } = React.useContext(RequestContext)
+
+   const {
+      state: { currentUser, currentUserToken },
    } = React.useContext(AuthContext)
 
    const back = React.useCallback(() => navigation.pop(), [])
@@ -25,6 +36,60 @@ const AddRequestScreen = ({ navigation }) => {
    function getValue(key, default_value) {
       if (formData) return formData[key] || default_value
       return default_value
+   }
+
+   const validate = () => {
+      const name = getValue('request_name', '').trim()
+      const description = getValue('request_description', '').trim()
+      const count = getValue('request_count', '').trim()
+      const classe = getValue('request_class', '').trim()
+      const documents = documents_ref.current.getDocumentsList()
+
+      if (name === '' || description === '' || count === '' || classe === '') {
+         ToastMessage('Set value of fields!')
+         return false
+      }
+
+      if (documents.length === 0) {
+         ToastMessage('Select minimum one file!')
+         return false
+      }
+
+      return true
+   }
+
+   const submit = () => {
+      const name = getValue('request_name', '').trim()
+      const description = getValue('request_description', '').trim()
+      const count = getValue('request_count', '').trim()
+      const classe = getValue('request_class', '').trim()
+      const documents = documents_ref.current.getDocumentsList()
+
+      if (!validate()) return
+
+      const data = {
+         request_name: name,
+         request_description: description,
+         classe: classe,
+         document_list: JSON.stringify(documents),
+         request_qte: count,
+         request_status: 'PENDING',
+         author_id: currentUser.user_id,
+      }
+
+      loader_ref.current.show()
+      createRequest(data, currentUserToken, (error, res) => {
+         loader_ref.current.dismiss()
+         if (error) {
+            console.log(error)
+            if (error.message) ToastMessage(error.message)
+            else ToastMessage('Error are provided!')
+            return
+         }
+         console.log(res)
+         ToastMessage('New request are init!')
+         navigation.pop()
+      })
    }
 
    return (
@@ -50,6 +115,7 @@ const AddRequestScreen = ({ navigation }) => {
             <Space />
             <View style={styles.container}>
                <AppTextInput
+                  capitalize
                   label={'Request name'}
                   onChange={(val) => setValue('request_name', val)}
                   value={getValue('request_name', '')}
@@ -57,6 +123,7 @@ const AddRequestScreen = ({ navigation }) => {
                <Space />
                <Space />
                <AppTextInput
+                  capitalize
                   multiline
                   lines={3}
                   label={'Request description'}
@@ -67,19 +134,26 @@ const AddRequestScreen = ({ navigation }) => {
                <Space />
                <AppTextInput
                   label={'Copy count'}
-                  onChange={(val) => setValue('copy_count', val)}
-                  value={getValue('copy_count', '')}
+                  type="numeric"
+                  onChange={(val) => setValue('request_count', val)}
+                  value={getValue('request_count', '')}
                />
                <Space />
                <Space />
-               <AppTextInput label={'Class'} onChange={(val) => setValue('class', val)} value={getValue('class', '')} />
+               <AppTextInput
+                  capitalize
+                  label={'Class'}
+                  onChange={(val) => setValue('request_class', val)}
+                  value={getValue('request_class', '')}
+               />
             </View>
-            <DocumentFormList />
+            <DocumentFormList ref={documents_ref} />
             <Space />
             <Space />
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                <LinearGradient colors={[COLORS.WARNING_50, COLORS.WARNING]} style={STYLES.button_container}>
                   <Pressable
+                     onPress={submit}
                      android_ripple={{
                         color: 'rgba(255,255,255,0.53)',
                      }}
@@ -91,6 +165,7 @@ const AddRequestScreen = ({ navigation }) => {
             </View>
             <Space />
             <Space />
+            <ModalLoader ref={loader_ref} />
          </ScrollView>
       </AppStatusBar>
    )

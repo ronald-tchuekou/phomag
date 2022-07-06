@@ -5,6 +5,7 @@ import './src/calendar-local-config'
 import { Provider as AuthProvider } from './src/contexts/authContext'
 import { Provider as PrinterProvider } from './src/contexts/printerServiceContext'
 import { Provider as AvailabilityProvider } from './src/contexts/availabilityContext'
+import { Provider as RequestProvider } from './src/contexts/requestContext'
 import AuthFlow from './src/navigations/auth-flow'
 import ManagerFlow from './src/navigations/manager/manager-flow'
 import PrinterServiceFlow from './src/navigations/printer-service/printer-service-flow'
@@ -55,7 +56,9 @@ export default function AppMain() {
       <AuthProvider>
          <PrinterProvider>
             <AvailabilityProvider>
-               <App />
+               <RequestProvider>
+                  <App />
+               </RequestProvider>
             </AvailabilityProvider>
          </PrinterProvider>
       </AuthProvider>

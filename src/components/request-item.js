@@ -3,6 +3,7 @@ import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
 import COLORS from '../themes/colors'
 import SIZES from '../themes/sizes'
 import { Status } from './status'
+import moment from 'moment'
 
 const { width } = Dimensions.get('window')
 
@@ -42,11 +43,11 @@ export const RequestItem = ({ item, index, onPress }) => {
          <Pressable onPress={onPress} android_ripple={{ color: COLORS.DARK_200 }} style={itemStyles.content}>
             <View>
                <Text style={itemStyles.title} numberOfLines={1}>
-                  {item.title}
+                  {item.request_name}
                </Text>
-               <Text style={itemStyles.label}>{item.date}</Text>
+               <Text style={itemStyles.label}>{moment(item.created_at).format('dddd, DD MMM YYYY')}</Text>
             </View>
-            <Status status={item.status} />
+            <Status status={item.request_status} />
          </Pressable>
       </View>
    )

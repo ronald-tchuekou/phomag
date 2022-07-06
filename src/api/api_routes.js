@@ -13,6 +13,7 @@ const API_ROUTES = {
    UPDATE_PASS: '/user/update-password',
    GET_FIlES: '/files',
    GET_USER: '/user',
+   GET_REQUEST: '/request',
    GET_PRINTER_SERVICE: '/printer-service',
    UPDATE_USER_IMG: '/auth/updateimage',
    GET_PLANNING: '/planning',

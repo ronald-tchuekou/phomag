@@ -4,31 +4,31 @@ import { AppLoader, AppStatusBar, ChartProgress, RequestItem } from '../../compo
 import { AddRequestSVG, NotificationSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
+import { Context as RequestContext } from '../../contexts/requestContext'
+import { Context as AuthContext } from '../../contexts/authContext'
 
 const HomeScreen = ({ navigation }) => {
    const [loading, setLoading] = React.useState(false)
    const [content, setContent] = React.useState([])
    const [value, setValue] = React.useState(0)
 
+   const {
+      state: { currentUserToken },
+   } = React.useContext(AuthContext)
+
+   const { getAuthorRequests } = React.useContext(RequestContext)
+
    React.useEffect(() => {
       setLoading(true)
       setValue(0)
-      setTimeout(() => {
+      getAuthorRequests(currentUserToken, null, (error, res) => {
          setLoading(false)
-         setContent([
-            { id: 'id1', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
-            { id: 'id2', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id3', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id4', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Canceled' },
-            { id: 'id5', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-            { id: 'id6', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id7', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id8', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
-            { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-         ])
-         setValue(40)
-      }, 1000)
+         if (error) {
+            console.log(error)
+            return
+         }
+         setContent(res)
+      })
    }, [])
 
    const showDetails = React.useCallback(() => {
@@ -84,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
                      {content.map((item, index) => {
                         return (
                            <RequestItem
-                              key={'item' + item.id + index}
+                              key={'item' + item.request_id + index}
                               onPress={showDetails}
                               item={item}
                               index={index}
