@@ -1,22 +1,26 @@
 import React from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AppLoader, AppStatusBar, ChartProgress, RequestItem } from '../../components'
 import { AddRequestSVG, NotificationSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import { Context as RequestContext } from '../../contexts/requestContext'
 import { Context as AuthContext } from '../../contexts/authContext'
+import { empty_requrest } from '../../themes/images'
 
 const HomeScreen = ({ navigation }) => {
    const [loading, setLoading] = React.useState(false)
-   const [content, setContent] = React.useState([])
    const [value, setValue] = React.useState(0)
 
    const {
       state: { currentUserToken },
    } = React.useContext(AuthContext)
 
-   const { getAuthorRequests } = React.useContext(RequestContext)
+   const {
+      state: { requestsList },
+      getAuthorRequests,
+      setCurrentRequest,
+   } = React.useContext(RequestContext)
 
    React.useEffect(() => {
       setLoading(true)
@@ -27,12 +31,18 @@ const HomeScreen = ({ navigation }) => {
             console.log(error)
             return
          }
-         setContent(res)
+         console.log(res)
       })
    }, [])
 
-   const showDetails = React.useCallback(() => {
-      navigation.navigate('RequestDetailsScreen')
+   const showDetails = React.useCallback((item) => {
+      setCurrentRequest(item, (error, res) => {
+         if (error) {
+            console.log(error)
+            return
+         }
+         navigation.navigate('RequestDetailsScreen')
+      })
    }, [])
 
    const handleAddAction = React.useCallback(() => {
@@ -79,13 +89,43 @@ const HomeScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
                {loading ? (
                   <AppLoader />
+               ) : requestsList.length === 0 ? (
+                  <View
+                     style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: 250,
+                     }}
+                  >
+                     <Image source={empty_requrest} resizeMode="contain" style={{ width: 200, height: 200 }} />
+                     <Text
+                        style={{
+                           fontSize: SIZES.H6,
+                           color: COLORS.DARK_300,
+                           paddingHorizontal: SIZES.DEFAULT_PADDING,
+                           textAlign: 'center',
+                        }}
+                     >
+                        No request to show here!.
+                     </Text>
+                     <Text
+                        style={{
+                           fontSize: SIZES.H7,
+                           color: COLORS.DARK_200,
+                           paddingHorizontal: SIZES.DEFAULT_PADDING,
+                           textAlign: 'center',
+                        }}
+                     >
+                        Click on Floating Action Button to add new request.
+                     </Text>
+                  </View>
                ) : (
                   <>
-                     {content.map((item, index) => {
+                     {requestsList.map((item, index) => {
                         return (
                            <RequestItem
                               key={'item' + item.request_id + index}
-                              onPress={showDetails}
+                              onPress={() => showDetails(item)}
                               item={item}
                               index={index}
                            />

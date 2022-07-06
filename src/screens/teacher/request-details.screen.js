@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React from 'react'
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
@@ -5,17 +6,29 @@ import { AppStatusBar, RequestConfirmationModal, Space, Status } from '../../com
 import { ArrowBackSVG, EditRequestSVG, PdfSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
+import { formatFileSize } from '../../utils'
+import { Context as RequestContext } from '../../contexts/requestContext'
 
 const { width } = Dimensions.get('window')
 
 const RequestDetailsScreen = ({ navigation }) => {
+   const status = navigation.state.params
+      ? navigation.state.params.status
+         ? navigation.state.params.status
+         : null
+      : null
+
    const confirm_ref = React.useRef(null)
 
-   const documents = [
-      { id: 'doc1', name: 'Introduction to AI Introduction to AI Introduction to AI', page_num: 120 },
-      { id: 'doc2', name: 'Introduction to data programming', page_num: 12 },
-      { id: 'doc3', name: 'Introduction to data manning', page_num: 52 },
-   ]
+   const {
+      state: { currentRequest },
+   } = React.useContext(RequestContext)
+
+   if (!currentRequest) return null
+
+   const documents = React.useMemo(() => {
+      return JSON.parse(currentRequest ? currentRequest.document_list : '[]')
+   }, [currentRequest])
 
    const back = React.useCallback(() => navigation.pop(), [])
 
@@ -29,8 +42,8 @@ const RequestDetailsScreen = ({ navigation }) => {
    }, [])
 
    const edit = React.useCallback(() => {
-      navigation.navigate('AddRequestScreen')
-   }, [])
+      navigation.navigate('AddRequestScreen', { edit: true, status })
+   }, [status])
 
    const validate = React.useCallback(() => {
       confirm_ref.current.show('Are you sure you want to validate this request?')
@@ -53,51 +66,57 @@ const RequestDetailsScreen = ({ navigation }) => {
                   Request details
                </Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-               <Pressable
-                  onPress={edit}
-                  android_ripple={{
-                     color: COLORS.DARK_200,
-                     borderless: true,
-                  }}
-               >
-                  <EditRequestSVG />
-               </Pressable>
-            </View>
+            {currentRequest.request_status === 'PENDING' ? (
+               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Pressable
+                     onPress={edit}
+                     android_ripple={{
+                        color: COLORS.DARK_200,
+                        borderless: true,
+                     }}
+                  >
+                     <EditRequestSVG />
+                  </Pressable>
+               </View>
+            ) : (
+               <></>
+            )}
          </View>
          <ScrollView style={{ flex: 1 }}>
             <View style={[styles.container, { marginTop: 5 }]}>
                <View style={styles.line}>
                   <Text style={{ fontSize: SIZES.H7, color: COLORS.DARK_300 }}>Class : </Text>
-                  <Text style={{ fontSize: SIZES.H7, color: COLORS.DARK_500, fontWeight: '700' }}>ICH 254</Text>
+                  <Text style={{ fontSize: SIZES.H7, color: COLORS.DARK_500, fontWeight: '700' }}>
+                     {currentRequest.classe}
+                  </Text>
                </View>
             </View>
             <Space />
             <View style={styles.container}>
                <View style={[styles.line, { paddingBottom: 5 }]}>
-                  <Text style={{ fontSize: SIZES.H7, color: COLORS.DARK_500 }}>TD sheet N° 12</Text>
-                  <Status status={'Pending'} />
+                  <Text style={{ fontSize: SIZES.H7, color: COLORS.DARK_500 }}>{currentRequest.request_name}</Text>
+                  <Status status={currentRequest.request_status} />
                </View>
-               <Text style={{ fontSize: SIZES.H7, color: COLORS.DARK_300 }}>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium at dicta eius eveniet inventore
-                  ipsam iste iure nemo nisi numquam pariatur placeat porro unde ut vel velit, voluptates voluptatibus
-                  voluptatum!
-               </Text>
+               <Text style={{ fontSize: SIZES.H7, color: COLORS.DARK_300 }}>{currentRequest.request_description}</Text>
                <View style={[styles.line, { paddingTop: 5 }]}>
-                  <Text style={{ fontSize: SIZES.H8, color: COLORS.PRIMARY }}>12 copies to print</Text>
-                  <Text style={{ fontSize: SIZES.H8, color: COLORS.DARK_200 }}>Lundi, 20 Juin 2022</Text>
+                  <Text style={{ fontSize: SIZES.H8, color: COLORS.PRIMARY }}>
+                     {documents.length} document(s) to print
+                  </Text>
+                  <Text style={{ fontSize: SIZES.H8, color: COLORS.DARK_200 }}>
+                     {moment(currentRequest.created_at).format('dddd, DD MMM YYYY')}
+                  </Text>
                </View>
             </View>
             <Space />
             <Text style={styles.subTitle}>Document list</Text>
             <View style={[styles.container]}>
-               {documents.map((item) => (
+               {documents.map((item, index) => (
                   <Pressable
                      onPress={showDoc}
                      android_ripple={{
                         color: COLORS.DARK_100,
                      }}
-                     key={item.id}
+                     key={index}
                      style={styles.doc_container}
                   >
                      <PdfSVG />
@@ -105,7 +124,7 @@ const RequestDetailsScreen = ({ navigation }) => {
                         <Text numberOfLines={1} style={styles.doc_name}>
                            {item.name}
                         </Text>
-                        <Text style={styles.doc_sub_name}>{item.page_num} pages</Text>
+                        <Text style={styles.doc_sub_name}>{formatFileSize(item.size)}</Text>
                      </View>
                   </Pressable>
                ))}

@@ -1,7 +1,14 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { AppStatusBar, AppTextInput, DocumentFormList, ModalLoader, Space } from '../../components'
+import {
+   AppStatusBar,
+   AppTextInput,
+   DocumentFormList,
+   ModalLoader,
+   RequestConfirmationModal,
+   Space,
+} from '../../components'
 import { Context as AuthContext } from '../../contexts/authContext'
 import { Context as RequestContext } from '../../contexts/requestContext'
 import { ArrowBackSVG } from '../../svg'
@@ -15,12 +22,22 @@ const { width } = Dimensions.get('window')
 const AddRequestScreen = ({ navigation }) => {
    const loader_ref = React.useRef(null)
    const documents_ref = React.useRef(null)
+   const confirm_ref = React.useRef(null)
+
+   const is_edit = navigation.state.params ? navigation.state.params.edit : false
+   const status = navigation.state.params
+      ? navigation.state.params.status
+         ? navigation.state.params.status
+         : null
+      : null
 
    const {
-      state: { formData },
+      state: { formData, currentRequest },
       setFormDataField,
       createRequest,
       updateRequest,
+      setCurrentRequest,
+      getAuthorRequests,
    } = React.useContext(RequestContext)
 
    const {
@@ -37,6 +54,15 @@ const AddRequestScreen = ({ navigation }) => {
       if (formData) return formData[key] || default_value
       return default_value
    }
+
+   React.useEffect(() => {
+      if (currentRequest && is_edit) {
+         setValue('request_name', currentRequest.request_name)
+         setValue('request_description', currentRequest.request_description)
+         setValue('request_count', currentRequest.request_qte + '')
+         setValue('request_class', currentRequest.classe)
+      }
+   }, [currentRequest])
 
    const validate = () => {
       const name = getValue('request_name', '').trim()
@@ -77,20 +103,87 @@ const AddRequestScreen = ({ navigation }) => {
          author_id: currentUser.user_id,
       }
 
+      if (!is_edit) createNew(data)
+      else {
+         confirm_ref.current.show('Are you sure that you want to save the modification of this request?')
+      }
+   }
+
+   const onConfirm = () => {
+      const name = getValue('request_name', '').trim()
+      const description = getValue('request_description', '').trim()
+      const count = getValue('request_count', '').trim()
+      const classe = getValue('request_class', '').trim()
+      const documents = documents_ref.current.getDocumentsList()
+
+      if (!validate()) return
+
+      const data = {
+         request_name: name,
+         request_description: description,
+         classe: classe,
+         document_list: JSON.stringify(documents),
+         request_qte: count,
+         request_status: 'PENDING',
+         author_id: currentUser.user_id,
+      }
+
+      udpate(data)
+   }
+
+   const udpate = (data) => {
       loader_ref.current.show()
-      createRequest(data, currentUserToken, (error, res) => {
-         loader_ref.current.dismiss()
+      updateRequest(currentRequest.request_id, data, currentUserToken, (error, res) => {
          if (error) {
             console.log(error)
             if (error.message) ToastMessage(error.message)
             else ToastMessage('Error are provided!')
             return
          }
-         console.log(res)
-         ToastMessage('New request are init!')
-         navigation.pop()
+         getAuthorRequests(currentUserToken, status, (error, res) => {
+            loader_ref.current.dismiss()
+            if (error) {
+               console.log(error)
+               return
+            }
+            ToastMessage('The request are updated successfully!')
+            setCurrentRequest(
+               {
+                  ...currentRequest,
+                  ...data,
+               },
+               () => {
+                  navigation.pop()
+               }
+            )
+         })
       })
    }
+
+   const createNew = (data) => {
+      loader_ref.current.show()
+      createRequest(data, currentUserToken, (error, res) => {
+         if (error) {
+            console.log(error)
+            if (error.message) ToastMessage(error.message)
+            else ToastMessage('Error are provided!')
+            return
+         }
+         getAuthorRequests(currentUserToken, status, (error, res) => {
+            loader_ref.current.dismiss()
+            if (error) {
+               console.log(error)
+               return
+            }
+            ToastMessage('New request are init!')
+            navigation.pop()
+         })
+      })
+   }
+
+   const documents = React.useMemo(() => {
+      return JSON.parse(currentRequest ? currentRequest.document_list : '[]')
+   }, [currentRequest])
 
    return (
       <AppStatusBar>
@@ -147,7 +240,7 @@ const AddRequestScreen = ({ navigation }) => {
                   value={getValue('request_class', '')}
                />
             </View>
-            <DocumentFormList ref={documents_ref} />
+            <DocumentFormList propsDocs={documents} ref={documents_ref} />
             <Space />
             <Space />
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -166,6 +259,7 @@ const AddRequestScreen = ({ navigation }) => {
             <Space />
             <Space />
             <ModalLoader ref={loader_ref} />
+            <RequestConfirmationModal onConfirm={onConfirm} ref={confirm_ref} />
          </ScrollView>
       </AppStatusBar>
    )

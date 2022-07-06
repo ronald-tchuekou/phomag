@@ -6,14 +6,13 @@ import COLORS from '../themes/colors'
 import SIZES from '../themes/sizes'
 import { RequestConfirmationModal } from './request-confirmation.modal'
 import * as DocumentPicker from 'expo-document-picker'
-import * as FileSystem from "expo-file-system"
 import { formatFileSize, ToastMessage } from '../utils'
 import { empty_file } from '../themes/images'
 
 const { width } = Dimensions.get('window')
 
 export const DocumentFormList = React.forwardRef((props, ref) => {
-   const {} = props
+   const { propsDocs = [] } = props
 
    const confirm_ref = React.useRef(null)
 
@@ -22,14 +21,18 @@ export const DocumentFormList = React.forwardRef((props, ref) => {
    const [documents, setDocuments] = React.useState([])
 
    React.useImperativeHandle(ref, () => ({
-      getDocumentsList: getDocumentsList
+      getDocumentsList: getDocumentsList,
    }))
 
-   function getDocumentsList () {
-      return documents.map(item => ({
+   React.useEffect(() => {
+      setDocuments(propsDocs)
+   }, [propsDocs])
+
+   function getDocumentsList() {
+      return documents.map((item) => ({
          name: item.name,
          size: item.size,
-         path: item.uri
+         uri: item.uri,
       }))
    }
 
@@ -63,7 +66,7 @@ export const DocumentFormList = React.forwardRef((props, ref) => {
    }
 
    const showDoc = async (file) => {
-      const path = "https://phomag-api.herokuapp.com/files?filename=exponentielle_et_logarithme.pdf&bucket=documents"
+      const path = file.uri ? file.uri : file.path
       console.log(path)
       const response = await Linking.canOpenURL(path)
       if (response) Linking.openURL(path)
