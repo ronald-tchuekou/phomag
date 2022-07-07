@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient'
+import { reject } from 'lodash'
 import React from 'react'
-import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import {
    AppStatusBar,
    AppTextInput,
@@ -15,7 +16,7 @@ import { ArrowBackSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import STYLES from '../../themes/style'
-import { ToastMessage } from '../../utils'
+import { postMedia, ToastMessage, updateMedia } from '../../utils'
 
 const { width } = Dimensions.get('window')
 
@@ -23,6 +24,8 @@ const AddRequestScreen = ({ navigation }) => {
    const loader_ref = React.useRef(null)
    const documents_ref = React.useRef(null)
    const confirm_ref = React.useRef(null)
+
+   const [file_loading, setFileLoading] = React.useState(false)
 
    const is_edit = navigation.state.params ? navigation.state.params.edit : false
    const status = navigation.state.params
@@ -38,6 +41,7 @@ const AddRequestScreen = ({ navigation }) => {
       updateRequest,
       setCurrentRequest,
       getAuthorRequests,
+      resetFormData,
    } = React.useContext(RequestContext)
 
    const {
@@ -61,6 +65,9 @@ const AddRequestScreen = ({ navigation }) => {
          setValue('request_description', currentRequest.request_description)
          setValue('request_count', currentRequest.request_qte + '')
          setValue('request_class', currentRequest.classe)
+      } else {
+         resetFormData()
+         setCurrentRequest(null)
       }
    }, [currentRequest])
 
@@ -84,7 +91,7 @@ const AddRequestScreen = ({ navigation }) => {
       return true
    }
 
-   const submit = () => {
+   const submit = async () => {
       const name = getValue('request_name', '').trim()
       const description = getValue('request_description', '').trim()
       const count = getValue('request_count', '').trim()
@@ -103,29 +110,38 @@ const AddRequestScreen = ({ navigation }) => {
          author_id: currentUser.user_id,
       }
 
-      if (!is_edit) createNew(data)
-      else {
+      if (!is_edit) {
+         const docs = await postDocuments(documents, 0)
+         createNew({...data, document_list: JSON.stringify(docs)})
+      } else {
          confirm_ref.current.show('Are you sure that you want to save the modification of this request?')
       }
    }
 
-   const onConfirm = () => {
+   const onConfirm = async () => {
       const name = getValue('request_name', '').trim()
       const description = getValue('request_description', '').trim()
       const count = getValue('request_count', '').trim()
       const classe = getValue('request_class', '').trim()
+      /**
+       * @type {Array<any>}
+       */
       const documents = documents_ref.current.getDocumentsList()
 
       if (!validate()) return
+
+      const files = documents.filter(item => item.uri)
+      let docs = []
+
+      if(files.length > 0)
+         docs = await postDocuments(files, 0)
 
       const data = {
          request_name: name,
          request_description: description,
          classe: classe,
-         document_list: JSON.stringify(documents),
+         document_list: JSON.stringify(documents.filter(item => item.path).concat(docs)),
          request_qte: count,
-         request_status: 'PENDING',
-         author_id: currentUser.user_id,
       }
 
       udpate(data)
@@ -178,6 +194,44 @@ const AddRequestScreen = ({ navigation }) => {
             ToastMessage('New request are init!')
             navigation.pop()
          })
+      })
+   }
+
+   const postDocuments = (files, index) => {
+      return new Promise(async (resolve, reject) => {
+         setFileLoading(true)
+         try {
+            const file = {
+               uri: files[index].uri,
+               name: new Date().getTime() + '.pdf',
+               type: `application/pdf`,
+            }
+            const formData = new FormData()
+            formData.append('file', file)
+            const response = await postMedia(formData, currentUserToken, 'document')
+            if (files.length === index + 1) {
+               setFileLoading(false)
+               resolve([
+                  {
+                     ...response,
+                     name: files[index].name,
+                     size: files[index].size,
+                  },
+               ])
+            } else {
+               resolve([
+                  {
+                     ...response,
+                     name: files[index].name,
+                     size: files[index].size,
+                  },
+                  ...(await postDocuments(files, index + 1)),
+               ])
+            }
+         } catch (error) {
+            console.log(error.response.data)
+            resolve([])
+         }
       })
    }
 
@@ -250,9 +304,14 @@ const AddRequestScreen = ({ navigation }) => {
                      android_ripple={{
                         color: 'rgba(255,255,255,0.53)',
                      }}
+                     disabled={file_loading}
                      style={[STYLES.button_accent, { width: 150 }]}
                   >
-                     <Text style={STYLES.button_text_accent}>Submit</Text>
+                     {file_loading ? (
+                        <ActivityIndicator size="small" color={COLORS.WHITE} />
+                     ) : (
+                        <Text style={STYLES.button_text_accent}>Submit</Text>
+                     )}
                   </Pressable>
                </LinearGradient>
             </View>

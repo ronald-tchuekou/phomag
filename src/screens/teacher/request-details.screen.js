@@ -1,12 +1,10 @@
 import moment from 'moment'
 import React from 'react'
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import Svg, { Path } from 'react-native-svg'
-import { AppStatusBar, RequestConfirmationModal, Space, Status } from '../../components'
-import { ArrowBackSVG, EditRequestSVG, PdfSVG } from '../../svg'
+import { AppStatusBar, DocumentList, Space, Status } from '../../components'
+import { ArrowBackSVG, EditRequestSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
-import { formatFileSize } from '../../utils'
 import { Context as RequestContext } from '../../contexts/requestContext'
 
 const { width } = Dimensions.get('window')
@@ -17,8 +15,6 @@ const RequestDetailsScreen = ({ navigation }) => {
          ? navigation.state.params.status
          : null
       : null
-
-   const confirm_ref = React.useRef(null)
 
    const {
       state: { currentRequest },
@@ -32,22 +28,9 @@ const RequestDetailsScreen = ({ navigation }) => {
 
    const back = React.useCallback(() => navigation.pop(), [])
 
-   const showDoc = React.useCallback(() => {
-      // TODO
-   }, [])
-
-   const onConfirm = React.useCallback((status) => {
-      // TODO
-      console.log(status)
-   }, [])
-
    const edit = React.useCallback(() => {
       navigation.navigate('AddRequestScreen', { edit: true, status })
    }, [status])
-
-   const validate = React.useCallback(() => {
-      confirm_ref.current.show('Are you sure you want to validate this request?')
-   }, [])
 
    return (
       <AppStatusBar>
@@ -108,28 +91,7 @@ const RequestDetailsScreen = ({ navigation }) => {
                </View>
             </View>
             <Space />
-            <Text style={styles.subTitle}>Document list</Text>
-            <View style={[styles.container]}>
-               {documents.map((item, index) => (
-                  <Pressable
-                     onPress={showDoc}
-                     android_ripple={{
-                        color: COLORS.DARK_100,
-                     }}
-                     key={index}
-                     style={styles.doc_container}
-                  >
-                     <PdfSVG />
-                     <View style={{ padding: 5 }}>
-                        <Text numberOfLines={1} style={styles.doc_name}>
-                           {item.name}
-                        </Text>
-                        <Text style={styles.doc_sub_name}>{formatFileSize(item.size)}</Text>
-                     </View>
-                  </Pressable>
-               ))}
-            </View>
-            <RequestConfirmationModal onConfirm={onConfirm} ref={confirm_ref} />
+            <DocumentList documents={documents} />
          </ScrollView>
       </AppStatusBar>
    )

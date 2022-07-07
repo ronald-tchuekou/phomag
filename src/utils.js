@@ -5,6 +5,8 @@ import { Alert, Platform, ToastAndroid } from 'react-native'
 import API_ROUTES from './api/api_routes'
 import phomagAPI from './api/phomag-api'
 import COLORS from './themes/colors'
+import * as IntentLauncher from 'expo-intent-launcher'
+import { ENV } from './api/env'
 
 export const storeLocaleValue = async (key, value, callback) => {
    try {
@@ -75,10 +77,27 @@ export const notifyUser = async (title, subtitle, message, data = {}) => {
    })
 }
 
-export const uploadImage = (formData, userToken, bucket) => {
+export const postMedia = (formData, userToken, bucket) => {
    return new Promise(async (resolve, reject) => {
       try {
          const fileResponse = await phomagAPI.post(API_ROUTES.GET_FIlES + '/' + bucket, formData, {
+            headers: {
+               'x-access-token': userToken,
+               'Content-Type': 'multipart/form-data',
+            },
+         })
+         resolve(fileResponse.data)
+      } catch (e) {
+         reject(e)
+      }
+   })
+}
+
+export const updateMedia = (formData, userToken, bucket, oldFileName) => {
+   return new Promise(async (resolve, reject) => {
+      try {
+         const query = `?bucket=${bucket}&filename=${oldFileName}`
+         const fileResponse = await phomagAPI.put(API_ROUTES.GET_FIlES + '/' + bucket + query, formData, {
             headers: {
                'x-access-token': userToken,
                'Content-Type': 'multipart/form-data',
@@ -129,6 +148,27 @@ export const formatFileSize = (size) => {
       : size / GOct < 1024
       ? parseFloat(`${size / GOct}`).toFixed(2) + ' Go'
       : parseFloat(`${size / TOct}`).toFixed(2) + ' To'
+}
+
+export const openPDF = async (path) => {
+   try {
+      await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+         data: path,
+         flags: 1,
+         type: 'application/pdf',
+      })
+   } catch (e) {
+      console.log(e.message)
+   }
+}
+
+/**
+ * @param {string} path
+ * @param {string} bucket
+ * @returns string
+ */
+export const getMediaPath = (path, bucket) => {
+   return `${ENV.base.url}/files?filename=${path}&bucket=${bucket}`
 }
 
 export const ToastMessage = (message) => ToastAndroid.show(message, ToastAndroid.LONG)

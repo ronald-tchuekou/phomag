@@ -31,7 +31,6 @@ const HomeScreen = ({ navigation }) => {
             console.log(error)
             return
          }
-         console.log(res)
       })
    }, [])
 

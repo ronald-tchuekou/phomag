@@ -6,8 +6,9 @@ import COLORS from '../themes/colors'
 import SIZES from '../themes/sizes'
 import { RequestConfirmationModal } from './request-confirmation.modal'
 import * as DocumentPicker from 'expo-document-picker'
-import { formatFileSize, ToastMessage } from '../utils'
+import { formatFileSize, getMediaPath, openPDF, ToastMessage } from '../utils'
 import { empty_file } from '../themes/images'
+import * as FileSystem from "expo-file-system"
 
 const { width } = Dimensions.get('window')
 
@@ -29,11 +30,7 @@ export const DocumentFormList = React.forwardRef((props, ref) => {
    }, [propsDocs])
 
    function getDocumentsList() {
-      return documents.map((item) => ({
-         name: item.name,
-         size: item.size,
-         uri: item.uri,
-      }))
+      return documents
    }
 
    function removeDoc(index) {
@@ -47,8 +44,8 @@ export const DocumentFormList = React.forwardRef((props, ref) => {
    async function addFile() {
       try {
          const response = await DocumentPicker.getDocumentAsync({
-            type: 'application/*',
-            copyToCacheDirectory: false,
+            type: 'application/pdf',
+            copyToCacheDirectory: true,
             multiple: false,
          })
          if (response.type === 'success') {
@@ -58,7 +55,6 @@ export const DocumentFormList = React.forwardRef((props, ref) => {
          } else {
             ToastMessage('Any file are select!')
          }
-         console.log(response)
       } catch (error) {
          console.log(error)
          ToastMessage('Please try again, an error are provided!')
@@ -66,11 +62,12 @@ export const DocumentFormList = React.forwardRef((props, ref) => {
    }
 
    const showDoc = async (file) => {
-      const path = file.uri ? file.uri : file.path
-      console.log(path)
-      const response = await Linking.canOpenURL(path)
-      if (response) Linking.openURL(path)
-      else ToastMessage('Any app cant open this file!')
+      try {
+         const path = file.path ? getMediaPath(file.path, 'documents') : await FileSystem.getContentUriAsync(file.uri)
+         openPDF(path)
+      } catch (e) {
+         console.log(e.message)
+      }
    }
 
    const onConfirm = (status) => {
