@@ -168,7 +168,9 @@ export const openPDF = async (path) => {
  * @returns string
  */
 export const getMediaPath = (path, bucket) => {
-   return `${ENV.base.url}/files?filename=${path}&bucket=${bucket}`
+   const route = `${ENV.base.url}/files?filename=${path}&bucket=${bucket}`
+   console.log(route)
+   return route
 }
 
 export const ToastMessage = (message) => ToastAndroid.show(message, ToastAndroid.LONG)

@@ -1,11 +1,11 @@
-import moment from 'moment'
 import React from 'react'
 import { Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AppLoader, AppStatusBar, PrinterAvailability, RequestItem, Space } from '../../components'
 import { Context as PrinterContext } from '../../contexts/printerServiceContext'
+import { Context as RequestContext } from '../../contexts/requestContext'
 import { ArrowBackSVG } from '../../svg'
 import COLORS from '../../themes/colors'
-import { default_profile } from '../../themes/images'
+import { default_profile, empty_requrest } from '../../themes/images'
 import SIZES from '../../themes/sizes'
 import { ButtonNav } from './bookings.screen'
 
@@ -14,22 +14,13 @@ const { width } = Dimensions.get('window')
 const PrinterServiceDetailsScreen = ({ navigation }) => {
    const availability_ref = React.useRef(null)
 
-   const content = [
-      { id: 'id1', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-      { id: 'id2', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
-      { id: 'id3', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-      { id: 'id4', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-      { id: 'id5', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
-      { id: 'id6', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
-      { id: 'id7', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-      { id: 'id8', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-      { id: 'id9', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-      { id: 'id10', title: 'TD sheet N° 12 (Mr John Doe)', date: 'Lundi, 20 Juin 2022', status: 'Validate' },
-   ]
+   const [content, setContent] = React.useState([])
 
    const {
       state: { currentPrinter },
    } = React.useContext(PrinterContext)
+
+   const { getPrinterRequestById, setCurrentRequest } = React.useContext(RequestContext)
 
    const [current, setCurrent] = React.useState('Requests')
    const [loading, setLoading] = React.useState(false)
@@ -37,9 +28,19 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
    React.useEffect(() => {
       if (current === 'Requests') {
          setLoading(true)
-         setTimeout(() => {
+         getPrinterRequestById(currentPrinter.printer_service_id, (error, res) => {
             setLoading(false)
-         }, 800)
+            if (error) {
+               console.log(error)
+               return
+            }
+            setContent(
+               res.map((item) => ({
+                  ...item,
+                  request_status: item.request_status === 'VALIDATE' ? 'PENDING' : item.request_status,
+               }))
+            )
+         })
       } else {
          availability_ref.current.start()
       }
@@ -47,8 +48,10 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
 
    const back = React.useCallback(() => navigation.pop(), [])
 
-   const showDetails = React.useCallback(() => {
-      navigation.navigate('RequestDetailsScreen')
+   const showDetails = React.useCallback((item) => {
+      setCurrentRequest(item, () => {
+         navigation.navigate('RequestDetailsScreen')
+      })
    }, [])
 
    return (
@@ -158,11 +161,39 @@ const PrinterServiceDetailsScreen = ({ navigation }) => {
          {loading ? (
             <AppLoader />
          ) : current === 'Requests' ? (
-            <FlatList
-               data={content}
-               keyExtractor={(item, index) => 'item' + item.id + index}
-               renderItem={({ item, index }) => <RequestItem onPress={showDetails} item={item} index={index} />}
-            />
+            <>
+               {content.length === 0 ? (
+                  <View
+                     style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: 200,
+                     }}
+                  >
+                     <Image source={empty_requrest} resizeMode="contain" style={{ width: 200, height: 200 }} />
+                     <Text
+                        style={{
+                           fontSize: SIZES.H6,
+                           color: COLORS.DARK_300,
+                           paddingHorizontal: SIZES.DEFAULT_PADDING,
+                           textAlign: 'center',
+                        }}
+                     >
+                        No request to show here!.
+                     </Text>
+                  </View>
+               ) : (
+                  <>
+                     <FlatList
+                        data={content}
+                        keyExtractor={(item, index) => 'item' + item.request_id + index}
+                        renderItem={({ item, index }) => (
+                           <RequestItem onPress={() => showDetails(item)} item={item} index={index} />
+                        )}
+                     />
+                  </>
+               )}
+            </>
          ) : (
             <PrinterAvailability ref={availability_ref} />
          )}

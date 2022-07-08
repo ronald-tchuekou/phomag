@@ -13,24 +13,28 @@ const BookingsScreen = ({ navigation }) => {
    const [loading, setLoading] = React.useState(false)
 
    const {
-      state: { currentUserToken },
+      state: { currentUserToken, currentUser },
    } = React.useContext(AuthContext)
 
    const {
       state: { pendingRequestsList, validateRequestsList, cancelRequestsList, printedRequestsList },
       getAuthorRequests,
+      getValidatorRequests,
       setCurrentRequest,
    } = React.useContext(RequestContext)
 
    React.useEffect(() => {
       setLoading(true)
-      getAuthorRequests(currentUserToken, current, (error, res) => {
-         setLoading(false)
-         console.log('Status = ', current)
-         if (error) {
-            console.log(error)
-         }
-      })
+      if (currentUser.role === 'Chief')
+         getValidatorRequests(currentUserToken, current, (error, res) => {
+            setLoading(false)
+            if (error) console.log(error)
+         })
+      else
+         getAuthorRequests(currentUserToken, current, (error, res) => {
+            setLoading(false)
+            if (error) console.log(error)
+         })
    }, [current])
 
    const showDetails = React.useCallback(

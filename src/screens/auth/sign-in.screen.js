@@ -54,6 +54,11 @@ const SignInScreen = ({ navigation }) => {
             return
          }
 
+         if (!response) {
+            ToastMessage("Internet connexion don't work, please check your internet connexion and try again!")
+            return
+         }
+
          console.log(response)
          const notification_token = await registerForPushNotificationsAsync()
          setNotificationToken(

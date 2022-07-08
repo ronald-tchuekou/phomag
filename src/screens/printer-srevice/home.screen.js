@@ -1,35 +1,45 @@
 import React from 'react'
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import { AppLoader, AppStatusBar, RequestItem, Space } from '../../components'
 import { NotificationSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
+import { Context as RequestContext } from '../../contexts/requestContext'
+import { Context as AuthContext } from '../../contexts/authContext'
+import { empty_requrest } from '../../themes/images'
 
 const HomeScreen = ({ navigation }) => {
    const [loading, setLoading] = React.useState(false)
-   const [content, setContent] = React.useState([])
+
+   const {
+      state: { currentUserToken },
+   } = React.useContext(AuthContext)
+
+   const {
+      state: { requestsList },
+      getPrinterRequests,
+      setCurrentRequest,
+   } = React.useContext(RequestContext)
 
    React.useEffect(() => {
       setLoading(true)
-      setTimeout(() => {
+      getPrinterRequests(currentUserToken, null, (error, res) => {
          setLoading(false)
-         setContent([
-            { id: 'id1', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-            { id: 'id2', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id3', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-            { id: 'id4', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id5', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-            { id: 'id6', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id7', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id8', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-            { id: 'id9', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Pending' },
-            { id: 'id10', title: 'TD sheet N° 12', date: 'Lundi, 20 Juin 2022', status: 'Printed' },
-         ])
-      }, 800)
+         if (error) {
+            console.log(error)
+            return
+         }
+      })
    }, [])
 
-   const showDetails = React.useCallback(() => {
-      navigation.navigate('RequestDetailsScreen')
+   const showDetails = React.useCallback((item) => {
+      setCurrentRequest(item, (error, res) => {
+         if (error) {
+            console.log(error)
+            return
+         }
+         navigation.navigate('RequestDetailsScreen')
+      })
    }, [])
 
    const showNotifications = React.useCallback(() => {
@@ -57,11 +67,36 @@ const HomeScreen = ({ navigation }) => {
          </View>
          {loading ? (
             <AppLoader />
+         ) : requestsList.length === 0 ? (
+            <View
+               style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 250,
+               }}
+            >
+               <Image source={empty_requrest} resizeMode="contain" style={{ width: 200, height: 200 }} />
+               <Text
+                  style={{
+                     fontSize: SIZES.H6,
+                     color: COLORS.DARK_300,
+                     paddingHorizontal: SIZES.DEFAULT_PADDING,
+                     textAlign: 'center',
+                  }}
+               >
+                  No request to show here!.
+               </Text>
+            </View>
          ) : (
             <FlatList
-               data={content}
+               data={requestsList.map((item) => ({
+                  ...item,
+                  request_status: item.request_status === 'VALIDATE' ? 'PENDING' : item.request_status,
+               }))}
                keyExtractor={(item, index) => 'item' + item.id + index}
-               renderItem={({ item, index }) => <RequestItem onPress={showDetails} item={item} index={index} />}
+               renderItem={({ item, index }) => (
+                  <RequestItem onPress={() => showDetails(item)} item={item} index={index} />
+               )}
             />
          )}
       </AppStatusBar>

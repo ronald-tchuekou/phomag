@@ -27,6 +27,7 @@ const HomeScreen = ({ navigation }) => {
       setValue(0)
       getAuthorRequests(currentUserToken, null, (error, res) => {
          setLoading(false)
+         setValue(30)
          if (error) {
             console.log(error)
             return

@@ -159,6 +159,17 @@ const getPrinterRequests = (dispatch) => {
    }
 }
 
+const getPrinterRequestById = () => {
+   return async (id, callback) => {
+      try {
+         const response = await phomagApi.get(API_ROUTES.GET_REQUEST + '/printer/' + id)
+         if (callback) callback(undefined, response.data)
+      } catch (error) {
+         if (callback) callback(error.response.data, undefined)
+      }
+   }
+}
+
 const createRequest = (dispatch) => {
    return async (data, token, callback) => {
       try {
@@ -168,6 +179,18 @@ const createRequest = (dispatch) => {
             },
          })
          dispatch({ type: 'reset_form_data' })
+         if (callback) callback(undefined, response.data)
+      } catch (error) {
+         if (callback) callback(error.response.data, undefined)
+      }
+   }
+}
+
+const assignRequest = () => {
+   return async (request_id, validator_id, date, callback) => {
+      try {
+         const query = `?request_id=${request_id}&validator_id=${validator_id}&date=${date}`
+         const response = await phomagApi.get(API_ROUTES.GET_REQUEST + '/assign' + query)
          if (callback) callback(undefined, response.data)
       } catch (error) {
          if (callback) callback(error.response.data, undefined)
@@ -237,7 +260,9 @@ export const { Context, Provider } = createDataContext(
       getAuthorRequests,
       getValidatorRequests,
       getPrinterRequests,
+      getPrinterRequestById,
       createRequest,
+      assignRequest,
       updateRequest,
       deleteRequest,
       setCurrentRequest,

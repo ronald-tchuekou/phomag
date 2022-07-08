@@ -112,7 +112,7 @@ const AddRequestScreen = ({ navigation }) => {
 
       if (!is_edit) {
          const docs = await postDocuments(documents, 0)
-         createNew({...data, document_list: JSON.stringify(docs)})
+         createNew({ ...data, document_list: JSON.stringify(docs) })
       } else {
          confirm_ref.current.show('Are you sure that you want to save the modification of this request?')
       }
@@ -130,17 +130,16 @@ const AddRequestScreen = ({ navigation }) => {
 
       if (!validate()) return
 
-      const files = documents.filter(item => item.uri)
+      const files = documents.filter((item) => item.uri)
       let docs = []
 
-      if(files.length > 0)
-         docs = await postDocuments(files, 0)
+      if (files.length > 0) docs = await postDocuments(files, 0)
 
       const data = {
          request_name: name,
          request_description: description,
          classe: classe,
-         document_list: JSON.stringify(documents.filter(item => item.path).concat(docs)),
+         document_list: JSON.stringify(documents.filter((item) => item.path).concat(docs)),
          request_qte: count,
       }
 
@@ -151,6 +150,7 @@ const AddRequestScreen = ({ navigation }) => {
       loader_ref.current.show()
       updateRequest(currentRequest.request_id, data, currentUserToken, (error, res) => {
          if (error) {
+            loader_ref.current.dismiss()
             console.log(error)
             if (error.message) ToastMessage(error.message)
             else ToastMessage('Error are provided!')
@@ -180,6 +180,7 @@ const AddRequestScreen = ({ navigation }) => {
       loader_ref.current.show()
       createRequest(data, currentUserToken, (error, res) => {
          if (error) {
+            loader_ref.current.dismiss()
             console.log(error)
             if (error.message) ToastMessage(error.message)
             else ToastMessage('Error are provided!')
