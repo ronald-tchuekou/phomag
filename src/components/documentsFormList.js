@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { Pressable, View, Text, StyleSheet, Dimensions, Image, Linking } from 'react-native'
+import { Pressable, View, Text, StyleSheet, Dimensions, Image } from 'react-native'
 import { PdfSVG } from '../svg'
 import COLORS from '../themes/colors'
 import SIZES from '../themes/sizes'
