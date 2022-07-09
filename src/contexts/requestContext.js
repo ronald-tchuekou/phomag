@@ -170,17 +170,17 @@ const getPrinterRequestById = () => {
    }
 }
 
-const createRequest = (dispatch) => {
+const createRequest = () => {
    return async (data, token, callback) => {
       try {
-         await phomagApi.post(API_ROUTES.GET_REQUEST, data, {
+         const response = await phomagApi.post(API_ROUTES.GET_REQUEST, data, {
             headers: {
                'x-access-token': token,
             },
          })
-         dispatch({ type: 'reset_form_data' })
          if (callback) callback(undefined, response.data)
       } catch (error) {
+         console.log(error)
          if (callback) callback(error.response.data, undefined)
       }
    }

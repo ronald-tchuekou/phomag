@@ -5,5 +5,6 @@ const default_profile = require('../../assets/profiles/default_profile.png')
 const empty_plage = require('../../assets/illustrations/empty-plages.png')
 const empty_file = require('../../assets/illustrations/empty-files.png')
 const empty_requrest = require('../../assets/illustrations/empty-request.png')
+const empty_notifications = require('../../assets/illustrations/empty-notifications.png')
 
-export { icon, splash_screen, profile1, default_profile, empty_plage, empty_file, empty_requrest }
+export { icon, splash_screen, profile1, default_profile, empty_plage, empty_file, empty_requrest, empty_notifications }

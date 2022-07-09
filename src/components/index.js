@@ -9,7 +9,7 @@ import { ChartProgress } from './chart-progress'
 import { PrinterAvailability } from './printer-availability'
 import { DocumentList } from './documentList'
 import { DocumentFormList } from './documentsFormList'
-import { ViewComponent } from './view-component'
+import { NotificationButton } from './notification-button'
 
 export {
    AppStatusBar,
@@ -24,5 +24,5 @@ export {
    PrinterAvailability,
    DocumentFormList,
    DocumentList,
-   ViewComponent,
+   NotificationButton
 }

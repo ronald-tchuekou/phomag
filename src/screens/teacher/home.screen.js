@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { AppLoader, AppStatusBar, ChartProgress, RequestItem } from '../../components'
-import { AddRequestSVG, NotificationSVG } from '../../svg'
+import { AppLoader, AppStatusBar, ChartProgress, NotificationButton, RequestItem } from '../../components'
+import { AddRequestSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import { Context as RequestContext } from '../../contexts/requestContext'
@@ -49,10 +49,6 @@ const HomeScreen = ({ navigation }) => {
       navigation.navigate('AddRequestScreen')
    }, [])
 
-   const showNotifications = React.useCallback(() => {
-      navigation.navigate('NotificationsScreen')
-   }, [])
-
    return (
       <AppStatusBar>
          <ScrollView style={{ flex: 1 }}>
@@ -70,19 +66,7 @@ const HomeScreen = ({ navigation }) => {
                   <Text style={styles.progress_description}>used</Text>
                </View>
                <View style={styles.notification_container}>
-                  <Pressable
-                     onPress={showNotifications}
-                     android_ripple={{
-                        color: COLORS.DARK_200,
-                        borderless: true,
-                     }}
-                     style={styles.notification}
-                  >
-                     <NotificationSVG />
-                     <View style={styles.notification_label}>
-                        <Text style={styles.notification_text}>10</Text>
-                     </View>
-                  </Pressable>
+                  <NotificationButton />
                </View>
             </View>
             <Text style={styles.subTitle}>Recent requests</Text>
@@ -212,23 +196,6 @@ const styles = StyleSheet.create({
       position: 'absolute',
       top: 30,
       right: 30,
-   },
-   notification: {
-      position: 'relative',
-      padding: 2,
-   },
-   notification_label: {
-      position: 'absolute',
-      top: -3,
-      right: -5,
-      borderRadius: 50,
-      backgroundColor: COLORS.ERROR,
-      paddingHorizontal: 3,
-      paddingVertical: 1,
-   },
-   notification_text: {
-      color: COLORS.WHITE,
-      fontSize: 12,
    },
 })
 

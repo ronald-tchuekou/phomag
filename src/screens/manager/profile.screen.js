@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import { AppStatusBar, RequestConfirmationModal, Space } from '../../components'
+import { AppStatusBar, NotificationButton, RequestConfirmationModal, Space } from '../../components'
 import { Context as AuthContext } from '../../contexts/authContext'
-import { ArrowLeftSVG, NotificationSVG } from '../../svg'
+import { ArrowLeftSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import { default_profile } from '../../themes/images'
 import SIZES from '../../themes/sizes'
@@ -13,10 +13,6 @@ const ProfileScreen = ({ navigation }) => {
       state: { currentUser },
       signOut,
    } = React.useContext(AuthContext)
-
-   const showNotifications = React.useCallback(() => {
-      navigation.navigate('NotificationsScreen')
-   }, [])
 
    const onConfirm = React.useCallback((status) => {
       if (status)
@@ -78,19 +74,7 @@ const ProfileScreen = ({ navigation }) => {
                   </Text>
                </View>
             </View>
-            <Pressable
-               onPress={showNotifications}
-               android_ripple={{
-                  color: COLORS.DARK_200,
-                  borderless: true,
-               }}
-               style={styles.notification}
-            >
-               <NotificationSVG />
-               <View style={styles.notification_label}>
-                  <Text style={styles.notification_text}>10</Text>
-               </View>
-            </Pressable>
+            <NotificationButton/>
          </View>
          <Space />
          <View style={styles.setting_container}>
@@ -179,23 +163,6 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-   },
-   notification: {
-      position: 'relative',
-      padding: 2,
-   },
-   notification_label: {
-      position: 'absolute',
-      top: -3,
-      right: -5,
-      borderRadius: 50,
-      backgroundColor: COLORS.ERROR,
-      paddingHorizontal: 3,
-      paddingVertical: 1,
-   },
-   notification_text: {
-      color: COLORS.WHITE,
-      fontSize: 12,
    },
    label: {
       fontSize: SIZES.H7,

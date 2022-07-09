@@ -1,7 +1,6 @@
 import React from 'react'
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import { AppLoader, AppStatusBar, RequestItem, Space } from '../../components'
-import { NotificationSVG } from '../../svg'
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import { AppLoader, AppStatusBar, NotificationButton, RequestItem, Space } from '../../components'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import { Context as RequestContext } from '../../contexts/requestContext'
@@ -42,28 +41,12 @@ const HomeScreen = ({ navigation }) => {
       })
    }, [])
 
-   const showNotifications = React.useCallback(() => {
-      navigation.navigate('NotificationsScreen')
-   }, [])
-
    return (
       <AppStatusBar>
          <Space />
          <View style={styles.line_between}>
             <Text style={styles.title}>Recent requests</Text>
-            <Pressable
-               onPress={showNotifications}
-               android_ripple={{
-                  color: COLORS.DARK_200,
-                  borderless: true,
-               }}
-               style={styles.notification}
-            >
-               <NotificationSVG />
-               <View style={styles.notification_label}>
-                  <Text style={styles.notification_text}>10</Text>
-               </View>
-            </Pressable>
+            <NotificationButton />
          </View>
          {loading ? (
             <AppLoader />
@@ -116,23 +99,6 @@ const styles = StyleSheet.create({
       paddingTop: SIZES.MEDIUM_PADDING,
       paddingHorizontal: SIZES.MEDIUM_PADDING,
       paddingBottom: SIZES.SMALL_PADDING,
-   },
-   notification: {
-      position: 'relative',
-      padding: 2,
-   },
-   notification_label: {
-      position: 'absolute',
-      top: -3,
-      right: -5,
-      borderRadius: 50,
-      backgroundColor: COLORS.ERROR,
-      paddingHorizontal: 3,
-      paddingVertical: 1,
-   },
-   notification_text: {
-      color: COLORS.WHITE,
-      fontSize: 12,
    },
 })
 

@@ -21,7 +21,7 @@ const RequestDetailsScreen = ({ navigation }) => {
       : null
 
    const {
-      state: { currentUserToken },
+      state: { currentUserToken, currentUser },
    } = React.useContext(AuthContext)
 
    const {
@@ -46,6 +46,7 @@ const RequestDetailsScreen = ({ navigation }) => {
    const validateRequest = () => {
       const data = {
          request_status: 'PRINTED',
+         printer_id: currentUser.user_id
       }
       loader_ref.current.show()
       updateRequest(currentRequest.request_id, data, currentUserToken, (error, res) => {

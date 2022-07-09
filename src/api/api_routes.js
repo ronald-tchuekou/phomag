@@ -19,6 +19,7 @@ const API_ROUTES = {
    GET_PLANNING: '/planning',
    GET_PAID_TAUX: '/paid-taux',
    GET_PLAGES: '/availability',
+   GET_NOTIFICATIONS: '/notification'
 }
 
 export default API_ROUTES

@@ -193,6 +193,7 @@ const AddRequestScreen = ({ navigation }) => {
                return
             }
             ToastMessage('New request are init!')
+            resetFormData()
             navigation.pop()
          })
       })
