@@ -41,7 +41,7 @@ export const registerForPushNotificationsAsync = async () => {
       }
       token = (
          await Notifications.getExpoPushTokenAsync({
-            experienceId: '@ronald-tchuekou/detect-presence',
+            experienceId: '@ronald-tchuekou/phomag',
          })
       ).data
       console.log(token)
@@ -49,8 +49,10 @@ export const registerForPushNotificationsAsync = async () => {
       if (Platform.OS === 'android') {
          await Notifications.setNotificationChannelAsync('default', {
             name: 'default',
+            sound: true,
+            priority: 'max',
+            vibrate: [0, 250, 250, 250],
             importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
             lightColor: COLORS.PRIMARY,
          })
       }

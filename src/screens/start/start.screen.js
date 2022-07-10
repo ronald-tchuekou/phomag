@@ -16,7 +16,6 @@ const StartScreen = ({ navigation }) => {
 
    const checkUser = () => {
       return getLocaleValue(ENV.user_key, async (error, value) => {
-         console.log('Local value : ', value)
          if (value) {
             const notification_token = await registerForPushNotificationsAsync()
             setNotificationToken(
@@ -34,7 +33,6 @@ const StartScreen = ({ navigation }) => {
                         if (value.role === 'Printer') return navigation.navigate('PrinterServiceFlow')
                      }
                   })
-                  console.log(res)
                }
             )
          } else {

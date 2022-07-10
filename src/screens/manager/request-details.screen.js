@@ -1,6 +1,5 @@
 import React from 'react'
 import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import Svg, { Path } from 'react-native-svg'
 import { AppStatusBar, DocumentList, ModalLoader, RequestConfirmationModal, Space, Status } from '../../components'
 import { ArrowBackSVG, CancelRequestSVG, ValidateRequestSVG } from '../../svg'
 import COLORS from '../../themes/colors'

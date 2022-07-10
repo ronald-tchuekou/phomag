@@ -50,8 +50,8 @@ export const NotificationButton = withNavigation(({ navigation }) => {
                ? 'user_' + currentUser.user_id
                : 'printer_' + currentUser.user_id
          if (data.receiver_id === role){
-            const notify = await notifyUser(data.title, 'com.roncoder.phomag', data.message)
-            console.log(notify)
+            // const notify = await notifyUser(data.title, 'com.roncoder.phomag', data.message)
+            // console.log('User is notify manualy : ', notify)
             getNotifications(currentUserToken, (error, res) => {
                if (error) {
                   console.log(error)

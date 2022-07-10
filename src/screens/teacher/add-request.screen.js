@@ -1,5 +1,4 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import { reject } from 'lodash'
 import React from 'react'
 import { ActivityIndicator, Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import {
@@ -16,7 +15,7 @@ import { ArrowBackSVG } from '../../svg'
 import COLORS from '../../themes/colors'
 import SIZES from '../../themes/sizes'
 import STYLES from '../../themes/style'
-import { postMedia, ToastMessage, updateMedia } from '../../utils'
+import { postMedia, ToastMessage } from '../../utils'
 
 const { width } = Dimensions.get('window')
 

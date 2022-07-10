@@ -7,6 +7,7 @@ import SIZES from '../../themes/sizes'
 import { Context as RequestContext } from '../../contexts/requestContext'
 import { Context as AuthContext } from '../../contexts/authContext'
 import { empty_requrest } from '../../themes/images'
+import { notifyUser } from '../../utils'
 
 const HomeScreen = ({ navigation }) => {
    const [loading, setLoading] = React.useState(false)
@@ -45,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
       })
    }, [])
 
-   const handleAddAction = React.useCallback(() => {
+   const handleAddAction = React.useCallback(async () => {
       navigation.navigate('AddRequestScreen')
    }, [])
 
